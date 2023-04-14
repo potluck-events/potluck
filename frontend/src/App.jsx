@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import './App.css'
+import './styles/App.css'
 
 function App() {
 
 
-  return (
-   
-  )
+  return null
+  
 }
 
 export default App
