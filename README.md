@@ -1,0 +1,2 @@
+# potluck
+Potluck app repository
