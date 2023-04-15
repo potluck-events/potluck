@@ -11,6 +11,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { Avatar, Typography } from "@material-tailwind/react";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -37,7 +38,7 @@ export default function Header() {
     <header className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5 flex">
+          <a href="/" className="-m-1.5 p-1.5 flex">
             <img className="h-8 w-auto mr-1.5" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
             <span className='mt-1'>PotLuck</span>
           </a>
@@ -63,7 +64,7 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5 flex">
+            <a href="/" className="-m-1.5 p-1.5 flex">
               <img
                 className="h-8 w-auto mr-1.5 "
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -82,10 +83,25 @@ export default function Header() {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">   
-              </div>
-              <div className="py-6">
-              </div>
+            <div className="flex gap-4">
+            <Avatar className="mt-4" src="/temp-img/winnie.png" t="avatar" size="md" variant="circular"  />
+            </div>
+              <Typography variant='h1' className="py-6 text-center" color="black">
+                NAME
+              </Typography>
+              <Typography variant='paragraph' className="text-center" color="gray">
+                Email: 
+              </Typography>
+              <Typography variant='paragraph' className="text-center" color="black">
+               Email Address
+              </Typography>
+              <Typography variant='paragraph' className="text-center pt-6" color="gray">
+                Location: 
+              </Typography>
+              <Typography variant='paragraph' className="text-center" color="black">
+               Lovation of user
+              </Typography>
+           
             </div>
           </div>
         </Dialog.Panel>
