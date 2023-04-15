@@ -3,7 +3,12 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    name = models.CharField(max_length=50)
+    nickname = models.CharField(max_length=50, blank=True, null=True)
+    thumbnail = models.ImageField(blank=True, null=True)
+    phone_number = models.CharField(max_length=10)
+    # email already included with AbstractUser?
+    city = models.Charfield(max_length=50)
 
 
 class Event(models.Model):
