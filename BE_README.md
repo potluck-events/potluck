@@ -1,3 +1,6 @@
+# HEROKU SERVER INFO
+https://potluck.herokuapp.com/
+
 # DJOSER ENDPOINTS
 https://djoser.readthedocs.io/en/latest/base_endpoints.html
 

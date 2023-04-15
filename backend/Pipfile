@@ -13,6 +13,8 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 social-auth-app-django = "*"
 django-cors-headers = "*"
+gunicorn = "*"
+django-on-heroku = "*"
 
 [dev-packages]
 

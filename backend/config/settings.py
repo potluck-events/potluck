@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import environ
 import os
+import django_on_heroku
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -147,3 +148,6 @@ AUTH_USER_MODEL = 'potluck.User'
 
 # allows requests from any urls
 CORS_ALLOW_ALL_ORIGINS = True
+
+django_on_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
