@@ -9,6 +9,9 @@ django-extensions = "*"
 djangorestframework = "*"
 psycopg2-binary = "*"
 django-environ = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 
