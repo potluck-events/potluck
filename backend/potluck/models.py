@@ -114,4 +114,8 @@ class Item(models.Model):
 
 
 class Post(models.Model):
-    pass
+    text = models.TextField(max_length=200)
+    author = models.ForeignKey(
+        to='User', on_delete=models.CASCADE, related_name='posts')
+    event = models.ForeignKey(
+        to='Event', on_delete=models.CASCADE, related_name='posts')
