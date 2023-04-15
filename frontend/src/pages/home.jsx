@@ -1,5 +1,6 @@
 
-
 export default function Home() {
-    return null
+    return (
+        <h1>Goodbye</h1>
+    )
 }
