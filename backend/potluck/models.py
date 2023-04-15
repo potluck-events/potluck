@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.constraints import UniqueConstraint
 
 
 class User(AbstractUser):
@@ -95,9 +96,21 @@ class Invitation(models.Model):
     email = models.EmailField(max_length=100)
     response = models.BooleanField(null=True, default=None)
 
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=['event', 'guest']
+            )
+        ]
 
-class EventItem(models.Model):
-    pass
+
+class Item(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=200)
+    event = models.ForeignKey(
+        to='Event', on_delete=models.CASCADE, related_name='items')
+    owner = models.ForeignKey(
+        to='User', on_delete=models.CASCADE, related_name='items')
 
 
 class Post(models.Model):
