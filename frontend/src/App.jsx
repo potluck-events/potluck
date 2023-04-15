@@ -26,6 +26,7 @@ function App() {
             <Route path='/invitations' element={<Invitations />} />
             <Route path='/event/new' element={<EventForm />} />
             <Route path='/event/:pk' element={<EventDetails />} />
+            <Route path='/event/:pk/edit' element={<EventForm />} />
             <Route path='/event/:pk/invitations' element={<RSVPList />} />
           </ProtectedRoute>
 
