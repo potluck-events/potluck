@@ -51,11 +51,22 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
+
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+    'allauth.socialaccount.providers.google',
+
     'corsheaders',
     'phonenumber_field',
     'potluck',
 ]
+
+# DJ REST AUTH SITE ID
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -154,7 +165,7 @@ django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
 
 
-#EMAIL SETTINGS
+# EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = env('EMAIL_USERNAME')
