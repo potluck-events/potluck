@@ -8,7 +8,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=50, blank=True, null=True)
     thumbnail = models.ImageField(blank=True, null=True)
-    phone_number = models.PhoneNumberField(blank=True, null=True, unique=True)
+    phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     # email already included with AbstractUser?
     city = models.CharField(max_length=50)
 
