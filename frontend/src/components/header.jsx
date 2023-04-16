@@ -39,8 +39,8 @@ export default function Header() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5 flex">
-            <img className="h-8 w-auto mr-1.5" src="/temp-img/champagne-glasses.png" alt="" />
-            <span className='mt-1'>PotLuck</span>
+            <img className="h-10 w-auto mr-1.5" src="/temp-img/champagne-glasses.png" alt="" />
+            <span className='mt-2 text-xl'>PotLuck</span>
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -70,7 +70,7 @@ export default function Header() {
                 src="/temp-img/champagne-glasses.png"
                 alt=""
               />
-            <span className='mt-1 '>PotLuck</span>
+            <span className='mt-1'>PotLuck</span>
             </a>
             <button
               type="button"
@@ -92,9 +92,11 @@ export default function Header() {
               <Typography variant='paragraph' className="text-center" color="gray">
                 Email: 
               </Typography>
+              <div>
               <Typography variant='paragraph' className="text-center" color="black">
                Email Address
               </Typography>
+               </div>
               <Typography variant='paragraph' className="text-center pt-6" color="gray">
                 Location: 
               </Typography>
