@@ -17,6 +17,7 @@ gunicorn = "*"
 django-on-heroku = "*"
 pillow = "*"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
+dj-rest-auth = {extras = ["with_social"], version = "*"}
 
 [dev-packages]
 
