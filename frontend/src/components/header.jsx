@@ -77,7 +77,7 @@ export default function Header() {
                 Location: 
               </Typography>
               <Typography variant='paragraph' className="text-center mb-5" color="black">
-               Location of user
+               Location of user currently
               </Typography>
               <div className="columns-1 flex justify-center mt-7">
                 <Button variant='filled' color='blue'>Log Out</Button>
