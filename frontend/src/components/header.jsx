@@ -70,14 +70,14 @@ export default function Header() {
               </Typography>
               <div>
               <Typography variant='paragraph' className="text-center" color="black">
-               Email Address
+                Email Address
               </Typography>
-               </div>
+              </div>
               <Typography variant='paragraph' className="text-center pt-6" color="gray">
                 Location: 
               </Typography>
               <Typography variant='paragraph' className="text-center mb-5" color="black">
-               Location of user currently
+                Location of user currently
               </Typography>
               <div className="columns-1 flex justify-center mt-7">
                 <Button variant='filled' color='blue'>Log Out</Button>
