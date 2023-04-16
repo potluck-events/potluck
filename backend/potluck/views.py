@@ -8,10 +8,7 @@ from dj_rest_auth.registration.views import SocialLoginView
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = CALLBACK_URL_YOU_SET_ON_GOOGLE
+    callback_url = 'https://potluck.herokuapp.com/google-signin'
     client_class = OAuth2Client
 
-
-class GoogleLogin(SocialLoginView):  # if you want to use Implicit Grant, use this
-    adapter_class = GoogleOAuth2Adapter
 # Create your views here.
