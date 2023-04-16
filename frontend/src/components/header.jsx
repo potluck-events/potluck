@@ -4,7 +4,8 @@ import { Dialog } from '@headlessui/react'
 import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { Avatar, Typography, Button } from "@material-tailwind/react";
+import { Avatar, Button, Typography,  } from "@material-tailwind/react";
+
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -78,7 +79,7 @@ export default function Header() {
               <Typography variant='paragraph' className="text-center mb-5" color="black">
                Location of user
               </Typography>
-              <div className="columns-1 flex justify-center mt-20">
+              <div className="columns-1 flex justify-center mt-7">
                 <Button variant='filled' color='blue'>Log Out</Button>
             </div>
             </div>
