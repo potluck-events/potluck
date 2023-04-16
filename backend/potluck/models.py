@@ -18,7 +18,7 @@ class Event(models.Model):
     theme = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(max_length=200)
     location_name = models.CharField(max_length=50)
-    street_address = models.CharField(max_length=50)
+    street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=2)
     zipcode = models.CharField(max_length=20)
