@@ -5,25 +5,23 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
-    name = models.CharField(max_length=50)
     nickname = models.CharField(max_length=50, blank=True, null=True)
     thumbnail = models.ImageField(blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
-    # email already included with AbstractUser?
-    city = models.CharField(max_length=50)
+    city = models.CharField(max_length=50, blank=True, null=True)
 
 
 class Event(models.Model):
     title = models.CharField(max_length=50)
     theme = models.CharField(max_length=50, blank=True, null=True)
-    description = models.TextField(max_length=200)
+    description = models.TextField(max_length=3000)
     location_name = models.CharField(max_length=50)
     street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=2)
     zipcode = models.CharField(max_length=20)
-    date = models.DateField()
-    time = models.TimeField()
+    date_scheduled = models.DateField()
+    time_scheduled = models.TimeField()
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
 
