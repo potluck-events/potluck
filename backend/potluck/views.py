@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -20,5 +21,6 @@ class ViewEventsHosting(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Event.objects.filter(host__id=user.id)
+        queryset = Event.objects.filter(
+            host__id=user.id, date_scheduled__gte=timezone.now().date())
         return queryset
