@@ -119,7 +119,7 @@ export default function Header({setToken}) {
           </Dialog.Panel>
         </Dialog>
       </header>
-      <Outlet />
+      {!mobileMenuOpen && <Outlet />}
     </>
     )
     
