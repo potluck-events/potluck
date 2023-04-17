@@ -28,18 +28,15 @@ export default function Login({setToken}) {
     };
 
     axios.request(options).then((response) => {
-      console.log(setToken);
-      console.log(response.data);
       setToken('Token ' + response.data.key);
+
+      //this code sends you to the page the user was redirected from visa-cis the ProtectedRoute component if it is stored in the location context
       const origin = location.state?.from?.pathname || '/'
       navigate(origin)
     }).catch((error) => {
       console.error(error);
       setError(error.response.data)
     }); 
-
-
-    //this code sends you to the page the user was redirected from visa-cis the ProtectedRoute component if it is stored in the location context
   }
 
   return (
