@@ -20,10 +20,12 @@ from potluck import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-
     path('dj-rest-auth/google/', views.GoogleLogin.as_view(), name='google_login'),
+
     path('events/hosting', views.EventsHosting.as_view()),
     path('events/attending', views.EventsAttending.as_view()),
+    path('items', views.Items.as_view()),
 ]
