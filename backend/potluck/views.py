@@ -5,6 +5,13 @@ from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
 from .serializers import CustomRegisterSerializer
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+import urllib.parse
+
+import requests
+
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
@@ -18,7 +25,21 @@ class CustomRegisterView(RegisterView):
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = 'https://potluck.herokuapp.com/google-signin'
+    callback_url = 'http://localhost:8000/dj-rest-auth/google/code'
     client_class = OAuth2Client
 
-# Create your views here.
+# Make testing easier
+
+
+@api_view(['GET'])
+def CodeView(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+
+    if request.method == 'GET':
+        code = urllib.parse.unquote(request.query_params['code'])
+
+        url = request.build_absolute_uri('/dj-rest-auth/google/')
+        response = requests.post(url, json={"code": code})
+        return (response.json())
