@@ -1,21 +1,17 @@
 # HEROKU SERVER INFO
 https://potluck.herokuapp.com/
 
-# DJOSER ENDPOINTS
-https://djoser.readthedocs.io/en/latest/base_endpoints.html
+# DJ-REST ENDPOINTS
+https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
+https://django-allauth.readthedocs.io/en/latest/views.html
 
-/users/
-/users/me/
-/users/confirm/
-/users/resend_activation/
-/users/set_password/
-/users/reset_password/
-/users/reset_password_confirm/
-/users/set_username/
-/users/reset_username/
-/users/reset_username_confirm/
-/token/login/ (Token Based Authentication)
-/token/logout/ (Token Based Authentication)
-/jwt/create/ (JSON Web Token Authentication)
-/jwt/refresh/ (JSON Web Token Authentication)
-/jwt/verify/ (JSON Web Token Authentication)
+# POTLUCK ENDPOINTS
+
+events/hosting -- |GET|
+-- lists all events hosted by current user with a date_scheduled >= today
+
+events/attending -- |GET|
+-- lists all events attended by current user with a date_scheduled >= today
+
+items -- |GET|
+-- lists all items owned by current user attached to an event with a date_scheduled >= today
