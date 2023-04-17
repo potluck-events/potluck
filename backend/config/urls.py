@@ -21,8 +21,11 @@ from potluck import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/google/', views.GoogleLogin.as_view(),
+         name='google_login'),  # google auth location
+    path('dj-rest-auth/google/code', views.CodeView, name='code'),
     path('dj-rest-auth/registration/',
          views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('dj-rest-auth/google/', views.GoogleLogin.as_view(), name='google_login')
+    # path('accounts/', include('allauth.urls')),
 ]
