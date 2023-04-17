@@ -21,3 +21,16 @@ class EventSerializer(serializers.ModelSerializer):
             'time_scheduled',
             'host',
         )
+
+
+class ItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Item
+        fields = (
+            'pk',
+            'title',
+            'description',
+            'event',
+            'owner',
+        )
