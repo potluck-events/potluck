@@ -3,6 +3,7 @@ from .models import User, Event, Invitation, Item, Post
 
 
 class EventSerializer(serializers.ModelSerializer):
+    # host = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         model = Event

@@ -14,7 +14,11 @@ class GoogleLogin(SocialLoginView):
     client_class = OAuth2Client
 
 
-class EventsView(generics.ListAPIView):
-    queryset = Event.objects.all()
+class ViewEventsHosting(generics.ListAPIView):
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(host__id=user.id)
+        return queryset
