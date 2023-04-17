@@ -24,3 +24,14 @@ class EventsHosting(generics.ListAPIView):
         queryset = Event.objects.filter(
             host__id=user.id, date_scheduled__gte=timezone.now().date())
         return queryset
+
+
+class EventsAttending(generics.ListAPIView):
+    serializer_class = EventSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            invitations__guest__id=user.id, invitations__response=True, date_scheduled__gte=timezone.now().date())
+        return queryset
