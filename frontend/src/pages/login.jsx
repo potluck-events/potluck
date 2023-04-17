@@ -9,21 +9,18 @@ export default function Login(setToken) {
   const location = useLocation()
 
   const [email, setEmail] = useState(null)
-  const [password1, setPassword1] = useState(null)
-  const [password2, setPassword2] = useState(null)
+  const [password, setPassword] = useState(null)
 
   const handleLogin = () => {
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8080/dj-rest-auth/registration/',
+      url: 'http://127.0.0.1:8080/dj-rest-auth/login/',
       headers: {
         'Content-Type': 'application/json'
       },
       data: {
-        username: email,
-        password1: password1,
-        password2: password2,
         email: email,
+        password: password,
       }
     };
 
