@@ -24,5 +24,5 @@ urlpatterns = [
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 
     path('dj-rest-auth/google/', views.GoogleLogin.as_view(), name='google_login'),
-
+    path('events/hosting', views.ViewEventsHosting.as_view()),
 ]
