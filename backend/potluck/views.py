@@ -35,3 +35,7 @@ class EventsAttending(generics.ListAPIView):
         queryset = Event.objects.filter(
             invitations__guest__id=user.id, invitations__response=True, date_scheduled__gte=timezone.now().date())
         return queryset
+
+
+class Items(generics.ListAPIView):
+    pass
