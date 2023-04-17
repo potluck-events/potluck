@@ -7,7 +7,7 @@ import ProtectedRoute from './components/protectedroute';
 import Header from './components/header'
 import EventForm from './components/eventform'
 import Login from './pages/login';
-import SignUp from './pages/sign-up';
+import SignUp from './pages/signup';
 import EventDetails from './pages/eventdetails';
 import Invitations from './pages/invitations';
 import RSVPList from './pages/rsvplist';

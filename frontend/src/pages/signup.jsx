@@ -29,7 +29,8 @@ export default function handleSignUp() {
       console.log(response.data);
     }).catch((error) => {
       console.error(error);
-    }); 
+    });
+  }
 
 
   return null
