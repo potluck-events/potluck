@@ -32,4 +32,5 @@ urlpatterns = [
     path('events/hosting', views.EventsHosting.as_view()),
     path('events/attending', views.EventsAttending.as_view()),
     path('items', views.Items.as_view()),
+    path('events/create', views.CreateEvent.as_view()),
 ]

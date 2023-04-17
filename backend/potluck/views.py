@@ -88,3 +88,12 @@ class Items(generics.ListAPIView):
             event__date_scheduled__gte=timezone.now().date()
         )
         return queryset
+
+
+class CreateEvent(generics.CreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(host=self.request.user)

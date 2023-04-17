@@ -1,3 +1,4 @@
+from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework import serializers
@@ -33,6 +34,14 @@ class EventSerializer(serializers.ModelSerializer):
             'time_scheduled',
             'host',
         )
+
+        read_only_fields = ('host',)
+
+    def validate_date_scheduled(self, value):
+        if value < timezone.now().date():
+            raise serializers.ValidationError(
+                'date_scheduled cannot be a past date')
+        return value
 
 
 class ItemSerializer(serializers.ModelSerializer):
