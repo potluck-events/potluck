@@ -39,14 +39,18 @@ export default function Home() {
     <>
     <Tabs className='mt-3' value="dashboard">
         <TabsHeader>
-            {data.map(({ label, value, icon }) => (
-            <Tab key={value} value={value}>
+            <Tab value={'events'}>
                 <div className="flex items-center gap-2">
-                {React.createElement(icon, { className: "w-5 h-5" })}
-                {label}
+                {React.createElement(CalendarIcon, { className: "w-5 h-5" })}
+                "Events"
                 </div>
             </Tab>
-            ))}
+            <Tab value={'items'}>
+                <div className="flex items-center gap-2">
+                {React.createElement(ListBulletIcon, { className: "w-5 h-5" })}
+                "Items"
+                </div>
+            </Tab>
         </TabsHeader>
         <TabsBody 
         animate={{
