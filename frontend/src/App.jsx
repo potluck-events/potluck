@@ -20,8 +20,8 @@ function App() {
     <AuthContext.Provider value={token}>
       <Routes>
         <Route element={<Header setToken={setToken} />}>
-          <Route path='home' element={<Home />}/>
           <Route path='/' element={token ? <Home /> : <Landing/>} />
+          <Route path='home' element={<Home />}/>
           <Route path='/login' element={<Login setToken={setToken} />} />
           <Route path='/sign-up' element={<SignUp setToken={setToken} />} />
           <Route element={<ProtectedRoute/>}>
