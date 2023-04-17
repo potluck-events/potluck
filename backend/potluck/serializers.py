@@ -1,9 +1,10 @@
-from rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 
+
 class CustomRegisterSerializer(RegisterSerializer):
-    first_name = serializers.CharField(required=True)
-    last_name = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
 
     def custom_signup(self, request, user):
         user.first_name = self.validated_data['first_name']
