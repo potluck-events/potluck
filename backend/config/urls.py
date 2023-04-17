@@ -25,4 +25,5 @@ urlpatterns = [
 
     path('dj-rest-auth/google/', views.GoogleLogin.as_view(), name='google_login'),
     path('events/hosting', views.EventsHosting.as_view()),
+    path('events/attending', views.EventsAttending.as_view()),
 ]
