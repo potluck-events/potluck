@@ -69,7 +69,6 @@ INSTALLED_APPS = [
 
 # DJ REST AUTH SITE ID
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
 # Users will login with emails, emails not verified
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
