@@ -22,6 +22,8 @@ class EventSerializer(serializers.ModelSerializer):
             'host',
         )
 
+        read_only_fields = ('host')
+
 
 class ItemSerializer(serializers.ModelSerializer):
 
