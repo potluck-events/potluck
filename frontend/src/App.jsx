@@ -1,19 +1,20 @@
 import './styles/App.css'
 import { Routes, Route } from 'react-router-dom'
 import { AuthContext } from './context/authcontext';
-import useLocalStorage from 'react-use-localstorage';
 import Landing from './pages/landing';
 import ProtectedRoute from './components/protectedroute';
 import Header from './components/header'
 import EventForm from './components/eventform'
 import Login from './pages/login';
-import SignUp from './pages/sign-up';
+import SignUp from './pages/signup';
 import EventDetails from './pages/eventdetails';
 import Invitations from './pages/invitations';
 import RSVPList from './pages/rsvplist';
+import Home from './pages/home'
+import useLocalStorageState from 'use-local-storage-state'
 
 function App() {
-  const [token, setToken] = useLocalStorage('token', null)
+  const [token, setToken] = useLocalStorageState('token', { defaultValue: null })
   
 
   return (
@@ -21,8 +22,8 @@ function App() {
       <Routes>
         <Route element={<Header setToken={setToken} />}>
           <Route path='/' element={token ? <Home /> : <Landing/>} />
-          <Route path='/login' element={<Login setToken={setToken} />} />
-          <Route path='/sign-up' element={<SignUp setToken={setToken} />} />
+          <Route path='/login' element={!token ? <Login setToken={setToken}/> : <Home />} />
+          <Route path='/sign-up' element={!token ? <SignUp setToken={setToken} /> : <Home />} />
           <Route element={<ProtectedRoute/>}>
             <Route path='/invitations' element={<Invitations />} />
             <Route path='/event/new' element={<EventForm />} />
