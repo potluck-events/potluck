@@ -1,13 +1,24 @@
 import { Button, Typography, } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom"
 
 export default function Landing() {
+    const navigate = useNavigate()
+
+    function handleClickLogin() {
+        navigate('/login')
+    }
+
+    function handleClickSignup() {
+        navigate('/sign-up')
+    }
+
     return (
         <>
         <div className="flex justify-evenly mt-2">
-            <Button size='lg' className="w-44">
+            <Button onClick={handleClickLogin} size='lg' className="w-44">
                 Log In
             </Button>
-            <Button variant="outlined" className="w-44">
+            <Button onClick={handleClickSignup} variant="outlined" className="w-44">
                 Sign Up
             </Button>
         </div>
