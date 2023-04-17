@@ -25,6 +25,9 @@ class Event(models.Model):
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
 
+    def __str__(self):
+        return f'{self.title} hosted by {self.host}'
+
 
 class Invitation(models.Model):
     event = models.ForeignKey(
