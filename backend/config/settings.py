@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -62,16 +63,32 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'phonenumber_field',
+
     'potluck',
 ]
 
 # DJ REST AUTH SITE ID
 SITE_ID = 1
-
-#Users will login with emails, emails not verified
+LOGIN_REDIRECT_URL = '/'
+# Users will login with emails, emails not verified
+SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
