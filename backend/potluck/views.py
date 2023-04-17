@@ -15,7 +15,7 @@ class GoogleLogin(SocialLoginView):
     client_class = OAuth2Client
 
 
-class ViewEventsHosting(generics.ListAPIView):
+class EventsHosting(generics.ListAPIView):
     serializer_class = EventSerializer
     # permission_classes = [IsAuthenticated]
 
