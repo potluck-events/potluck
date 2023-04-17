@@ -11,7 +11,7 @@ import SignUp from './pages/signup';
 import EventDetails from './pages/eventdetails';
 import Invitations from './pages/invitations';
 import RSVPList from './pages/rsvplist';
-
+import Home from './pages/home'
 function App() {
   const [token, setToken] = useLocalStorage('token', null)
 
