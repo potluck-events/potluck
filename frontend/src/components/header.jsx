@@ -112,7 +112,7 @@ export default function Header({setToken}) {
                     </Typography>
                   </div>
                   <div className="columns-1 flex justify-center mt-7">
-                    <Button variant='filled' color='blue'onClick={handleLogout}>Log Out</Button>
+                    <Button variant='filled' className='w-44' color='blue' onClick={handleLogout}>Log Out</Button>
                   </div>
               </div>
             </div>

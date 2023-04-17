@@ -25,6 +25,9 @@ class Event(models.Model):
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
 
+    def __str__(self):
+        return f'{self.title} hosted by {self.host}'
+
 
 class Invitation(models.Model):
     event = models.ForeignKey(
@@ -50,6 +53,9 @@ class Item(models.Model):
         to='Event', on_delete=models.CASCADE, related_name='items')
     owner = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='items')
+
+    def __str__(self):
+        return f'{self.title} for {self.event}'
 
 
 class Post(models.Model):
