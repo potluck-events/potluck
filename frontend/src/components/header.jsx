@@ -16,7 +16,7 @@ export default function Header({setToken}) {
   function handleLogout() {
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8000/dj-rest-auth/logout/',
+      url: 'https://potluck.herokuapp.com/accunts/logout/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token

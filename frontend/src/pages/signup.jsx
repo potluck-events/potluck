@@ -18,7 +18,7 @@ export default function SignUp({setToken}) {
     e.preventDefault()
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8000/dj-rest-auth/registration/',
+      url: 'https://potluck.herokuapp.com/accounts/registration/',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -47,7 +47,7 @@ export default function SignUp({setToken}) {
 
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8000/dj-rest-auth/login/',
+      url: 'https://potluck.herokuapp.com/accounts/login/',
       headers: {
         'Content-Type': 'application/json'
       },

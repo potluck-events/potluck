@@ -17,7 +17,7 @@ export default function Login({setToken}) {
 
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8000/dj-rest-auth/login/',
+      url: 'https://potluck.herokuapp.com/accounts/login/',
       headers: {
         'Content-Type': 'application/json'
       },
