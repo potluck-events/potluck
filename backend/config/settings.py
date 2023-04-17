@@ -68,6 +68,11 @@ INSTALLED_APPS = [
 # DJ REST AUTH SITE ID
 SITE_ID = 1
 
+#Users will login with emails, emails not verified
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
