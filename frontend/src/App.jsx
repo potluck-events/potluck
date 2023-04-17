@@ -11,15 +11,16 @@ import SignUp from './pages/sign-up';
 import EventDetails from './pages/eventdetails';
 import Invitations from './pages/invitations';
 import RSVPList from './pages/rsvplist';
+import Home from './pages/home';
 
 function App() {
   const [token, setToken] = useLocalStorage('token', null)
-  
 
   return (
     <AuthContext.Provider value={token}>
       <Routes>
         <Route element={<Header setToken={setToken} />}>
+          <Route path='home' element={<Home />}/>
           <Route path='/' element={token ? <Home /> : <Landing/>} />
           <Route path='/login' element={<Login setToken={setToken} />} />
           <Route path='/sign-up' element={<SignUp setToken={setToken} />} />
