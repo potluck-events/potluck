@@ -1,21 +1,24 @@
 import { useState } from "react"
 import axios from "axios"
+import { Typography, Button, Input } from "@material-tailwind/react";
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 export default function SignUp({setToken}) {
-  const [email, setEmail] = useState(null)
-  const [password1, setPassword1] = useState(null)
-  const [password2, setPassword2] = useState(null)
-  const [firstName, setFirstName] = useState(null)
-  const [lastName, setLastName] = useState(null)
+  const [email, setEmail] = useState('')
+  const [password1, setPassword1] = useState('')
+  const [password2, setPassword2] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
 
   const [error, setError] = useState("")
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleSignup = (e) => {
     e.preventDefault()
-    
     const options = {
       method: 'POST',
-      url: 'http://127.0.0.1:8080/dj-rest-auth/registration/',
+      url: 'http://127.0.0.1:8000/dj-rest-auth/registration/',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -35,7 +38,7 @@ export default function SignUp({setToken}) {
 
     }).catch((error) => {
       console.error(error);
-      setError(error);
+      setError(error.response.data);
 
     });
   }
@@ -50,7 +53,7 @@ export default function SignUp({setToken}) {
       },
       data: {
         email: email,
-        password: password,
+        password: password1,
       }
     };
 
@@ -69,8 +72,8 @@ export default function SignUp({setToken}) {
 
   return (<>
       <div className="mt-8 flex flex-col items-center justify-center">
-        <Typography variant = 'h4' color="blue-gray">Login to your account</Typography>
-        <form onSubmit={(e) => handleLogin(e)}>
+        <Typography variant = 'h4' color="blue-gray">Sign up for an account</Typography>
+        <form onSubmit={(e) => handleSignup(e)}>
           <div className="mt-8 mb-4 w-80">
             <div className="flex flex-col gap-6">
               <div>
@@ -78,13 +81,22 @@ export default function SignUp({setToken}) {
                 {error.email && <Typography variant='small' color="red">{error.email[0]}</Typography>}
               </div>
               <div>
-                <Input required value={password} onChange={(e) => setPassword(e.target.value)} label="Password" size="lg" type="password" />
-                {error.non_field_errors && <Typography variant='small' color="red">Your password and/or username were incorrect. Please login again.</Typography>}
+                <Input required value={password1} onChange={(e) => setPassword1(e.target.value)} label="Password" size="lg" type="password" />
+                {error.non_field_errors && <Typography variant='small' color="red">{error.non_field_errors}</Typography>}
               </div>
-            <Button type="submit" className="" fullWidth>Login</Button>
+              <div>
+                <Input required value={password2} onChange={(e) => setPassword2(e.target.value)} label="Retype Password" size="lg" type="password" />
+              </div>
+             <div>
+                <Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} label="First Name" size="lg" type="text" />
+              </div>
+              <div>
+                <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="First Name" size="lg" type="text" />
+              </div>
+            <Button type="submit" className="" fullWidth>Sign-up</Button>
             </div>
           </div>
-          <Typography variant = "small">Don't have an account? <Link to="/sign-up" className=" font-bold text-blue-800">Create one</Link></Typography>
+          <Typography variant = "small">Already have an account? <Link to="/login" className=" font-bold text-blue-800">Login</Link></Typography>
         </form>
       </div>
     </>)
