@@ -14,6 +14,7 @@ import RSVPList from './pages/rsvplist';
 
 function App() {
   const [token, setToken] = useLocalStorage('token', null)
+  
 
   return (
     <AuthContext.Provider value={token}>
