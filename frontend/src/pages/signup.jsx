@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 
-export default function handleSignUp() {
+export default function SignUp({setToken}) {
   const [email, setEmail] = useState(null)
   const [password1, setPassword1] = useState(null)
   const [password2, setPassword2] = useState(null)
