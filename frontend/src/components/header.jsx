@@ -88,7 +88,7 @@ export default function Header() {
                   </Typography>
                   </div>
                     <div className="columns-1 flex justify-center mt-7">
-                      <Button variant='filled' color='blue'>Log Out</Button>
+                      <Button variant='filled' className='w-44' color='blue'>Log Out</Button>
                     </div>
             </div>
           </div>
