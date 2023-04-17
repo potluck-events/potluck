@@ -1,10 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
 
-export default function SignUp() {
+export default function handleSignUp() {
   const [email, setEmail] = useState(null)
   const [password1, setPassword1] = useState(null)
   const [password2, setPassword2] = useState(null)
+  const [firstName, setFirstName] = useState(null)
+  const [lastName, setLastName] = useState(null)
 
   const handleSignup = () => {
     const options = {
@@ -18,6 +20,8 @@ export default function SignUp() {
         password1: password1,
         password2: password2,
         email: email,
+        first_name: firstName,
+        last_name: lastName,
       }
     };
 
