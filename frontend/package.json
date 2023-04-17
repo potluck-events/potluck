@@ -20,7 +20,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
-    "react-use-localstorage": "^3.5.3",
     "use-local-storage-state": "^18.3.2"
   },
   "devDependencies": {

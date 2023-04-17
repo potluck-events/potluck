@@ -1,9 +1,9 @@
 # HEROKU SERVER INFO
 https://potluck.herokuapp.com/
 
-# DJ-REST-AUTH API ENDPOINTS
+# DJ-REST ENDPOINTS
 https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
-
+https://django-allauth.readthedocs.io/en/latest/views.html
 
 # POTLUCK ENDPOINTS
 
