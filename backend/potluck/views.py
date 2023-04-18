@@ -129,6 +129,10 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return [IsHost()]
 
 
+# permissions not working correctly
+# when host creates item, owner is null
+# when guest creates item, owner is guest
+# users can only create items for events they are hosting or attending
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
