@@ -16,7 +16,7 @@ export default function Header({setToken}) {
   function handleLogout() {
     const options = {
       method: 'POST',
-      url: 'https://potluck.herokuapp.com/accunts/logout/',
+      url: 'https://potluck.herokuapp.com/accounts/logout/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token
