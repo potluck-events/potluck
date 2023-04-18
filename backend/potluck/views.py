@@ -103,9 +103,10 @@ class CreateEvent(generics.CreateAPIView):
 class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    # permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         if self.request.method == 'GET':
             return []
         else:
-            return [IsAuthenticated(), IsHost()]
+            return [IsHost()]
