@@ -6,6 +6,7 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from .models import User, Event, Invitation, Item, Post
 from .serializers import EventSerializer, ItemSerializer
+from .permissions import IsHost
 
 from dj_rest_auth.registration.views import RegisterView
 from .serializers import CustomRegisterSerializer
