@@ -34,8 +34,49 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('date_joined',)
 
 
+class EventItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Item
+        fields = (
+            'pk',
+            'title',
+            'description',
+            'owner',
+        )
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+
 class EventSerializer(serializers.ModelSerializer):
-    # host = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    host = serializers.SerializerMethodField()
+    items = EventItemSerializer(many=True, read_only=True)
+    posts = PostSerializer(many=True, read_only=True)
+
+    count_invited = serializers.SerializerMethodField()
+    rsvp_yes = serializers.SerializerMethodField()
+    rsvp_no = serializers.SerializerMethodField()
+    rsvp_tbd = serializers.SerializerMethodField()
+
+    def get_count_invited(self, obj):
+        return obj.invitations.count()
+
+    def get_rsvp_yes(self, obj):
+        return obj.invitations.filter(response=True).count()
+
+    def get_rsvp_no(self, obj):
+        return obj.invitations.filter(response=False).count()
+
+    def get_rsvp_tbd(self, obj):
+        return obj.invitations.filter(response=None).count()
+
+    def get_host(self, obj):
+        return f"{obj.host.first_name} {obj.host.last_name}"
 
     class Meta:
         model = Event
@@ -52,6 +93,12 @@ class EventSerializer(serializers.ModelSerializer):
             'date_scheduled',
             'time_scheduled',
             'host',
+            'count_invited',
+            'rsvp_yes',
+            'rsvp_no',
+            'rsvp_tbd',
+            'items',
+            'posts',
         )
 
         read_only_fields = ('host',)
@@ -63,8 +110,26 @@ class EventSerializer(serializers.ModelSerializer):
         return value
 
 
-class ItemSerializer(serializers.ModelSerializer):
-    event = EventSerializer(many=False)
+class EventSerializerShort(serializers.ModelSerializer):
+    host = serializers.SlugRelatedField(
+        read_only=True, slug_field='username')
+
+    class Meta:
+        model = Event
+        fields = (
+            'pk',
+            'title',
+            'theme',
+            'description',
+            'location_name',
+            'date_scheduled',
+            'time_scheduled',
+            'host',
+        )
+
+
+class UserItemSerializer(serializers.ModelSerializer):
+    event = EventSerializerShort(read_only=True, )
 
     class Meta:
         model = Item
