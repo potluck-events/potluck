@@ -15,6 +15,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save(update_fields=['first_name', 'last_name'])
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     # host = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
