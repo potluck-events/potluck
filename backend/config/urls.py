@@ -32,7 +32,7 @@ urlpatterns = [
     path('users/me', views.UserProfile.as_view(), name='me'),
     path('events/hosting', views.EventsHosting.as_view()),
     path('events/attending', views.EventsAttending.as_view()),
-    path('items', views.Items.as_view()),
+    path('items', views.UserItems.as_view()),
     path('events', views.CreateEvent.as_view()),
     path('events/<int:pk>', views.EventDetails.as_view()),
     path('events/<int:pk>/items', views.CreateItem.as_view()),
