@@ -45,10 +45,13 @@ class Invitation(models.Model):
             )
         ]
 
+    def __str__(self):
+        return f"{self.guest}'s invitation to {self.event}"
+
 
 class Item(models.Model):
     title = models.CharField(max_length=50)
-    description = models.TextField(max_length=200)
+    description = models.TextField(max_length=200, blank=True, null=True)
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='items')
     owner = models.ForeignKey(
@@ -64,3 +67,6 @@ class Post(models.Model):
         to='User', on_delete=models.CASCADE, related_name='posts')
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='posts')
+
+    def __str__(self):
+        return f'Post for {self.event} by {self.author}'

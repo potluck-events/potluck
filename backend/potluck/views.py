@@ -6,6 +6,7 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from .models import User, Event, Invitation, Item, Post
 from .serializers import EventSerializer, ItemSerializer
+from .permissions import IsHost
 
 from dj_rest_auth.registration.views import RegisterView
 from .serializers import CustomRegisterSerializer
@@ -97,3 +98,15 @@ class CreateEvent(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
+
+
+class EventDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return []
+        else:
+            return [IsHost()]
