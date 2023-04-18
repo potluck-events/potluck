@@ -16,10 +16,10 @@ class Event(models.Model):
     theme = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(max_length=3000)
     location_name = models.CharField(max_length=50)
-    street_address = models.CharField(max_length=100)
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=2)
-    zipcode = models.CharField(max_length=20)
+    street_address = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
+    zipcode = models.CharField(max_length=20, blank=True, null=True)
     date_scheduled = models.DateField()
     time_scheduled = models.TimeField()
     host = models.ForeignKey(
@@ -55,7 +55,7 @@ class Item(models.Model):
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='items')
     owner = models.ForeignKey(
-        to='User', on_delete=models.CASCADE, related_name='items')
+        to='User', on_delete=models.CASCADE, related_name='items', blank=True, null=True)
 
     def __str__(self):
         return f'{self.title} for {self.event}'

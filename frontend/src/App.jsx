@@ -4,7 +4,7 @@ import { AuthContext } from './context/authcontext';
 import Landing from './pages/landing';
 import ProtectedRoute from './components/protectedroute';
 import Header from './components/header'
-import EventForm from './components/eventform'
+import EventForm from './pages/eventform'
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import EventDetails from './pages/eventdetails';
@@ -26,13 +26,12 @@ function App() {
           <Route path='/sign-up' element={!token ? <SignUp setToken={setToken} /> : <Home />} />
           <Route element={<ProtectedRoute/>}>
             <Route path='/invitations' element={<Invitations />} />
-            <Route path='/event/new' element={<EventForm />} />
-            <Route path='/event/:pk' element={<EventDetails />} />
-            <Route path='/event/:pk/edit' element={<EventForm />} />
-            <Route path='/event/:pk/invitations' element={<RSVPList />} />
+            <Route path='/events/new' element={<EventForm />} />
+            <Route path='/events/:pk' element={<EventDetails />} />
+            <Route path='/events/:pk/edit' element={<EventForm />} />
+            <Route path='/events/:pk/invitations' element={<RSVPList />} />
           </Route>
-
-          
+          <Route path='*' element={token ? <Home /> : <Landing/>} />   
         </Route>
       </Routes>
     </AuthContext.Provider>
