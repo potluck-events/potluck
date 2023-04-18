@@ -12,10 +12,42 @@ import {
     ListBulletIcon,
     } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
-export default function Home() {
+export default function Home({token}) {
+
+    useEffect(() => {
+        axios.get('https://potluck.herokuapp.com/events/hosting', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+            }
+        }).then((response) => {
+            console.log(response)
+        })
+        
+        axios.get('https://potluck.herokuapp.com/events/attending', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+            }
+        }).then((response) => {
+            console.log(response)
+        })
+        
+        axios.get('https://potluck.herokuapp.com/items', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+            }
+        }).then((response) => {
+            console.log(response)
+        })
+    }, [])
+
+
     const navigate = useNavigate()
-
     const data = [
     {
         label: "Events",
