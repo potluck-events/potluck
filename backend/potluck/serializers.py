@@ -19,7 +19,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'nickname',
+            'email',
+            'phone_number',
+            'city',
+            'thumbnail',
+            'date_joined',
+        )
+
+        read_only_fields = ('date_joined',)
 
 
 class EventSerializer(serializers.ModelSerializer):
