@@ -64,7 +64,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    event = EventSerializer(many=False)
+    event = EventSerializer(read_only=True)
 
     class Meta:
         model = Item
