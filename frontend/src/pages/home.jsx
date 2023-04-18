@@ -48,7 +48,6 @@ export default function Home({token}) {
 
 
     const navigate = useNavigate()
-
     const data = [
     {
         label: "Events",
