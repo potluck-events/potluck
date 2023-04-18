@@ -21,6 +21,7 @@ import moment from 'moment'
 
 export default function Home() {
     const token = useContext(AuthContext)
+    const navigate = useNavigate()
     const [hosting, setHosting] = useState()
     const [attending, setAttending] =useState()
     const [item, setItem] = useState()
@@ -64,16 +65,16 @@ export default function Home() {
     }, [])
 
     
-    const navigate = useNavigate()
+    
     function onClickHandleInvitations(){
         navigate('/invitations')
     }
     function onClickNewEvent(){
-        navigate('/event/new')
+        navigate('/events/new')
     }
     
-    function onClickViewEvent(){
-        navigate('/event/:pk')
+    function onClickViewEvent(pk){
+        navigate(`/events/${pk}`)
     }
 
 
@@ -106,7 +107,7 @@ export default function Home() {
             {hosting.map((event, index) => {
                 return (
                 <div className="" key={index}>
-                    <div onClick={onClickViewEvent} className="flex py-1">
+                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
                             <p>{moment(event.date_scheduled).format(
@@ -114,7 +115,7 @@ export default function Home() {
                             )} - {event.location_name}</p>
                         </div>
                         <div className="absolute right-0">
-                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <IconButton variant="text" className="mt-1 mr-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
                             </svg>
@@ -129,7 +130,7 @@ export default function Home() {
             {attending.map((event, index) => {
                 return (
                 <div className="" key={index}>
-                    <div onClick={onClickViewEvent} className="flex py-1">
+                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
                             <p>{moment(event.date_scheduled).format(
@@ -137,7 +138,7 @@ export default function Home() {
                             )} - {event.location_name}</p>
                         </div>
                         <div className="absolute right-0">
-                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <IconButton variant="text" className="mt-1 mr-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
                             </svg>
@@ -161,13 +162,13 @@ export default function Home() {
             {item.map((items, index) => {
                 return (
                 <div className="" key={index}>
-                    <div onClick={onClickViewEvent} className="flex py-1">
+                    <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{items.title}</h2>
                             <p>{items.event.title}</p>
                         </div>
                         <div className="absolute right-0">
-                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <IconButton variant="text" className="mt-1 mr-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
                             </svg>
