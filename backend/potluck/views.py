@@ -55,10 +55,8 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     # permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        queryset = User.objects.filter(id=user.id)
-        return queryset
+    def get_object(self):
+        return self.request.user
 
 
 class EventsHosting(generics.ListAPIView):
