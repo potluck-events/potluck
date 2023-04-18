@@ -1,12 +1,13 @@
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from .models import User, Event, Invitation, Item, Post
-from .serializers import EventSerializer, ItemSerializer
-from .permissions import IsHost
+from .serializers import UserSerializer, EventSerializer, ItemSerializer
+from .permissions import IsHost, IsItemHost
 
 from dj_rest_auth.registration.views import RegisterView
 from .serializers import CustomRegisterSerializer
@@ -49,6 +50,14 @@ def CodeView(request):
         url = request.build_absolute_uri('/dj-rest-auth/google/')
         response = requests.post(url, json={"code": code})
         return (response.json())
+
+
+class UserProfile(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 class EventsHosting(generics.ListAPIView):
@@ -110,3 +119,13 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return []
         else:
             return [IsHost()]
+
+
+class CreateItem(generics.CreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
+        serializer.save(event=event)
