@@ -125,6 +125,7 @@ class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsItemHost]
 
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
