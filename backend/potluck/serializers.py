@@ -35,7 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    # host = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    host = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         model = Event
