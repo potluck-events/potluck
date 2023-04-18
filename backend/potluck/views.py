@@ -5,7 +5,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from .models import User, Event, Invitation, Item, Post
-from .serializers import EventSerializer, ItemSerializer
+from .serializers import UserSerializer, EventSerializer, ItemSerializer
 from .permissions import IsHost
 
 from dj_rest_auth.registration.views import RegisterView
@@ -49,6 +49,14 @@ def CodeView(request):
         url = request.build_absolute_uri('/dj-rest-auth/google/')
         response = requests.post(url, json={"code": code})
         return (response.json())
+
+
+class UserProfile(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 class EventsHosting(generics.ListAPIView):

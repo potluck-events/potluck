@@ -29,6 +29,7 @@ urlpatterns = [
          views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
 
+    path('users/me', views.UserProfile.as_view(), name='me'),
     path('events/hosting', views.EventsHosting.as_view()),
     path('events/attending', views.EventsAttending.as_view()),
     path('items', views.Items.as_view()),
