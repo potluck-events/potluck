@@ -1,78 +1,85 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
     Tabs,
     TabsHeader,
     TabsBody,
     Tab,
     TabPanel,
-    Button
+    Button,
+    IconButton,
+    Typography
     } from "@material-tailwind/react";
     import {
     CalendarIcon,
     ListBulletIcon,
     } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../context/authcontext";
 
-export default function Home({token}) {
-
+export default function Home() {
+    const token = useContext(AuthContext)
+    const [hosting, setHosting] = useState()
+    const [attending, setAttending] =useState()
+    const [item, setItem] = useState()
+    
     useEffect(() => {
+        console.log(token)
         axios.get('https://potluck.herokuapp.com/events/hosting', {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
             }
         }).then((response) => {
-            console.log(response)
+            setHosting(response.data)
         })
+        .catch(error => {
+            console.error(error);
+        });
         
         axios.get('https://potluck.herokuapp.com/events/attending', {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+            'Authorization': token
             }
         }).then((response) => {
-            console.log(response)
+            setAttending(response.data)
         })
+        .catch(error => {
+            console.error(error);
+        });
         
         axios.get('https://potluck.herokuapp.com/items', {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+            'Authorization': token
             }
         }).then((response) => {
-            console.log(response)
+            setItem(response.data)
         })
+        .catch(error => {
+            console.error(error);
+        });
     }, [])
 
-
+    
     const navigate = useNavigate()
-    const data = [
-    {
-        label: "Events",
-        value: "events",
-        icon: CalendarIcon,
-        desc: `A list of events`,
-    },
-    {
-        label: "Items",
-        value: "items",
-        icon: ListBulletIcon,
-        desc: `A list of items.`,
-    },
-        ];
-
     function onClickHandleInvitations(){
         navigate('/invitations')
     }
     function onClickNewEvent(){
         navigate('/event/new')
     }
+    
+    function onClickViewEvent(){
+        navigate('/event/:pk')
+    }
+
 
     return (
     <>
-    <Tabs className='mt-3' value="events" >
+    <Tabs className='mt-3 px-6' value="events" >
         <TabsHeader>
             <Tab selected={true} value='events'>
                 <div className="flex items-center gap-2">
@@ -93,11 +100,80 @@ export default function Home({token}) {
             mount: { y: 0 },
             unmount: { y: 250 },
         }}>
-            {data.map(({ value, desc }) => (
-            <TabPanel key={value} value={value}>
-                {desc}
+            <TabPanel value='events'>
+            <Typography variant="h2" className='py-2'>Hosting</Typography>
+                {hosting &&  <div className="divide-y divide-black">
+            {hosting.map((event, index) => {
+                return (
+                <div className="">
+                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                        <div className="columns-1 py-1" >
+                            <h2>{event.title}</h2>
+                            <p>{event.date_scheduled} - {event.location_name}</p>
+                        </div>
+                        <div className="absolute right-0">
+                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
+                            </svg>
+                            </IconButton>
+                        </div>
+                    </div> 
+                </div>)
+            })}
+        </div> }
+            <Typography variant="h2" className='py-2'>Attending</Typography>
+                {attending &&  <div className="divide-y divide-black">
+            {attending.map((event, index) => {
+                return (
+                <div className="">
+                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                        <div className="columns-1 py-1" >
+                            <h2>{event.title}</h2>
+                            <p>{event.date_scheduled} - {event.location_name}</p>
+                        </div>
+                        <div className="absolute right-0">
+                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
+                            </svg>
+                            </IconButton>
+                        </div>
+                    </div> 
+                </div>)
+            })}
+        </div> }
             </TabPanel>
-            ))}
+        </TabsBody>
+        <TabsBody 
+        animate={{
+            initial: { y: 250 },
+            mount: { y: 0 },
+            unmount: { y: 250 },
+        }}>
+            <TabPanel value='items'>
+            <Typography variant="h2" className='py-2'>Items</Typography>
+                {item &&  <div className="divide-y divide-black">
+            {item.map((items, index) => {
+                return (
+                <div className="">
+                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                        <div className="columns-1 py-1" >
+                            <h2>{items.title}</h2>
+                            <p>{items.event}</p>
+                        </div>
+                        <div className="absolute right-0">
+                            <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
+                            </svg>
+                            </IconButton>
+                        </div>
+                    </div> 
+                </div>)
+            })}
+        </div> }
+            </TabPanel>
         </TabsBody>
     </Tabs>
     <div className="text-center">
