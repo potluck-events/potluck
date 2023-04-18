@@ -116,6 +116,7 @@ class CreateEvent(generics.CreateAPIView):
         serializer.save(host=self.request.user)
 
 
+# need some kind of permission for non-party members
 class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
