@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -118,3 +119,13 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return []
         else:
             return [IsHost()]
+
+
+class CreateItem(generics.CreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
+        serializer.save(event=event)
