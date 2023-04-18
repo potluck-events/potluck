@@ -25,7 +25,6 @@ export default function Home() {
     const [item, setItem] = useState()
     
     useEffect(() => {
-        console.log(token)
         axios.get('https://potluck.herokuapp.com/events/hosting', {
             headers: {
                 'Content-Type': 'application/json',
@@ -105,8 +104,8 @@ export default function Home() {
                 {hosting &&  <div className="divide-y divide-black">
             {hosting.map((event, index) => {
                 return (
-                <div className="">
-                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                <div className="" key={index}>
+                    <div onClick={onClickViewEvent} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
                             <p>{event.date_scheduled} - {event.location_name}</p>
@@ -126,8 +125,8 @@ export default function Home() {
                 {attending &&  <div className="divide-y divide-black">
             {attending.map((event, index) => {
                 return (
-                <div className="">
-                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                <div className="" key={index}>
+                    <div onClick={onClickViewEvent} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
                             <p>{event.date_scheduled} - {event.location_name}</p>
@@ -156,8 +155,8 @@ export default function Home() {
                 {item &&  <div className="divide-y divide-black">
             {item.map((items, index) => {
                 return (
-                <div className="">
-                    <div onClick={onClickViewEvent} key={index} className="flex py-1">
+                <div className="" key={index}>
+                    <div onClick={onClickViewEvent} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{items.title}</h2>
                             <p>{items.event.title}</p>
