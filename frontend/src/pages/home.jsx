@@ -66,13 +66,16 @@ export default function Home() {
     
     const navigate = useNavigate()
     function onClickHandleInvitations(){
+        console.log('click')
         navigate('/invitations')
     }
     function onClickNewEvent(){
+        console.log('click')
         navigate('/event/new')
     }
     
     function onClickViewEvent(){
+        console.log('click')
         navigate('/event/:pk')
     }
 
