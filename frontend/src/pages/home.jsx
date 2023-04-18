@@ -160,7 +160,7 @@ export default function Home() {
                     <div onClick={onClickViewEvent} key={index} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{items.title}</h2>
-                            <p>{items.event}</p>
+                            <p>{items.event.title}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
