@@ -16,5 +16,5 @@ events/attending --> |GET|
 items --> |GET|
 -- lists all items owned by current user attached to an event with a date_scheduled >= today
 
-events/create --> |POST|
+events --> |POST|
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
