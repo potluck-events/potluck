@@ -9,10 +9,7 @@ import {
     IconButton,
     Typography
     } from "@material-tailwind/react";
-    import {
-    CalendarIcon,
-    ListBulletIcon,
-    } from "@heroicons/react/24/solid";
+import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -95,67 +92,15 @@ export default function Home() {
                 </div>
             </Tab>
         </TabsHeader>
-        <TabsBody 
-        animate={{
-            initial: { y: 250 },
-            mount: { y: 0 },
-            unmount: { y: 250 },
-        }}>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events'>
-            <Typography variant="h2" className='py-2'>Hosting</Typography>
-                {hosting &&  <div className="divide-y divide-black">
-            {hosting.map((event, index) => {
-                return (
-                <div className="" key={index}>
-                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                        <div className="columns-1 py-1" >
-                            <h2>{event.title}</h2>
-                            <p>{moment(event.date_scheduled).format(
-                                'MMMM Do YYYY'
-                            )} - {event.location_name}</p>
-                        </div>
-                        <div className="absolute right-0">
-                            <IconButton variant="text" className="mt-1 mr-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
-                            </svg>
-                            </IconButton>
-                        </div>
-                    </div> 
-                </div>)
-            })}
-        </div> }
-            <Typography variant="h2" className='py-2'>Attending</Typography>
-                {attending &&  <div className="divide-y divide-black">
-            {attending.map((event, index) => {
-                return (
-                <div className="" key={index}>
-                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                        <div className="columns-1 py-1" >
-                            <h2>{event.title}</h2>
-                            <p>{moment(event.date_scheduled).format(
-                                'MMMM Do YYYY'
-                            )} - {event.location_name}</p>
-                        </div>
-                        <div className="absolute right-0">
-                            <IconButton variant="text" className="mt-1 mr-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
-                            </svg>
-                            </IconButton>
-                        </div>
-                    </div> 
-                </div>)
-            })}
-        </div> }
+                <Typography variant="h2" className='py-2'>Hosting</Typography>
+                {hosting && <Events events={hosting} />}
+                <Typography variant="h2" className='py-2'>Attending</Typography>
+                {attending && <Events events={attending} />}
             </TabPanel>
         </TabsBody>
-        <TabsBody 
-        animate={{
-            initial: { y: 250 },
-            mount: { y: 0 },
-            unmount: { y: 250 },
-        }}>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='items'>
             <Typography variant="h2" className='py-2'>Items</Typography>
                 {item &&  <div className="divide-y divide-black">
@@ -202,4 +147,31 @@ Add Event
     </div>
 </>
     );
+}
+
+function Events({events}) {
+    
+    return (
+        <div className="divide-y divide-black">
+            {events.map((event, index) => {
+                return (
+                <div className="" key={index}>
+                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
+                        <div className="columns-1 py-1" >
+                            <h2>{event.title}</h2>
+                            <p>{moment(event.date_scheduled).format(
+                                'MMMM Do YYYY'
+                            )} - {event.location_name}</p>
+                        </div>
+                        <div className="absolute right-0">
+                            <IconButton variant="text" className="mt-1 mr-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M4.72 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 010-1.06zm6 0a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 010-1.06z" clipRule="evenodd" />
+                            </svg>
+                            </IconButton>
+                        </div>
+                    </div> 
+                </div>)
+            })}
+        </div>)
 }
