@@ -1,22 +1,29 @@
-from rest_framework import generics
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from rest_framework.permissions import IsAuthenticated
+
+
+# AUTHENTICATION IMPORTS
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
-from .models import User, Event, Invitation, Item, Post
-from .serializers import UserSerializer, EventSerializer, ItemSerializer
+from dj_rest_auth.registration.views import RegisterView
+
+# PERMISSIONS IMPORTS
+from rest_framework.permissions import IsAuthenticated
 from .permissions import IsHost, IsItemHost
 
-from dj_rest_auth.registration.views import RegisterView
+# MODELS IMPORTS
+from .models import User, Event, Invitation, Item, Post
+
+# SERIALIZERS IMPORTS
+from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer
 from .serializers import CustomRegisterSerializer
 
+
+# MISC IMPORTS
+from rest_framework import generics
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 import urllib.parse
-
 import requests
 
 
@@ -87,8 +94,8 @@ class EventsAttending(generics.ListAPIView):
         return queryset
 
 
-class Items(generics.ListAPIView):
-    serializer_class = ItemSerializer
+class UserItems(generics.ListAPIView):
+    serializer_class = UserItemSerializer
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -123,7 +130,7 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
 
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+    serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
     # permission_classes = [IsItemHost]
 

@@ -96,7 +96,7 @@ export default function SignUp({setToken}) {
             <Button type="submit" className="" fullWidth>Sign-up</Button>
             </div>
           </div>
-          <Typography variant = "small">Already have an account? <Link to="/login" className=" font-bold text-blue-800">Login</Link></Typography>
+          <Typography variant = "small">Already have an account? <Link to="/login" className=" font-bold text-blue-800 hover:text-blue-500">Login</Link></Typography>
         </form>
       </div>
     </>)
