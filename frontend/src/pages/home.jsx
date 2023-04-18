@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
+import moment from 'moment'
 
 export default function Home() {
     const token = useContext(AuthContext)
@@ -108,7 +109,9 @@ export default function Home() {
                     <div onClick={onClickViewEvent} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
-                            <p>{event.date_scheduled} - {event.location_name}</p>
+                            <p>{moment(event.date_scheduled).format(
+                                'MMMM Do YYYY'
+                            )} - {event.location_name}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
@@ -129,7 +132,9 @@ export default function Home() {
                     <div onClick={onClickViewEvent} className="flex py-1">
                         <div className="columns-1 py-1" >
                             <h2>{event.title}</h2>
-                            <p>{event.date_scheduled} - {event.location_name}</p>
+                            <p>{moment(event.date_scheduled).format(
+                                'MMMM Do YYYY'
+                            )} - {event.location_name}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton onClick={onClickViewEvent} variant="text" className="mt-1 mr-1">
