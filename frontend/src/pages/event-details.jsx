@@ -1,4 +1,4 @@
-import { faAngleDown, faAngleUp, faCalendar, faComment, faList, faLocation, faLocationDot, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp, faCalendar, faComment, faList, faLocation, faLocationDot, faPenToSquare, faPlus, faSpinner, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Tabs,
@@ -21,12 +21,14 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import CreateItemModal from "../components/create-item";
 
 
 export default function EventDetails() {
   const { pk } = useParams()
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
+  const [itemModalOpen, setItemModalOpen] = useState(false)
 
 
   useEffect(() => {
@@ -57,7 +59,10 @@ export default function EventDetails() {
 
       <RSVP event={event} />
 
-      <ItemPostTabs event={event} />
+      <EventBody event={event} />
+      <CreateItemModal itemModalOpen={ itemModalOpen } />
+      <NewItemButton itemModalOpen={ setItemModalOpen } />
+
     </div>  
   </>)
 
@@ -132,7 +137,7 @@ function RSVP({ event }) {
   )
 }
 
-function ItemPostTabs({ event }) {
+function EventBody({ event }) {
   return (
     <Tabs className='mt-3' value="items" >
         <TabsHeader>
@@ -153,7 +158,7 @@ function ItemPostTabs({ event }) {
   )
 }
 
-function Items({items}) {
+function Items({ items }) {
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
@@ -170,27 +175,55 @@ function Item({item}) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="flex justify-between items-center p-1">
-      <Checkbox />
-      <div className="flex flex-col">
+    <div className="flex items-center py-1">
+      <Checkbox value={item.pk} />
+      <div className="flex flex-auto flex-col pr-2 self-start" onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
-        <p>{item.description}</p>
+        <p className={expanded ? "" : "ellipsis-after-1"}>{item.description}</p>
       </div>
-      <div className="flex flex-col">
-        <FontAwesomeIcon icon={faUser} />
+      <div className="flex flex-col gap-3">
+        {item.owner && <FontAwesomeIcon icon={faUser} />}
+        {expanded && <FontAwesomeIcon icon={faPenToSquare} />}
+        {expanded && <FontAwesomeIcon icon={faTrash} />}
         <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
       </div>
 
     </div>
   )
 }
+
+function NewItemButton({setItemModalOpen}) {
+
+
+    return (
+        <div className="absolute bottom-5 right-5">
+            <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
+                <div className="flex justify-center">
+                <FontAwesomeIcon icon={faPlus} className="w-10 h-14"/>
+                </div> 
+            </Button>
+        </div>
+    )
+}
+
 function Posts({posts}) {
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='posts'>
-        <Typography variant="h4" className='py-2'>Posts</Typography>
+        <CreatePostForm />
+        {posts.map((post, index) => (
+          <Post post = {post} key = {index} />
+        ))}
       </TabPanel>
     </TabsBody>
   )
+}
+
+function CreatePostForm() {
+  return null
+}
+
+function Post({post}) {
+  return (<h1>{post.title}</h1>)
 }
