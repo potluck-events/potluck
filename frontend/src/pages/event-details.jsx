@@ -60,9 +60,9 @@ export default function EventDetails() {
       <RSVP event={event} />
 
       <EventBody event={event} />
-      <CreateItemModal itemModalOpen={ itemModalOpen } />
-      <NewItemButton itemModalOpen={ setItemModalOpen } />
-
+      <CreateItemModal setItemModalOpen={ setItemModalOpen } itemModalOpen={ itemModalOpen } />
+      <NewItemButton setItemModalOpen={ setItemModalOpen } />
+      
     </div>  
   </>)
 

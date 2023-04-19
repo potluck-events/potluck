@@ -68,7 +68,7 @@ console.log(userData)
   function UserLocation() {
     return (
       <div className="text-center mb-5" color="black">
-      <Typography variant='paragraph' className='font-semibold'>{userData.city}</Typography>
+      <Typography variant='paragraph' className='font-semibold'>{userData.city} </Typography>
       </div>
     )
   }
