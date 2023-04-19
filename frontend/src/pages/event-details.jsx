@@ -29,7 +29,7 @@ export default function EventDetails() {
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
-
+  const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
 
   useEffect(() => {
   
@@ -53,15 +53,27 @@ export default function EventDetails() {
   }, [])
 
 
+  const hasSelected = () => { 
+    let some = event.items.some((item) => {
+      console.log(item);
+      return item.selected === true
+    })
+    console.log("some:", some);
+    return some
+  }
+
+
   if (event) return (<>
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} />
 
       <RSVP event={event} />
-
-      <EventBody event={event} />
+      
+      <EventBody event={event} setEvent = {setEvent} setItemsTabOpen={ setItemsTabOpen }/>
       <CreateItemModal setItemModalOpen={ setItemModalOpen } itemModalOpen={ itemModalOpen } />
-      <NewItemButton setItemModalOpen={ setItemModalOpen } />
+      {itemsTabOpen && hasSelected() ?
+        <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> :
+        <NewItemButton setItemModalOpen={setItemModalOpen} />}
       
     </div>  
   </>)
@@ -137,46 +149,78 @@ function RSVP({ event }) {
   )
 }
 
-function EventBody({ event }) {
+function EventBody({ event, setEvent, setItemsTabOpen }) {
   return (
     <Tabs className='mt-3' value="items" >
         <TabsHeader>
-            <Tab value='items'>
+            <Tab value='items' onClick={() => setItemsTabOpen(true)}>
                 <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Items
                 </div>
             </Tab>
-            <Tab value='posts'>
+            <Tab value='posts' onClick={() => setItemsTabOpen(false)}>
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> Posts
               </div>
             </Tab>
         </TabsHeader>
-        <Items items={event.items} />
+        <Items items={event.items} setEvent = {setEvent}/>
         <Posts posts={event.posts} />
     </Tabs>
   )
 }
 
-function Items({ items }) {
+function Items({ items, setEvent}) {
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='items' className="pl-0 divide-y">
         {items.map((item, index) => (
-          <Item key = {index} item={item} />
+          <Item key = {index} item={item} setEvent = {setEvent}/>
         ))}
       </TabPanel>
     </TabsBody>
   )
 }
 
-function Item({item}) {
+function Item({item, setEvent}) {
   const [expanded, setExpanded] = useState(false)
+
+  //OG code thaat marks items as selected
+  // const handleSelect = () => {
+  //   setEvent(event => {
+  //       event.items = event.items.map(prevItem => {
+  //       if (prevItem.pk === item.pk) {
+  //         let select
+  //         if (typeof selected !== "undefined") {
+  //           select = !selected
+  //         } else select = true
+
+  //         return { ...prevItem, selected: select}
+  //       }
+  //       return prevItem
+  //     })
+
+  //     return event
+  //   })
+  // }
+
+  //GPT improved code
+  const handleSelect = () => {
+  setEvent(event => {
+    const selectedIndex = event.items.findIndex(prevItem => prevItem.pk === item.pk)
+    if (selectedIndex !== -1) {
+      const selected = event.items[selectedIndex].selected
+      event.items[selectedIndex] = { ...event.items[selectedIndex], selected: selected != null ? !selected : true }
+    }
+    console.log(event);
+    return event
+  })
+}
 
   return (
     <div className="flex items-center py-1">
-      <Checkbox value={item.pk} />
+      {!item.owner && <Checkbox value={item.pk} onClick={handleSelect} />}
       <div className="flex flex-auto flex-col pr-2 self-start" onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
         <p className={expanded ? "" : "ellipsis-after-1"}>{item.description}</p>
@@ -193,8 +237,6 @@ function Item({item}) {
 }
 
 function NewItemButton({setItemModalOpen}) {
-
-
     return (
         <div className="absolute bottom-5 right-5">
             <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
@@ -205,6 +247,24 @@ function NewItemButton({setItemModalOpen}) {
         </div>
     )
 }
+
+function ReserveItemsButton({ items }) {
+  function handleReserve() {
+
+  }
+
+  return (
+      <div className="absolute bottom-5 right-5">
+          <Button onClick={handleReserve} className="w-20 rounded-full">
+              <div className="flex justify-center">
+              <p>Reserve items</p>
+              </div> 
+          </Button>
+      </div>
+  )
+}
+
+
 
 function Posts({posts}) {
   
