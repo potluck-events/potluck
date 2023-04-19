@@ -113,9 +113,7 @@ function Events({ events }) {
                     <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
                         <div className="columns-1 py-1" >
                             <h2 className="font-semibold">{event.title}</h2>
-                            <p>{moment(event.date_scheduled).format(
-                                'MMMM Do YYYY'
-                            )} - {event.location_name}</p>
+                            <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton variant="text" className="mt-1 mr-1">
