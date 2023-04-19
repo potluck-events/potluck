@@ -78,7 +78,8 @@ export default function Home() {
             </Tab>
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-            <TabPanel value='events'>
+            <TabPanel value='events' className='py-0'>
+                <InvitationsButton className=''/>
                 <Typography variant="h2" className='py-2'>Hosting</Typography>
                 {hostingEvents && <Events events={hostingEvents} />}
                 <Typography variant="h2" className='py-2'>Attending</Typography>
@@ -92,7 +93,6 @@ export default function Home() {
             </TabPanel>
         </TabsBody>
     </Tabs>
-    <InvitationsButton />
     <NewEventButton />
 </>
     );
