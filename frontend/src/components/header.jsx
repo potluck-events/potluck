@@ -60,7 +60,7 @@ console.log(userData)
   function EmailAddress() {
     return (
       <div className="text-center" color="black">
-      <Typography variant='paragraph'>{userData.email}</Typography>
+      <Typography variant='paragraph' className='font-semibold'>{userData.email}</Typography>
       </div>
     )
   }
@@ -68,7 +68,7 @@ console.log(userData)
   function UserLocation() {
     return (
       <div className="text-center mb-5" color="black">
-      <Typography variant='paragraph'>{userData.city}</Typography>
+      <Typography variant='paragraph' className='font-semibold'>{userData.city}</Typography>
       </div>
     )
   }
