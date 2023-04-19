@@ -1,4 +1,4 @@
-import { faCalendar, faComment, faList, faLocation, faLocationDot, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp, faCalendar, faComment, faList, faLocation, faLocationDot, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Tabs,
@@ -8,7 +8,8 @@ import {
     TabPanel,
     Button,
     IconButton,
-    Typography
+    Typography,
+    Checkbox
     } from "@material-tailwind/react";
 import axios from "axios";
 import moment from "moment";
@@ -106,7 +107,7 @@ function EventHeader({ event, mapsURL }) {
 }
 
 function RSVP({ event }) {
-  const handleRSVP = (response) => {
+  const handleRSVP = (attending) => {
 
   }
   
@@ -115,12 +116,12 @@ function RSVP({ event }) {
       <p className="font-bold">RSVP:</p>
         <Tabs value="">
           <TabsHeader>
-            <Tab value='yes'>
+            <Tab value='yes' onClick={() => handleRSVP(true)}>
                 <div className="flex items-center gap-2">
                   <FontAwesomeIcon icon ={faCheck} className = "" /> Attending
                 </div>
             </Tab>
-            <Tab value='no'>
+            <Tab value='no' onClick={() => handleRSVP(false)}>
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faXmark} className = "" /> Can't Go
               </div>
@@ -146,17 +147,50 @@ function ItemPostTabs({ event }) {
               </div>
             </Tab>
         </TabsHeader>
-        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-          <TabPanel value='items'>
-              <Typography variant="h4" className='py-2'>Items</Typography>
-              
-          </TabPanel>
-        </TabsBody>
-        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-          <TabPanel value='posts'>
-            <Typography variant="h4" className='py-2'>Posts</Typography>
-          </TabPanel>
-        </TabsBody>
+        <Items items={event.items} />
+        <Posts posts={event.posts} />
     </Tabs>
+  )
+}
+
+function Items({items}) {
+  
+  return (
+    <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+      <TabPanel value='items' className="pl-0 divide-y">
+        {items.map((item, index) => (
+          <Item key = {index} item={item} />
+        ))}
+      </TabPanel>
+    </TabsBody>
+  )
+}
+
+function Item({item}) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div className="flex justify-between items-center p-1">
+      <Checkbox />
+      <div className="flex flex-col">
+        <Typography variant="h6">{item.title}</Typography>
+        <p>{item.description}</p>
+      </div>
+      <div className="flex flex-col">
+        <FontAwesomeIcon icon={faUser} />
+        <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+      </div>
+
+    </div>
+  )
+}
+function Posts({posts}) {
+  
+  return (
+    <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+      <TabPanel value='posts'>
+        <Typography variant="h4" className='py-2'>Posts</Typography>
+      </TabPanel>
+    </TabsBody>
   )
 }
