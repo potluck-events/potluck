@@ -9,9 +9,9 @@ class IsHost(permissions.BasePermission):
         return False
 
 
-class IsItemHost(permissions.BasePermission):
+class IsItemCreator(permissions.BasePermission):
 
-    def has_permission(self, request, view):
-        if request.user == item.event.host:
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.created_by:
             return True
         return False
