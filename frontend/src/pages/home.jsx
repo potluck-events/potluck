@@ -20,7 +20,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Home() {
     const token = useContext(AuthContext)
-    const navigate = useNavigate()
     const [hostingEvents, setHostingEvents] = useState()
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
@@ -67,16 +66,14 @@ export default function Home() {
     <>
     <Tabs className='mt-3 px-6' value="events" >
         <TabsHeader>
-            <Tab selected={true} value='events'>
+            <Tab value='events'>
                 <div className="flex items-center gap-2">
-                {React.createElement(CalendarIcon, { className: "w-5 h-5" })}
-                "Events"
+                <CalendarIcon className = "w-5 h-5" /> "Events"
                 </div>
             </Tab>
             <Tab value='items'>
                 <div className="flex items-center gap-2">
-                {React.createElement(ListBulletIcon, { className: "w-5 h-5" })}
-                "Items"
+                <ListBulletIcon className = "w-5 h-5" /> "Items"
                 </div>
             </Tab>
         </TabsHeader>
@@ -101,7 +98,9 @@ export default function Home() {
     );
 }
 
-function Events({events}) {
+function Events({ events }) {
+    const navigate = useNavigate()
+    
     function onClickViewEvent(pk){
         navigate(`/events/${pk}`)
     }
@@ -155,6 +154,8 @@ function Items({ items }) {
 
 
 function NewEventButton() {
+    const navigate = useNavigate()
+
     function onClickNewEvent(){
         navigate('/events/new')
     }
@@ -175,6 +176,8 @@ function NewEventButton() {
 
 
 function InvitationsButton() {
+    const navigate = useNavigate()
+
     function onClickHandleInvitations(){
         navigate('/invitations')
     }
