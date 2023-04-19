@@ -100,7 +100,7 @@ class UserItems(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Item.objects.filter(
+        queryset = self.objects.filter(
             owner__id=user.id,
             event__date_scheduled__gte=timezone.now().date()
         )
@@ -128,10 +128,9 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
         else:
             return [IsHost()]
 
+
 # need to make it so that:
 # users can only create items for events they are hosting or attending
-
-
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
@@ -147,12 +146,8 @@ class CreateItem(generics.CreateAPIView):
             serializer.save(event=event, created_by=created_by)
 
 
-# Retrieve --> host & guests
-# Update --> host can update any Items
-# Update --> guest can update Items they create
-# Destroy --> host can delete any Item
-# Destroy --> guest can delete Item they create
 class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
+    permission_classes = [ItemDetailPermission]
