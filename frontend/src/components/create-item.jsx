@@ -3,7 +3,6 @@
 
 
 export default function CreateItemModal({itemModalOpen, setItemModalOpen}) {
-  return (
-    console.log('clicked')
+  return (null
   )
 }

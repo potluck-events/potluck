@@ -25,7 +25,6 @@ export default function Header({setToken}) {
     };
 
     axios.request(options).then((response) => {
-      console.log(response.data);
       setToken(null)
       setMobileMenuOpen(false)
     }).catch((error) => {
@@ -47,7 +46,6 @@ export default function Header({setToken}) {
 });
 }, [])
 
-console.log(userData)
 
   function UserName() {
     return (
