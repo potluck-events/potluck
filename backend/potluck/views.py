@@ -8,6 +8,7 @@ from dj_rest_auth.registration.views import RegisterView
 
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission
 
 # MODELS IMPORTS
@@ -16,7 +17,6 @@ from .models import User, Event, Invitation, Item, Post
 # SERIALIZERS IMPORTS
 from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer
 from .serializers import CustomRegisterSerializer
-
 
 # MISC IMPORTS
 from rest_framework import generics
@@ -151,3 +151,14 @@ class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
     permission_classes = [ItemDetailPermission]
+
+    def perform_update(self, serializer):
+        item = get_object_or_404(Item, pk=self.kwargs["pk"])
+        if self.request.user == item.owner:
+            serializer.save(owner=None)
+        elif item.owner == None:
+            serializer.save(owner=self.request.user)
+        elif item.owner != self.request.user and item.owner != None:
+            raise PermissionDenied()
+        else:
+            serializer.save()
