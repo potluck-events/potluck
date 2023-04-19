@@ -13,10 +13,13 @@ import {
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/eventdetails.css"
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function EventDetails() {
@@ -51,31 +54,9 @@ export default function EventDetails() {
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} />
 
-      <Tabs className='mt-3' value="items" >
-        <TabsHeader>
-            <Tab value='items'>
-                <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> "Items"
-                </div>
-            </Tab>
-            <Tab value='posts'>
-              <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> "Posts"
-              </div>
-            </Tab>
-        </TabsHeader>
-        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-          <TabPanel value='items'>
-              <Typography variant="h4" className='py-2'>Items</Typography>
-              
-          </TabPanel>
-        </TabsBody>
-        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-          <TabPanel value='posts'>
-            <Typography variant="h4" className='py-2'>Posts</Typography>
-          </TabPanel>
-        </TabsBody>
-    </Tabs>
+      <RSVP event={event} />
+
+      <ItemPostTabs event={event} />
     </div>  
   </>)
 
@@ -85,7 +66,13 @@ export default function EventDetails() {
 
 function EventHeader({ event, mapsURL }) {
   const [showMore, setShowMore] = useState(false)
-  
+  const { pk } = useParams()
+  const navigate = useNavigate()
+
+  const handleClickAttendees = () => {
+    navigate(`/events/${pk}/invitations`)
+  }
+
   return (
     <div className="">
         <div className="pb-2">
@@ -102,7 +89,7 @@ function EventHeader({ event, mapsURL }) {
           <p className="font-bold">Description:</p>
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
         </div>
-        <div className="mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer">
+        <div onClick={handleClickAttendees} className="mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer">
           <div>
             <p className="font-bold">Attendees:</p>
             <div className="flex justify-around gap-2">
@@ -115,5 +102,57 @@ function EventHeader({ event, mapsURL }) {
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
       </div>
+  )
+}
+
+function RSVP({event}) {
+  return (
+    <div className="mt-2 flex justify-between items-center">
+      <p className="font-bold">RSVP:</p>
+        <Tabs value="">
+          <TabsHeader>
+            <Tab value='yes'>
+                <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faCheck} className = "" /> Attending
+                </div>
+            </Tab>
+            <Tab value='posts'>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faXmark} className = "" /> Can't Go
+              </div>
+            </Tab>
+        </TabsHeader>
+      </Tabs>
+    </div>
+  )
+}
+
+function ItemPostTabs({ event }) {
+  return (
+    <Tabs className='mt-3' value="items" >
+        <TabsHeader>
+            <Tab value='items'>
+                <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Items
+                </div>
+            </Tab>
+            <Tab value='posts'>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> Posts
+              </div>
+            </Tab>
+        </TabsHeader>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+          <TabPanel value='items'>
+              <Typography variant="h4" className='py-2'>Items</Typography>
+              
+          </TabPanel>
+        </TabsBody>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+          <TabPanel value='posts'>
+            <Typography variant="h4" className='py-2'>Posts</Typography>
+          </TabPanel>
+        </TabsBody>
+    </Tabs>
   )
 }
