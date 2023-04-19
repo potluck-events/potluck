@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
 import {
   XMarkIcon,
@@ -10,8 +10,8 @@ import axios from 'axios';
 
 export default function Header({setToken}) {
   const token = useContext(AuthContext)
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [userData, setUserData] = useState()
     
   function handleLogout() {
     const options = {
@@ -31,6 +31,46 @@ export default function Header({setToken}) {
     }).catch((error) => {
       console.error(error);
     }); 
+  }
+
+  useEffect(() => {
+    axios.get('https://potluck.herokuapp.com/users/me', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+  }
+}).then((response) => {
+  setUserData(response.data)
+})
+.catch(error => {
+  console.error(error);
+});
+}, [])
+
+console.log(userData)
+
+  function UserName() {
+    return (
+      <div className="py-6 text-center" color="black">
+      <Typography variant='h2'>{userData.first_name} {userData.last_name}</Typography>
+      </div>
+    )
+  }
+
+  function EmailAddress() {
+    return (
+      <div className="text-center" color="black">
+      <Typography variant='paragraph'>{userData.email}</Typography>
+      </div>
+    )
+  }
+
+  function UserLocation() {
+    return (
+      <div className="text-center mb-5" color="black">
+      <Typography variant='paragraph'>{userData.city}</Typography>
+      </div>
+    )
   }
   
   return (
@@ -91,25 +131,19 @@ export default function Header({setToken}) {
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="columns-1 flex my-8 justify-center">
                   <Avatar className="h-80 aspect-square rounded-full w-auto mt-4" src="/temp-img/winnie.png" t="avatar" size="md" variant="circular"  />
-                </div>
-                  <Typography variant='h1' className="py-6 text-center" color="black">
-                    NAME
-                  </Typography>
+                </div >
+                    <UserName/>
                   <div>
                     <Typography variant='paragraph' className="text-center" color="gray">
                       Email: 
                     </Typography>
-                    <Typography variant='paragraph' className="text-center" color="black">
-                      Email Address
-                    </Typography>
+                      <EmailAddress />
                   </div>
                   <div>
                     <Typography variant='paragraph' className="text-center pt-6" color="gray">
                       Location: 
                     </Typography>
-                    <Typography variant='paragraph' className="text-center mb-5" color="black">
-                      Location of user currently
-                    </Typography>
+                      <UserLocation/>
                   </div>
                   <div className="columns-1 flex justify-center mt-7">
                     <Button variant='filled' className='w-44' color='blue' onClick={handleLogout}>Log Out</Button>
@@ -122,5 +156,4 @@ export default function Header({setToken}) {
       {!mobileMenuOpen && <Outlet />}
     </>
     )
-    
 }
