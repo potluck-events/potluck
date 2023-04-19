@@ -19,6 +19,10 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /items/ --> | GET |
 -- lists all items owned by current user attached to an event with a date_scheduled >= today
 
+/items/pk --> | GET | PUT | PATCH | DELETE |
+-- host can edit/delete items
+-- guests can only edit/delete items they created
+
 /events/ --> | POST |
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
 
