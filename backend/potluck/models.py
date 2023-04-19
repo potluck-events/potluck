@@ -54,6 +54,8 @@ class Item(models.Model):
     description = models.TextField(max_length=200, blank=True, null=True)
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='items')
+    created_by = models.ForeignKey(
+        to='User', on_delete=models.CASCADE, related_name='creator')
     owner = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='items', blank=True, null=True)
 

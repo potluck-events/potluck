@@ -8,7 +8,7 @@ from dj_rest_auth.registration.views import RegisterView
 
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsHost, IsItemHost
+from .permissions import IsHost, ItemDetailPermission
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -100,7 +100,7 @@ class UserItems(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Item.objects.filter(
+        queryset = self.objects.filter(
             owner__id=user.id,
             event__date_scheduled__gte=timezone.now().date()
         )
@@ -116,6 +116,7 @@ class CreateEvent(generics.CreateAPIView):
         serializer.save(host=self.request.user)
 
 
+# need some kind of permission for non-party members
 class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -128,6 +129,8 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return [IsHost()]
 
 
+# need to make it so that:
+# users can only create items for events they are hosting or attending
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
@@ -135,4 +138,16 @@ class CreateItem(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
-        serializer.save(event=event)
+        created_by = self.request.user
+        if self.request.user != event.host:
+            serializer.save(event=event, created_by=created_by,
+                            owner=self.request.user)
+        else:
+            serializer.save(event=event, created_by=created_by)
+
+
+class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Item.objects.all()
+    serializer_class = EventItemSerializer
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [ItemDetailPermission]
