@@ -11,7 +11,7 @@ class IsHost(permissions.BasePermission):
 
 class IsItemHost(permissions.BasePermission):
 
-    def has_object_permission(self, request, view, obj):
-        if request.user == obj.event.host:
+    def has_permission(self, request, view):
+        if request.user == item.event.host:
             return True
         return False
