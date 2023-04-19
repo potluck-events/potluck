@@ -2,14 +2,14 @@ import './styles/App.css'
 import { Routes, Route } from 'react-router-dom'
 import { AuthContext } from './context/authcontext';
 import Landing from './pages/landing';
-import ProtectedRoute from './components/protectedroute';
+import ProtectedRoute from './components/protected-route';
 import Header from './components/header'
-import EventForm from './pages/eventform'
+import EventForm from './pages/event-form'
 import Login from './pages/login';
 import SignUp from './pages/signup';
-import EventDetails from './pages/eventdetails';
-import Invitations from './pages/invitations';
-import RSVPList from './pages/rsvplist';
+import EventDetails from './pages/event-details';
+import Invitations from './pages/user-invitations';
+import RSVPList from './pages/rsvp-list';
 import Home from './pages/home'
 import useLocalStorageState from 'use-local-storage-state'
 
