@@ -105,7 +105,11 @@ function EventHeader({ event, mapsURL }) {
   )
 }
 
-function RSVP({event}) {
+function RSVP({ event }) {
+  const handleRSVP = (response) => {
+
+  }
+  
   return (
     <div className="mt-2 flex justify-between items-center">
       <p className="font-bold">RSVP:</p>
@@ -113,10 +117,10 @@ function RSVP({event}) {
           <TabsHeader>
             <Tab value='yes'>
                 <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon ={faCheck} className = "" /> Attending
+                  <FontAwesomeIcon icon ={faCheck} className = "" /> Attending
                 </div>
             </Tab>
-            <Tab value='posts'>
+            <Tab value='no'>
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faXmark} className = "" /> Can't Go
               </div>
