@@ -2,6 +2,8 @@
 //Modal for create item
 
 
-export default function CreateItemModal() {
-  return null
+export default function CreateItemModal({itemModalOpen, setItemModalOpen}) {
+  return (
+    console.log('clicked')
+  )
 }
