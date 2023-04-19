@@ -1,6 +1,15 @@
-import { faLocation, faLocationDot, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faComment, faList, faLocation, faLocationDot, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography } from "@material-tailwind/react";
+import {
+    Tabs,
+    TabsHeader,
+    TabsBody,
+    Tab,
+    TabPanel,
+    Button,
+    IconButton,
+    Typography
+    } from "@material-tailwind/react";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -27,7 +36,7 @@ export default function EventDetails() {
       setEvent(response.data)
 
       if (response.data.street_address) {
-        let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zip}`
+        let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`
         setMapsURL(url)
       }
     }).catch(function (error) {
@@ -39,6 +48,32 @@ export default function EventDetails() {
   if (event) return (<>
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} />
+
+      <Tabs className='mt-3 px-6' value="items" >
+        <TabsHeader>
+            <Tab value='items'>
+                <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> "Items"
+                </div>
+            </Tab>
+            <Tab value='posts'>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> "Posts"
+              </div>
+            </Tab>
+        </TabsHeader>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+          <TabPanel value='items'>
+              <Typography variant="h4" className='py-2'>Items</Typography>
+              
+          </TabPanel>
+        </TabsBody>
+        <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+          <TabPanel value='posts'>
+            <Typography variant="h4" className='py-2'>Posts</Typography>
+          </TabPanel>
+        </TabsBody>
+    </Tabs>
     </div>  
   </>)
 
@@ -53,7 +88,7 @@ function EventHeader({ event, mapsURL }) {
     <div className="">
         <div className="pb-2">
           <Typography variant="h4">{event.title}</Typography>
-          <Typography variant="lead">{moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')}</Typography>
+          <Typography variant="lead"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')}</Typography>
         </div>
         <div>
           <header className="text-lg font-bold">Event Details:</header>
