@@ -128,24 +128,27 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
         else:
             return [IsHost()]
 
-
-# permissions not working correctly
-# when host creates item, owner is null
-# when guest creates item, owner is guest
+# need to make it so that:
 # users can only create items for events they are hosting or attending
+
+
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
-    # permission_classes = [IsItemHost]
 
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
-        serializer.save(event=event)
+        created_by = self.request.user
+        if self.request.user != event.host:
+            serializer.save(event=event, created_by=created_by,
+                            owner=self.request.user)
+        else:
+            serializer.save(event=event, created_by=created_by)
 
 
 # Retrieve --> host & guests
-# Update --> host can update Items they create
+# Update --> host can update any Items
 # Update --> guest can update Items they create
 # Destroy --> host can delete any Item
 # Destroy --> guest can delete Item they create
