@@ -42,6 +42,7 @@ class EventItemSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'description',
+            'created_by',
             'owner',
         )
 
@@ -138,5 +139,6 @@ class UserItemSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'event',
+            'created_by',
             'owner',
         )
