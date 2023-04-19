@@ -8,7 +8,7 @@ from dj_rest_auth.registration.views import RegisterView
 
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsHost, IsItemHost
+from .permissions import IsHost, ItemDetailPermission
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
