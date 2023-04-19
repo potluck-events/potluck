@@ -142,3 +142,14 @@ class CreateItem(generics.CreateAPIView):
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
         serializer.save(event=event)
+
+
+# Retrieve --> host & guests
+# Update --> host can update Items they create
+# Update --> guest can update Items they create
+# Destroy --> host can delete any Item
+# Destroy --> guest can delete Item they create
+class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Item.objects.all()
+    serializer_class = EventItemSerializer
+    # permission_classes = [IsAuthenticated]
