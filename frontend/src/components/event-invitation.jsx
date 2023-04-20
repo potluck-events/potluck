@@ -1,6 +1,6 @@
 import { Dialog, Transition, } from '@headlessui/react'
 import { Fragment, useState, useContext } from 'react'
-import { Input, Textarea, Button, Chip } from '@material-tailwind/react'
+import { Input, Textarea, Button, Chip, Typography } from '@material-tailwind/react'
 import { useParams } from 'react-router-dom'
 import { AuthContext } from "../context/authcontext"
 import axios from 'axios'
@@ -51,7 +51,7 @@ export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                 >
-                    New Invitations
+                    <Typography className='font-semibold'>New Invitations</Typography>
                 </Dialog.Title>
                 <form>
                     <div className='flex flex-wrap'>
@@ -95,7 +95,7 @@ export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
                             </Button>
                             </div>
                             <div className='flex justify-end mr-3'>
-                            <Button type="submit" className="w-22" >Send</Button>
+                            <Button type="submit" className=" w-18" >Send</Button>
                             </div>
                 </form>
                 </Dialog.Panel>
