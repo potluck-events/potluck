@@ -34,3 +34,6 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 
 /events/pk/items/ --> | POST |
 -- user can create an item for an event. if user is a guest, they will be automatically set as the owner. if user is host, owner field will be null.
+
+/invitations/ --> | GET |
+-- lists all invitations received by current user with a date_scheduled >= today
