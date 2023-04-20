@@ -22,13 +22,14 @@ const token = useContext(AuthContext)
     axios.post(`https://potluck.herokuapp.com/events/${pk}/items/`, {
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': token
       },
       data: {
         title: title,
-        description: description,
+        description: description
       }
-    })}
+    });
+  }
 
   return (
     <>
