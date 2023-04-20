@@ -15,7 +15,7 @@ from .permissions import IsHost, ItemDetailPermission
 from .models import User, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
-from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer
+from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -102,6 +102,19 @@ class UserItems(generics.ListAPIView):
         user = self.request.user
         queryset = Item.objects.filter(
             owner__id=user.id,
+            event__date_scheduled__gte=timezone.now().date()
+        )
+        return queryset
+
+
+class UserInvitations(generics.ListAPIView):
+    serializer_class = UserInvitationSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Invitation.objects.filter(
+            guest__id=user.id,
             event__date_scheduled__gte=timezone.now().date()
         )
         return queryset

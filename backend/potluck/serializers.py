@@ -166,3 +166,25 @@ class ReserveItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
         )
+
+
+class UserInvitationSerializer(serializers.ModelSerializer):
+    event = serializers.SerializerMethodField()
+    host = serializers.SerializerMethodField()
+
+    def get_host(self, obj):
+        return f"{obj.event.host.first_name} {obj.event.host.last_name}"
+
+    def get_event(self, obj):
+        return obj.event.title
+
+    class Meta:
+        model = Invitation
+        fields = (
+            'pk',
+            'event',
+            'host',
+            'response',
+        )
+
+        read_only_fields = ('pk', 'event', 'host',)
