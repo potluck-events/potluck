@@ -55,14 +55,13 @@ export default function EventDetails() {
 
 
   const hasSelected = () => { 
-    let some = event.items.some((item) => {
+    let some = event?.items.some((item) => {
       console.log(item);
       return item.selected === true
     })
     console.log("some:", some);
     return some
   }
-
 
   if (event) return (<>
     <div className="px-6">
@@ -72,9 +71,7 @@ export default function EventDetails() {
       
       <EventBody event={event} setEvent = {setEvent} setItemsTabOpen={ setItemsTabOpen }/>
       <CreateItemModal setItemModalOpen={ setItemModalOpen } itemModalOpen={ itemModalOpen } />
-      {itemsTabOpen && hasSelected() ?
-        <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> :
-        <NewItemButton setItemModalOpen={setItemModalOpen} />}
+      {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} />)}
       
     </div>  
   </>)
@@ -184,39 +181,51 @@ function Items({ items, setEvent}) {
   )
 }
 
-function Item({item, setEvent}) {
+function Item({item, setEvent, setSelected}) {
   const [expanded, setExpanded] = useState(false)
 
-  //OG code thaat marks items as selected
-  // const handleSelect = () => {
-  //   setEvent(event => {
-  //       event.items = event.items.map(prevItem => {
-  //       if (prevItem.pk === item.pk) {
-  //         let select
-  //         if (typeof selected !== "undefined") {
-  //           select = !selected
-  //         } else select = true
-
-  //         return { ...prevItem, selected: select}
-  //       }
-  //       return prevItem
-  //     })
-
-  //     return event
-  //   })
-  // }
-
-  //GPT improved code
   const handleSelect = () => {
-  setEvent(event => {
-    const selectedIndex = event.items.findIndex(prevItem => prevItem.pk === item.pk)
-    if (selectedIndex !== -1) {
-      const selected = event.items[selectedIndex].selected
-      event.items[selectedIndex] = { ...event.items[selectedIndex], selected: selected != null ? !selected : true }
-    }
-    console.log(event);
-    return event
-  })
+    // setSelected(prevSelected => {
+    //   const selectedIndex = prevSelected.findIndex(prevItem => prevItem.pk === item.pk)
+    //   if (selectedIndex !== -1) {
+    //     // If the item is already selected, remove it from the selected array
+    //     const updatedSelected = prevSelected.filter(prevItem => prevItem.pk !== item.pk)
+    //     return updatedSelected
+    //   } else {
+    //     // If the item is not selected, add it to the selected array
+    //     const updatedSelected = [...prevSelected, item]
+    //     return updatedSelected
+    //   }
+    // })
+
+setEvent(prevEvent => {
+  // Find the index of the item in the items array
+  const selectedIndex = prevEvent.items.findIndex(prevItem => prevItem.pk === item.pk)
+  
+  // If the item was found in the array
+  if (selectedIndex !== -1) {
+    // Get the selected property of the item
+    const selected = prevEvent.items[selectedIndex].selected
+    
+    // Create a copy of the items array
+    const updatedItems = [...prevEvent.items]
+    
+    // Update the selected property of the item
+    updatedItems[selectedIndex] = { ...updatedItems[selectedIndex], selected: selected != null ? !selected : true }
+    
+    // Create a copy of the event object with the updated items array
+    const updatedEvent = { ...prevEvent, items: updatedItems }
+    
+    // Log the updated event object
+    console.log(updatedEvent);
+    
+    // Return the updated event object
+    return updatedEvent
+  }
+  
+  // If the item was not found in the array, return the original event object
+  return prevEvent
+})
 }
 
   return (
@@ -240,10 +249,10 @@ function Item({item, setEvent}) {
 function NewItemButton({setItemModalOpen}) {
     return (
         <div className="absolute right-5 bottom-5 z-30">
-            <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
-                <div className="flex justify-center">
-                <FontAwesomeIcon icon={faPlus} className="w-10 h-14"/>
-                </div> 
+            <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
+              <div className="flex justify-center items-center">
+                <FontAwesomeIcon icon={faPlus} className="w-5 h-5 mr-2" /> New Item            
+              </div>
             </Button>
         </div>
     )
@@ -255,13 +264,13 @@ function ReserveItemsButton({ items }) {
   }
 
   return (
-      <div className="absolute bottom-5 right-5">
-          <Button onClick={handleReserve} className="w-20 rounded-full">
-              <div className="flex justify-center">
-              <p>Reserve items</p>
-              </div> 
-          </Button>
-      </div>
+    <div className="absolute right-5 bottom-5 z-30">
+        <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
+          <div className="flex justify-center items-center">
+            <FontAwesomeIcon icon={faCheck} className="w-5 h-5 mr-2" /> Reserve Items            
+          </div>
+        </Button>
+    </div>
   )
 }
 
@@ -280,10 +289,6 @@ function Posts({posts}) {
     </TabsBody>
   )
 }
-
-// function handleUserPost(){
-
-// }
 
 function CreatePostForm() {
   const [userPost, setUserPost] = useState('')
