@@ -2,10 +2,33 @@ import { Typography, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useContext, useState } from "react";
+import { AuthContext } from "../context/authcontext";
+import axios from "axios";
 
 
 
 export default function UserInvitations() {
+  const token = useContext(AuthContext)
+  const [going, setGoing] = useState([])
+
+
+  useEffect(() => {
+    axios.get('https://potluck.herokuapp.com/invitations', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
+    }).then((response) => {
+      setGoing(response.data)
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }, [])
+
+  console.log(going)
+
   return (
     <>
     <div className="text-center my-1">
@@ -52,12 +75,14 @@ function PendingInvites() {
       )
 }
 
-function AcceptedInvites() {
+function AcceptedInvites({going}) {
   const navigate = useNavigate()
   
   function onClickViewEvent(pk){
       navigate(`/events/${pk}`)
   }
+
+  console.log(going)
 
   return (
   <>
