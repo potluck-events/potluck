@@ -15,7 +15,7 @@ from .permissions import IsHost, ItemDetailPermission
 from .models import User, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
-from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer
+from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
