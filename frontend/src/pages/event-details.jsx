@@ -9,7 +9,8 @@ import {
     Button,
     IconButton,
     Typography,
-    Checkbox
+    Checkbox,
+    Textarea
     } from "@material-tailwind/react";
 import axios from "axios";
 import moment from "moment";
@@ -238,7 +239,7 @@ function Item({item, setEvent}) {
 
 function NewItemButton({setItemModalOpen}) {
     return (
-        <div className="absolute bottom-5 right-5">
+        <div className="absolute right-5 bottom-5 z-30">
             <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
                 <div className="flex justify-center">
                 <FontAwesomeIcon icon={faPlus} className="w-10 h-14"/>
@@ -280,10 +281,31 @@ function Posts({posts}) {
   )
 }
 
+// function handleUserPost(){
+
+// }
+
 function CreatePostForm() {
-  return null
+  const [userPost, setUserPost] = useState('')
+
+  return (
+    <form className='flex flex-col' onSubmit={(p) => handleUserPost(p)}>
+      <Textarea value={userPost} onChange={(p) => setUserPost(p.target.value)} label="New post" size="lg" />
+      <Button type="submit" className="w-20 self-end">Post!</Button>
+    </form>
+  )
 }
 
 function Post({post}) {
-  return (<h1>{post.title}</h1>)
+  return (
+    <>
+    <div className='my-2'>
+      <div>
+        <p className="font-semibold">{post.author}</p>
+      </div>
+      <p>{post.text}</p>
+    </div>
+    <div className="border-black border-t-2"></div>
+    </>
+  )
 }

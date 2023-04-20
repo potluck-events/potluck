@@ -68,12 +68,12 @@ export default function Home() {
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">
-                <CalendarIcon className = "w-5 h-5" /> "Events"
+                <CalendarIcon className = "w-5 h-5" /> Events
                 </div>
             </Tab>
             <Tab value='items'>
                 <div className="flex items-center gap-2">
-                <ListBulletIcon className = "w-5 h-5" /> "Items"
+                <ListBulletIcon className = "w-5 h-5" /> Items
                 </div>
             </Tab>
         </TabsHeader>
@@ -128,15 +128,20 @@ function Events({ events }) {
 
 
 function Items({ items }) {
+    const navigate = useNavigate()
+
+    function onClickViewEvent(pk){
+        navigate(`/events/${pk}`)
+    }
     return (
         <div className="divide-y divide-black">
-            {items.map((items, index) => {
+            {items.map((item, index) => {
                 return (
                 <div className="" key={index}>
                     <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
                         <div className="columns-1 py-1" >
-                            <h2 className="font-semibold">{items.title}</h2>
-                            <p>{items.event.title}</p>
+                            <h2 className="font-semibold">{item.title}</h2>
+                            <p>{item.event.title}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton variant="text" className="mt-1 mr-1">
