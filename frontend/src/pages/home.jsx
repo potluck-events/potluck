@@ -68,12 +68,12 @@ export default function Home() {
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">
-                <CalendarIcon className = "w-5 h-5" /> "Events"
+                <CalendarIcon className = "w-5 h-5" /> Events
                 </div>
             </Tab>
             <Tab value='items'>
                 <div className="flex items-center gap-2">
-                <ListBulletIcon className = "w-5 h-5" /> "Items"
+                <ListBulletIcon className = "w-5 h-5" /> Items
                 </div>
             </Tab>
         </TabsHeader>
