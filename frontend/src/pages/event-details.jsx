@@ -228,9 +228,9 @@ function CreatePostForm() {
   const [userPost, setUserPost] = useState('')
 
   return (
-    <form onSubmit={(p) => handleUserPost(p)}>
+    <form className='flex flex-col' onSubmit={(p) => handleUserPost(p)}>
       <Textarea value={userPost} onChange={(p) => setUserPost(p.target.value)} label="New post" size="lg" />
-      <Button type="submit" className="w-20 absolute right-5">Post!</Button>
+      <Button type="submit" className="w-20 self-end">Post!</Button>
     </form>
   )
 }
