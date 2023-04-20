@@ -152,6 +152,17 @@ class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsAuthenticated]
     permission_classes = [ItemDetailPermission]
 
+
+class ReserveItem(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ReserveItemSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        obj = get_object_or_404(Item, pk=pk)
+        return obj
+
     def perform_update(self, serializer):
         item = get_object_or_404(Item, pk=self.kwargs["pk"])
         if self.request.user == item.owner:
