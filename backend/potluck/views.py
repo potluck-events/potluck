@@ -107,6 +107,19 @@ class UserItems(generics.ListAPIView):
         return queryset
 
 
+class UserInvitations(generics.ListAPIView):
+    serializer_class = UserInvitationSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Invitation.objects.filter(
+            guest__id=user.id,
+            event__date_scheduled__gte=timezone.now().date()
+        )
+        return queryset
+
+
 class CreateEvent(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
