@@ -40,11 +40,11 @@ export default function UserInvitations() {
     </div>
     <div className='my-8 px-6'>
       <Typography variant='h4'>Accepted</Typography>
-      < AcceptedInvites />
+      < AcceptedInvites  going={going}/>
     </div>
     <div className='my-8 px-6'>
       <Typography variant='h4'>Declined</Typography>
-      < DeclinedInvites />
+      < DeclinedInvites  going={going}/>
     </div>
     </>
   )
@@ -75,22 +75,23 @@ function PendingInvites() {
       )
 }
 
-function AcceptedInvites({going}) {
+function AcceptedInvites({ going }) {
   const navigate = useNavigate()
-  
+  const acceptedEvents = 
+  going.filter((event) => event.response === true);
+
   function onClickViewEvent(pk){
       navigate(`/events/${pk}`)
   }
-
-  console.log(going)
-
+  
   return (
   <>
+  {acceptedEvents.map((event) => (
     <div className="flex py-1" onClick={() => onClickViewEvent(event.pk)}>
       <div className="columns-1 py-1">
-        <Typography className="font-semibold">Title</Typography>
-        <p>Date - Location</p>
-        <p>Number of Attendees</p>
+        <Typography className="font-semibold"></Typography>
+        <p>{event.event}</p>
+        <p>Host: {event.host}</p>
       </div>
       <div className="absolute right-0" onClick={() => onClickViewEvent(event.pk)}>
         <IconButton variant="text" className="mt-5 mr-2">
@@ -98,12 +99,15 @@ function AcceptedInvites({going}) {
         </IconButton>
       </div>
     </div>
+  ))}
   </>
       )
 }
 
-function DeclinedInvites() {
+function DeclinedInvites({ going }) {
   const navigate = useNavigate()
+  const declinedEvents = 
+  going.filter((event) => event.response === false);
   
   function onClickViewEvent(pk){
       navigate(`/events/${pk}`)
@@ -111,11 +115,12 @@ function DeclinedInvites() {
 
   return (
   <>
+  {declinedEvents.map((event) => (
     <div className="flex py-1" onClick={() => onClickViewEvent(event.pk)}>
       <div className="columns-1 py-1">
         <Typography className="font-semibold">Title</Typography>
-        <p>Date - Location</p>
-        <p>Number of Attendees</p>
+        <p>{event.event}</p>
+        <p>{event.host}</p>
       </div>
       <div className="absolute right-0" onClick={() => onClickViewEvent(event.pk)}>
         <IconButton variant="text" className="mt-5 mr-2">
@@ -123,6 +128,7 @@ function DeclinedInvites() {
         </IconButton>
       </div>
     </div>
+  ))}
   </>
       )
 }
