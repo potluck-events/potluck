@@ -128,15 +128,20 @@ function Events({ events }) {
 
 
 function Items({ items }) {
+    const navigate = useNavigate()
+
+    function onClickViewEvent(pk){
+        navigate(`/events/${pk}`)
+    }
     return (
         <div className="divide-y divide-black">
-            {items.map((items, index) => {
+            {items.map((item, index) => {
                 return (
                 <div className="" key={index}>
                     <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
                         <div className="columns-1 py-1" >
-                            <h2 className="font-semibold">{items.title}</h2>
-                            <p>{items.event.title}</p>
+                            <h2 className="font-semibold">{item.title}</h2>
+                            <p>{item.event.title}</p>
                         </div>
                         <div className="absolute right-0">
                             <IconButton variant="text" className="mt-1 mr-1">
