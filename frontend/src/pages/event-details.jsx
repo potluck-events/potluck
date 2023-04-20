@@ -9,7 +9,6 @@ import {
     Button,
     IconButton,
     Typography,
-    Checkbox,
     Textarea
     } from "@material-tailwind/react";
 import axios from "axios";
@@ -24,7 +23,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import CreateItemModal from "../components/create-item";
 import { AuthContext } from "../context/authcontext";
-
+import Checkbox from '@mui/material/Checkbox';
 
 export default function EventDetails() {
   const { pk } = useParams()
@@ -234,10 +233,10 @@ setEvent(prevEvent => {
 
   return (
     <div className="flex items-center py-1">
-      <Checkbox disabled={item.owner} value={item.pk} onClick={handleSelect} />
+      <Checkbox  disabled={item.owner} name={item.pk} value={item.pk} onClick={handleSelect} />
       <div className="flex flex-auto flex-col pr-2 self-start " onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
-        {item.description && <p className={expanded ? "" : "ellipsis-after-1"}>{item.description}</p>}
+        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
       </div>
       <div className="flex flex-col gap-3">
         {item.owner && <FontAwesomeIcon icon={faUser} />}
