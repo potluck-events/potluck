@@ -17,17 +17,22 @@ const token = useContext(AuthContext)
     setItemModalOpen(false)
   }
 
-  function handleCreateItem(i){
+  function handleCreateItem(i) {
     i.preventDefault()
-    axios.post(`https://potluck.herokuapp.com/events/${pk}/items/`, {
+    const options = {
+      method: 'POST',
+      url: `https://potluck.herokuapp.com/events/${pk}/items`,
       headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+        'Content-Type': 'application/json',
+        Authorization: token
       },
-      data: {
-        title: title,
-        description: description
-      }
+      data: { title: title, description: description }
+    };
+
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
     });
   }
 
