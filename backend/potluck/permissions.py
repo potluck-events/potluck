@@ -20,6 +20,6 @@ class ItemDetailPermission(permissions.BasePermission):
 # class IsAttending(permissions.BasePermission):
 
 #     def has_object_permission(self, request, view, obj):
-#         if request.user == obj.host or request.user == obj.invitations__guest:
+#         if request.user == obj.host or request.user == obj.invitations.guest:
 #             return True
 #         return False
