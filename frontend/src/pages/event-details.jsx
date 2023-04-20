@@ -30,6 +30,7 @@ export default function EventDetails() {
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
+  const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
 
   useEffect(() => {
   
@@ -53,15 +54,24 @@ export default function EventDetails() {
   }, [])
 
 
+  const hasSelected = () => { 
+    let some = event?.items.some((item) => {
+      console.log(item);
+      return item.selected === true
+    })
+    console.log("some:", some);
+    return some
+  }
+
   if (event) return (<>
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} />
 
       <RSVP event={event} />
-
-      <EventBody event={event} />
+      
+      <EventBody event={event} setEvent = {setEvent} setItemsTabOpen={ setItemsTabOpen }/>
       <CreateItemModal setItemModalOpen={ setItemModalOpen } itemModalOpen={ itemModalOpen } />
-      <NewItemButton setItemModalOpen={ setItemModalOpen } />
+      {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} />)}
       
     </div>  
   </>)
@@ -137,46 +147,90 @@ function RSVP({ event }) {
   )
 }
 
-function EventBody({ event }) {
+function EventBody({ event, setEvent, setItemsTabOpen }) {
   return (
     <Tabs className='mt-3' value="items" >
         <TabsHeader>
-            <Tab value='items'>
+            <Tab value='items' onClick={() => setItemsTabOpen(true)}>
                 <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Items
                 </div>
             </Tab>
-            <Tab value='posts'>
+            <Tab value='posts' onClick={() => setItemsTabOpen(false)}>
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> Posts
               </div>
             </Tab>
         </TabsHeader>
-        <Items items={event.items} />
+        <Items items={event.items} setEvent = {setEvent}/>
         <Posts posts={event.posts} />
     </Tabs>
   )
 }
 
-function Items({ items }) {
+function Items({ items, setEvent}) {
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='items' className="pl-0 divide-y">
         {items.map((item, index) => (
-          <Item key = {index} item={item} />
+          <Item key = {index} item={item} setEvent = {setEvent}/>
         ))}
       </TabPanel>
     </TabsBody>
   )
 }
 
-function Item({item}) {
+function Item({item, setEvent, setSelected}) {
   const [expanded, setExpanded] = useState(false)
+
+  const handleSelect = () => {
+    // setSelected(prevSelected => {
+    //   const selectedIndex = prevSelected.findIndex(prevItem => prevItem.pk === item.pk)
+    //   if (selectedIndex !== -1) {
+    //     // If the item is already selected, remove it from the selected array
+    //     const updatedSelected = prevSelected.filter(prevItem => prevItem.pk !== item.pk)
+    //     return updatedSelected
+    //   } else {
+    //     // If the item is not selected, add it to the selected array
+    //     const updatedSelected = [...prevSelected, item]
+    //     return updatedSelected
+    //   }
+    // })
+
+setEvent(prevEvent => {
+  // Find the index of the item in the items array
+  const selectedIndex = prevEvent.items.findIndex(prevItem => prevItem.pk === item.pk)
+  
+  // If the item was found in the array
+  if (selectedIndex !== -1) {
+    // Get the selected property of the item
+    const selected = prevEvent.items[selectedIndex].selected
+    
+    // Create a copy of the items array
+    const updatedItems = [...prevEvent.items]
+    
+    // Update the selected property of the item
+    updatedItems[selectedIndex] = { ...updatedItems[selectedIndex], selected: selected != null ? !selected : true }
+    
+    // Create a copy of the event object with the updated items array
+    const updatedEvent = { ...prevEvent, items: updatedItems }
+    
+    // Log the updated event object
+    console.log(updatedEvent);
+    
+    // Return the updated event object
+    return updatedEvent
+  }
+  
+  // If the item was not found in the array, return the original event object
+  return prevEvent
+})
+}
 
   return (
     <div className="flex items-center py-1">
-      <Checkbox value={item.pk} />
+      {!item.owner && <Checkbox value={item.pk} onClick={handleSelect} />}
       <div className="flex flex-auto flex-col pr-2 self-start" onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
         <p className={expanded ? "" : "ellipsis-after-1"}>{item.description}</p>
@@ -193,18 +247,34 @@ function Item({item}) {
 }
 
 function NewItemButton({setItemModalOpen}) {
-
-
     return (
         <div className="absolute right-5 bottom-5 z-30">
-            <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
-                <div className="flex justify-center">
-                <FontAwesomeIcon icon={faPlus} className="w-10 h-14"/>
-                </div> 
+            <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
+              <div className="flex justify-center items-center">
+                <FontAwesomeIcon icon={faPlus} className="w-5 h-5 mr-2" /> New Item            
+              </div>
             </Button>
         </div>
     )
 }
+
+function ReserveItemsButton({ items }) {
+  function handleReserve() {
+
+  }
+
+  return (
+    <div className="absolute right-5 bottom-5 z-30">
+        <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
+          <div className="flex justify-center items-center">
+            <FontAwesomeIcon icon={faCheck} className="w-5 h-5 mr-2" /> Reserve Items            
+          </div>
+        </Button>
+    </div>
+  )
+}
+
+
 
 function Posts({posts}) {
   
@@ -219,10 +289,6 @@ function Posts({posts}) {
     </TabsBody>
   )
 }
-
-// function handleUserPost(){
-
-// }
 
 function CreatePostForm() {
   const [userPost, setUserPost] = useState('')
