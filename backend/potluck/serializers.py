@@ -166,3 +166,10 @@ class ReserveItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
         )
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invitation
+        fields = '__all__'
