@@ -196,7 +196,7 @@ function NewItemButton({setItemModalOpen}) {
 
 
     return (
-        <div className="absolute bottom-5 right-5 z-30">
+        <div className="text-center z-30 mb-5">
             <Button onClick={() => setItemModalOpen(true)} className="w-20 rounded-full">
                 <div className="flex justify-center">
                 <FontAwesomeIcon icon={faPlus} className="w-10 h-14"/>
