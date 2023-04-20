@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
@@ -65,6 +66,7 @@ class EventSerializer(serializers.ModelSerializer):
     rsvp_yes = serializers.SerializerMethodField()
     rsvp_no = serializers.SerializerMethodField()
     rsvp_tbd = serializers.SerializerMethodField()
+    user_rsvp = serializers.SerializerMethodField()
 
     def get_count_invited(self, obj):
         return obj.invitations.count()
@@ -80,6 +82,9 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_host(self, obj):
         return f"{obj.host.first_name} {obj.host.last_name}"
+
+    def get_user_rsvp(self, obj):
+        return get_object_or_404(Invitation, guest=self.context['request'].user).response
 
     class Meta:
         model = Event
@@ -102,6 +107,7 @@ class EventSerializer(serializers.ModelSerializer):
             'rsvp_tbd',
             'items',
             'posts',
+            'user_rsvp'
         )
 
         read_only_fields = ('host',)
