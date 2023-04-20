@@ -23,6 +23,9 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 -- host can edit/delete items
 -- guests can only edit/delete items they created
 
+/items/pk/reserved/ --> | PATCH |
+-- guest can reserve/unreserve item
+
 /events/ --> | POST |
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
 
