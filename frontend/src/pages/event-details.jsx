@@ -9,12 +9,11 @@ import {
     Button,
     IconButton,
     Typography,
-    Checkbox,
     Textarea
     } from "@material-tailwind/react";
 import axios from "axios";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/eventdetails.css"
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +22,8 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import CreateItemModal from "../components/create-item";
-
+import { AuthContext } from "../context/authcontext";
+import Checkbox from '@mui/material/Checkbox';
 
 export default function EventDetails() {
   const { pk } = useParams()
@@ -31,13 +31,16 @@ export default function EventDetails() {
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
   const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
+  const token = useContext(AuthContext)
 
   useEffect(() => {
   
     const options = {
       method: 'GET',
       url: `https://potluck.herokuapp.com/events/${pk}`,
-      headers: { Authorization: 'Bearer 36fc1369aa32be1e8e24ef1b22c11ac5c715a1e0' }
+      headers: { 
+        'Authorization': token
+      }
     };
 
     axios.request(options).then(function (response) {
@@ -230,10 +233,10 @@ setEvent(prevEvent => {
 
   return (
     <div className="flex items-center py-1">
-      {!item.owner && <Checkbox value={item.pk} onClick={handleSelect} />}
-      <div className="flex flex-auto flex-col pr-2 self-start" onClick={() => setExpanded(!expanded)}>
+      <Checkbox  disabled={item.owner} name={item.pk} value={item.pk} onClick={handleSelect} />
+      <div className="flex flex-auto flex-col pr-2 self-start " onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
-        <p className={expanded ? "" : "ellipsis-after-1"}>{item.description}</p>
+        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
       </div>
       <div className="flex flex-col gap-3">
         {item.owner && <FontAwesomeIcon icon={faUser} />}
@@ -259,17 +262,37 @@ function NewItemButton({setItemModalOpen}) {
 }
 
 function ReserveItemsButton({ items }) {
+  const token = useContext(AuthContext)
+  
+  
   function handleReserve() {
+    for (const item of items) {
+      const options = {
+        method: 'PATCH',
+        url: `https://potluck.herokuapp.com/items/${item.pk}/reserved`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      };
 
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
   }
 
   return (
     <div className="absolute right-5 bottom-5 z-30">
-        <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
+      <form>
+        <Button type="submit" onClick={handleReserve} className="rounded-full">
           <div className="flex justify-center items-center">
             <FontAwesomeIcon icon={faCheck} className="w-5 h-5 mr-2" /> Reserve Items            
           </div>
         </Button>
+      </form>
     </div>
   )
 }
