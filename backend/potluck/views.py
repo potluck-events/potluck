@@ -100,7 +100,7 @@ class UserItems(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = self.objects.filter(
+        queryset = Item.objects.filter(
             owner__id=user.id,
             event__date_scheduled__gte=timezone.now().date()
         )
