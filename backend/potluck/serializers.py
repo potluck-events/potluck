@@ -46,6 +46,8 @@ class EventItemSerializer(serializers.ModelSerializer):
             'owner',
         )
 
+        read_only_fields = ('created_by',)
+
 
 class PostSerializer(serializers.ModelSerializer):
 
@@ -141,4 +143,26 @@ class UserItemSerializer(serializers.ModelSerializer):
             'event',
             'created_by',
             'owner',
+        )
+
+        read_only_fields = ('created_by',)
+
+
+class ReserveItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Item
+        fields = (
+            'pk',
+            'title',
+            'description',
+            'created_by',
+            'owner',
+        )
+
+        read_only_fields = (
+            'pk',
+            'title',
+            'description',
+            'created_by',
         )
