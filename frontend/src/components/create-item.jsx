@@ -1,17 +1,39 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Dialog, Transition, } from '@headlessui/react'
+import { Fragment, useState, useContext } from 'react'
+import { Input, Textarea, Button } from '@material-tailwind/react'
+import { useParams } from 'react-router-dom'
+import { AuthContext } from "../context/authcontext"
+import axios from 'axios'
+
 
 
 export default function CreateItemModal({itemModalOpen, setItemModalOpen}) {
+const [title, setTitle] = useState('')
+const [description, setDescription] = useState('')
+const { pk } = useParams()
+const token = useContext(AuthContext)
 
   function close () {
     setItemModalOpen(false)
   }
 
+  function handleCreateItem(i){
+    i.preventDefault()
+    axios.post(`https://potluck.herokuapp.com/events/${pk}/items/`, {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      },
+      data: {
+        title: title,
+        description: description,
+      }
+    })}
+
   return (
     <>
       <Transition appear show={itemModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setItemModalOpen}>
+        <Dialog as="div" className="relative z-20" onClose={setItemModalOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -40,24 +62,19 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen}) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Payment successful
+                    Add Item
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
-                  </div>
-
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={close}
-                    >
-                      Got it, thanks!
-                    </button>
-                  </div>
+                  <form onSubmit={(i) => handleCreateItem(i)}>
+                    <div className="mt-3">
+                      <Input value={title} onChange={(t) => setTitle(t.target.value)} label="Item" size="lg" />
+                    </div>
+                    <div className='my-2'>
+                      <Textarea value={description} onChange={(e) => setDescription(e.target.value)} label="Description" size="lg" />
+                    </div>
+                    <div className="flex justify-center">
+                      <Button type="submit" onClick={close} className="w-32" >Add</Button>
+                    </div>
+                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
