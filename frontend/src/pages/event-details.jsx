@@ -9,7 +9,8 @@ import {
     Button,
     IconButton,
     Typography,
-    Checkbox
+    Checkbox,
+    Textarea
     } from "@material-tailwind/react";
 import axios from "axios";
 import moment from "moment";
@@ -29,7 +30,6 @@ export default function EventDetails() {
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
-
 
   useEffect(() => {
   
@@ -220,10 +220,31 @@ function Posts({posts}) {
   )
 }
 
+// function handleUserPost(){
+
+// }
+
 function CreatePostForm() {
-  return null
+  const [userPost, setUserPost] = useState('')
+
+  return (
+    <form onSubmit={(p) => handleUserPost(p)}>
+      <Textarea value={userPost} onChange={(p) => setUserPost(p.target.value)} label="New post" size="lg" />
+      <Button type="submit" className="w-20 absolute right-5">Post!</Button>
+    </form>
+  )
 }
 
 function Post({post}) {
-  return (<h1>{post.title}</h1>)
+  return (
+    <>
+    <div className='my-2'>
+      <div>
+        <p className="font-semibold">{post.author}</p>
+      </div>
+      <p>{post.text}</p>
+    </div>
+    <div className="border-black border-t-2"></div>
+    </>
+  )
 }
