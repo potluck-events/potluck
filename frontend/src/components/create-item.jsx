@@ -18,7 +18,6 @@ const token = useContext(AuthContext)
   }
 
   function handleCreateItem(i) {
-    i.preventDefault()
     const options = {
       method: 'POST',
       url: `https://potluck.herokuapp.com/events/${pk}/items`,
