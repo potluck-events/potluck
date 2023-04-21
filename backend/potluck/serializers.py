@@ -228,3 +228,12 @@ class UserInvitationSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('pk', 'event', 'host',)
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invitation
+        fields = "__all__"
+
+        read_only_fields = ('event',)
