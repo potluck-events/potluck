@@ -92,7 +92,7 @@ function CreatePostForm({ handleUserPost }) {
 function Post({post, handleDelete}) {
   return (
     <>
-    <Card color="blue" variant="gradient" className="my-1 px-2"
+    <Card color="light-blue" variant="gradient" className="my-1 px-2"
     animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <div className='my-2'>
         <div>
