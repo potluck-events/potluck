@@ -1,4 +1,14 @@
-import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
+import { 
+  TabsBody, 
+  TabPanel, 
+  Button, 
+  Textarea, 
+  Typography,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+} from "@material-tailwind/react";
 import { useState, useContext } from "react";
 import "../../styles/eventdetails.css"
 import { useParams, useNavigate } from 'react-router-dom'
@@ -62,13 +72,16 @@ function CreatePostForm({ handleUserPost }) {
 function Post({post}) {
   return (
     <>
-    <div className='my-2'>
-      <div>
-        <p className="font-semibold">{post.author.full_name}</p>
+    <Card color="blue" variant="gradient" className="my-1 px-2"
+    animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+      <div className='my-2'>
+        <div>
+          <Typography variant='h6'>{post.author.full_name}</Typography>
+        </div>
+        <Typography variant='small'>{post.text}</Typography>
       </div>
-      <p>{post.text}</p>
-    </div>
-    <div className="border-black border-t-2"></div>
+      <Button></Button>
+    </Card>
     </>
   )
 }
