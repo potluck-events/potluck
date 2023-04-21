@@ -188,6 +188,8 @@ class ReserveItem(generics.UpdateAPIView):
             serializer.save()
 
 
+# add permissions
+# guests and hosts only
 class CreatePost(generics.CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -197,3 +199,12 @@ class CreatePost(generics.CreateAPIView):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
         author = self.request.user
         serializer.save(event=event, author=author)
+
+
+# add permissions
+# guests can delete their posts
+# host can delete any post
+class DeletePost(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    # permission_classes = [IsAuthenticated]
