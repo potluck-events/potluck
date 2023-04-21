@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, IsInvitationGuest, IsInvitationHost
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, IsInvitationHost
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -216,6 +216,8 @@ class DeletePost(generics.DestroyAPIView):
 
 class ListCreateInvitations(generics.ListCreateAPIView):
     serializer_class = InvitationSerializer
+    # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsInvitationHostOrGuest]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
@@ -233,10 +235,14 @@ class ListCreateInvitations(generics.ListCreateAPIView):
 
     # def get_permissions(self):
     #     if self.request.method == 'GET':
-    #         breakpoint()
     #         return [IsInvitationHost() or IsInvitationGuest()]
     #     else:
     #         return [IsInvitationHost()]
+
+    # def get_permissions(self):
+    #     if self.request.method == 'POST':
+    #         return [IsInvitationHost()]
+    #     return [IsAuthenticated()]
 
 
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
