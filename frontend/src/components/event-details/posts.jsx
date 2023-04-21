@@ -42,12 +42,27 @@ export default function Posts({posts}) {
     )
   }
 
+  function handleDelete() {
+    const options = {
+      method: 'DELETE',
+      url: `https://potluck.herokuapp.com/posts/${pk}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+    };
+    axios.request(options).then(response => {
+      navigate(`/events/${pk}`) 
+    })
+  }
+  
+
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='posts'>
         <CreatePostForm  handleUserPost={handleUserPost}/>
         {posts.length ? posts.map((post, index) => (
-          <Post post = {post} key = {index} />
+          <Post post = {post} key = {index} handleDelete={handleDelete}/>
         )):
           <div className="flex items-center justify-center h-40">
             <Typography className="text-gray-500" variant="h3">No Posts</Typography>
@@ -73,9 +88,7 @@ function CreatePostForm({ handleUserPost }) {
   )
 }
 
-
-
-function Post({post}) {
+function Post({post, handleDelete}) {
   return (
     <>
     <Card color="blue" variant="gradient" className="my-1 px-2"
@@ -86,7 +99,7 @@ function Post({post}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <Button className="w-fit absolute right-2 my-3"><FontAwesomeIcon icon={faX} /></Button>
+      <Button onClick={handleDelete} className="w-fit absolute right-2 my-3"><FontAwesomeIcon icon={faX} /></Button>
     </Card>
     </>
   )
