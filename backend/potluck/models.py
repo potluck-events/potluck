@@ -69,6 +69,7 @@ class Post(models.Model):
         to='User', on_delete=models.CASCADE, related_name='posts')
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='posts')
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'Post for {self.event} by {self.author}'
