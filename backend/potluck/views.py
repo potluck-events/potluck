@@ -191,14 +191,9 @@ class ReserveItem(generics.UpdateAPIView):
 # add permissions
 # guests and hosts only
 class ListCreatePost(generics.ListCreateAPIView):
-    # queryset = Post.objects.all()
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        event = self.event
-        queryset = Post.objects.filter(event=event)
-        return queryset
 
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
