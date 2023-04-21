@@ -1,6 +1,10 @@
 import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
-import { useState } from "react";
-import "../../styles/eventdetails.css"
+import { useState, useContext } from "react";
+import "../../styles/eventdetails.css";
+import { AuthContext } from '../../context/authcontext';
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 
 export default function Posts({posts}) {
@@ -20,7 +24,26 @@ export default function Posts({posts}) {
   )
 }
 
-function CreatePostForm() {
+function handleUserPost(userPost){
+  const { pk } = useParams()
+  const token = useContext(AuthContext)
+
+  axios.post(`https://potluck.herokuapp.com/events/${pk}/posts`,
+    {
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`
+    }},
+    {
+      data: { posts: userPost}
+  }).then(function(response){
+    console.log(response);
+    console.log('click');
+    navigate(`/events/${pk}`)
+  })
+}
+
+function CreatePostForm(handleUserPost) {
   const [userPost, setUserPost] = useState('')
 
   return (
