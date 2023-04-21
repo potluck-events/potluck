@@ -43,16 +43,17 @@ export default function Posts({posts}) {
   }
 
   function handleDelete(post) {
+    console.log(post)
     const options = {
       method: 'DELETE',
-      url: `https://potluck.herokuapp.com/posts/${pk}`,
+      url: `https://potluck.herokuapp.com/posts/${post.id}`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: token
       },
     };
     axios.request(options).then(response => {
-      navigate(`/events/${pk}`) 
+      location.reload()
     })
   }
   
