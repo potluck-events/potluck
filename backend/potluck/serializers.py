@@ -35,6 +35,23 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('date_joined',)
 
 
+class UserSerializerShort(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
+    class Meta:
+        model = User
+        fields = (
+            'full_name',
+            'email',
+            'thumbnail',
+        )
+
+        read_only_fields = ('date_joined',)
+
+
 class EventItemSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -59,6 +76,8 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+
+        read_only_fields = ('event',)
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -211,3 +230,12 @@ class UserInvitationSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('pk', 'event', 'host',)
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invitation
+        fields = "__all__"
+
+        read_only_fields = ('event',)
