@@ -99,7 +99,7 @@ function Post({post, handleDelete}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <Button onClick={handleDelete} className="w-fit absolute right-2 my-3"><FontAwesomeIcon icon={faX} /></Button>
+      <FontAwesomeIcon onClick={handleDelete} className="w-fit absolute right-3 my-3" icon={faX} />
     </Card>
     </>
   )
