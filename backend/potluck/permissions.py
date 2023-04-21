@@ -32,14 +32,6 @@ class IsPostAuthorOrHost(permissions.BasePermission):
         return False
 
 
-class IsPostAuthorOrHost(permissions.BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        if request.user == obj.author or request.user == obj.event.host:
-            return True
-        return False
-
-
 class OrPermission(permissions.BasePermission):
     def __init__(self, *permissions):
         self.permissions = permissions

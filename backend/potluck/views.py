@@ -204,9 +204,6 @@ class ListCreatePost(generics.ListCreateAPIView):
         serializer.save(event=event, author=author)
 
 
-# add permissions
-# guests can delete their posts
-# host can delete any post
 class DeletePost(generics.DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
