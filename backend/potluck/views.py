@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -211,3 +211,4 @@ class DeletePost(generics.DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
+    permission_classes = [IsPostAuthorOrHost]
