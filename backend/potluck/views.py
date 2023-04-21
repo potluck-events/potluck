@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, IsInvitationHost
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, IsInvitationHost, IsInvitationGuest
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -132,7 +132,6 @@ class CreateEvent(generics.CreateAPIView):
         serializer.save(host=self.request.user)
 
 
-# need some kind of permission for non-party members
 class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -145,7 +144,7 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return [IsHost()]
 
 
-# need to make it so that:
+# add permissions
 # users can only create items for events they are hosting or attending
 class CreateItem(generics.CreateAPIView):
     queryset = Item.objects.all()
@@ -217,7 +216,6 @@ class DeletePost(generics.DestroyAPIView):
 class ListCreateInvitations(generics.ListCreateAPIView):
     serializer_class = InvitationSerializer
     # permission_classes = [IsAuthenticated]
-    # permission_classes = [IsInvitationHostOrGuest]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
@@ -225,7 +223,6 @@ class ListCreateInvitations(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         email = self.request.data.get('email')
-        print(email)
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
@@ -233,16 +230,11 @@ class ListCreateInvitations(generics.ListCreateAPIView):
         else:
             serializer.save(event=event)
 
-    # def get_permissions(self):
-    #     if self.request.method == 'GET':
-    #         return [IsInvitationHost() or IsInvitationGuest()]
-    #     else:
-    #         return [IsInvitationHost()]
-
     def get_permissions(self):
-        if self.request.method == 'POST':
+        if self.request.method != 'GET':
             return [IsInvitationHost()]
-        return []
+        else:
+            return [IsInvitationGuest() | IsInvitationHost()]
 
 
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):

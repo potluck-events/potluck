@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from django.shortcuts import get_object_or_404
-from .models import Event, Invitation
+from .models import Event
 
 
 class IsHost(permissions.IsAuthenticated):
@@ -29,10 +29,25 @@ class ItemDetailPermission(permissions.BasePermission):
 class IsInvitationHost(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        event = Event.objects.get(id=request.data['event_id'])
-        # event_id = view.kwargs.get('event_id')
-        # event = get_object_or_404(Event, pk=event_id)
+        kwargs = view.kwargs
+        event_pk = kwargs.get('pk')
+        event = Event.objects.get(pk=event_pk)
         return request.user == event.host
+
+    def __or__(self, other):
+        return OrPermission(self, other)
+
+
+class IsInvitationGuest(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        kwargs = view.kwargs
+        event_pk = kwargs.get('pk')
+        event = Event.objects.get(pk=event_pk)
+        return event.invitations.filter(guest=request.user).exists()
+
+    def __or__(self, other):
+        return OrPermission(self, other)
 
 
 class IsPostAuthorOrHost(permissions.BasePermission):
