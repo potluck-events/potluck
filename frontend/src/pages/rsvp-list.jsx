@@ -2,6 +2,8 @@ import { Typography, IconButton, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Invitation from "../components/event-invitation";
 
 // useEffect(() => {
 //   null
@@ -24,10 +26,10 @@ import { useNavigate } from "react-router-dom";
     )
   }
 
-  function InviteButton(){
+  function InviteButton({setInviteModalOpen}){
     return (
       <div className='mx-4 my-4'>
-        <Button fullWidth>Invite Guests</Button>
+        <Button onClick={() => setInviteModalOpen(true)} fullWidth>Invite Guests</Button>
       </div>
     )
   }
@@ -69,11 +71,14 @@ import { useNavigate } from "react-router-dom";
   }
 
 export default function RSVPList() {
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+
   return (
   <>
     <EventTitle />
     <Invitations />
-    <InviteButton />
+    <Invitation setInviteModalOpen={ setInviteModalOpen } inviteModalOpen={ inviteModalOpen } />
+    <InviteButton setInviteModalOpen={ setInviteModalOpen }/>
     <Attending />
     <TBD />
     <Declined/>
