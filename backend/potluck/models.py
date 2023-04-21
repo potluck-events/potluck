@@ -71,5 +71,8 @@ class Post(models.Model):
         to='Event', on_delete=models.CASCADE, related_name='posts')
     time_created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-time_created']
+
     def __str__(self):
         return f'Post for {self.event} by {self.author}'
