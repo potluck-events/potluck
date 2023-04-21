@@ -1,9 +1,6 @@
 import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
-import { useState, useParams } from "react";
+import { useState } from "react";
 import "../../styles/eventdetails.css"
-import { AuthContext } from "../../context/authcontext";
-import axios from "axios";
-
 
 
 export default function Posts({posts}) {
@@ -21,18 +18,6 @@ export default function Posts({posts}) {
       </TabPanel>
     </TabsBody>
   )
-}
-
-function handleUserPost(userPost){
-  
-  axios.post(`https://potluck.herokuapp.com/events/${pk}/posts`,
-    userPost,
-    {
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`
-      }
-  })
 }
 
 function CreatePostForm() {
