@@ -5,10 +5,14 @@ import "../../styles/eventdetails.css"
 
 export default function Posts({posts}) {
   
+  function handleUserPost(userPost){
+    console.log(`user post: ${userPost}`)
+  }
+
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='posts'>
-        <CreatePostForm />
+        <CreatePostForm  handleUserPost={handleUserPost}/>
         {posts.length ? posts.map((post, index) => (
           <Post post = {post} key = {index} />
         )):
@@ -20,11 +24,17 @@ export default function Posts({posts}) {
   )
 }
 
-function CreatePostForm() {
+function CreatePostForm({ handleUserPost }) {
   const [userPost, setUserPost] = useState('')
 
+  function handleSubmit(event){
+    event.preventDefault();
+    handleUserPost(userPost);
+    setUserPost('')
+  }
+
   return (
-    <form className='flex flex-col' onSubmit={(p) => handleUserPost(p)}>
+    <form className='flex flex-col' onSubmit={handleSubmit}>
       <Textarea value={userPost} onChange={(p) => setUserPost(p.target.value)} label="New post" size="lg" />
       <Button type="submit" className="w-20 self-end">Post!</Button>
     </form>
