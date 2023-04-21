@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission
+from .permissions import IsHost, ItemDetailPermission, IsGuest
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -137,7 +137,7 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            return []
+            return [IsHost() | IsGuest()]
         else:
             return [IsHost()]
 
