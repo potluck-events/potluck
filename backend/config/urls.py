@@ -40,4 +40,5 @@ urlpatterns = [
     path('items/<int:pk>', views.ItemDetails.as_view()),
     path('items/<int:pk>/reserved', views.ReserveItem.as_view()),
     path('invitations', views.UserInvitations.as_view()),
+    path('posts/<int:pk>', views.DeletePost.as_view()),
 ]
