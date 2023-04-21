@@ -26,7 +26,7 @@ class ItemDetailPermission(permissions.BasePermission):
         return True
 
 
-class IsInvitationHost(permissions.BasePermission):
+class PostInvitationHost(permissions.BasePermission):
 
     def has_permission(self, request, view):
         kwargs = view.kwargs
@@ -38,7 +38,7 @@ class IsInvitationHost(permissions.BasePermission):
         return OrPermission(self, other)
 
 
-class IsInvitationGuest(permissions.BasePermission):
+class PostInvitationGuest(permissions.BasePermission):
 
     def has_permission(self, request, view):
         kwargs = view.kwargs
