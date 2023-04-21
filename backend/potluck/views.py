@@ -190,11 +190,10 @@ class ReserveItem(generics.UpdateAPIView):
             serializer.save()
 
 
-# add permissions
-# guests and hosts only
 class ListCreatePost(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
+    permission_classes = [PostInvitationGuest | PostInvitationHost]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
