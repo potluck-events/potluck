@@ -42,7 +42,7 @@ export default function Posts({posts}) {
     )
   }
 
-  function handleDelete() {
+  function handleDelete(post) {
     const options = {
       method: 'DELETE',
       url: `https://potluck.herokuapp.com/posts/${pk}`,
@@ -99,7 +99,7 @@ function Post({post, handleDelete}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <FontAwesomeIcon onClick={handleDelete} className="w-fit absolute right-3 my-3" icon={faX} />
+      <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />
     </Card>
     </>
   )
