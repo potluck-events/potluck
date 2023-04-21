@@ -9,6 +9,17 @@ class User(AbstractUser):
     thumbnail = models.ImageField(blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     city = models.CharField(max_length=50, blank=True, null=True)
+    initials = models.CharField(max_length=3, blank=True)
+    full_name = models.CharField(max_length=61, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.initials = "".join(
+            [name[0] for name in self.first_name.split() + self.last_name.split()])
+        self.full_name = "{} {}".format(self.first_name, self.last_name)
+        super(User, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class Event(models.Model):
