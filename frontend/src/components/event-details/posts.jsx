@@ -1,6 +1,6 @@
 import { TabsBody, TabPanel, Button, Textarea } from "@material-tailwind/react";
 import { useState } from "react";
-import "../styles/eventdetails.css"
+import "../../styles/eventdetails.css"
 
 
 export default function Posts({posts}) {

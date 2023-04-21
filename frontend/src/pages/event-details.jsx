@@ -11,7 +11,7 @@ import EventHeader from "../components/event-details/event-header";
 import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
 import { NewItemButton, ReserveItemsButton } from "../components/event-details/item-buttons";
-
+import Posts from "../components/event-details/posts";
 export default function EventDetails() {
   const { pk } = useParams()
   const [event, setEvent] = useState()
