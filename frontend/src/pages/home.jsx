@@ -105,25 +105,30 @@ function Events({ events }) {
         navigate(`/events/${pk}`)
     }
 
-    return (
-        <div className="divide-y divide-black">
-            {events.map((event, index) => {
-                return (
-                <div className="" key={index}>
-                    <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                        <div className="columns-1 py-1" >
-                            <h2 className="font-semibold">{event.title}</h2>
-                            <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
-                        </div>
-                        <div className="absolute right-0">
-                            <IconButton variant="text" className="mt-1 mr-1">
-                                <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-                            </IconButton>
-                        </div>
-                    </div> 
-                </div>)
-            })}
-        </div>)
+    if (events.length > 0)
+        return (
+            <div className="divide-y divide-black">
+                {events.map((event, index) => {
+                    return (
+                    <div className="" key={index}>
+                        <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
+                            <div className="columns-1 py-1" >
+                                <h2 className="font-semibold">{event.title}</h2>
+                                <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                            </div>
+                            <div className="absolute right-0">
+                                <IconButton variant="text" className="mt-1 mr-1">
+                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                                </IconButton>
+                            </div>
+                        </div> 
+                    </div>)
+                })}
+            </div>)
+    else
+        return (
+            <Typography variant='small' className='font-semibold'>😢 No Events</Typography>
+        )
 }
 
 
@@ -133,26 +138,31 @@ function Items({ items }) {
     function onClickViewEvent(pk){
         navigate(`/events/${pk}`)
     }
-    return (
-        <div className="divide-y divide-black">
-            {items.map((item, index) => {
-                return (
-                <div className="" key={index}>
-                    <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
-                        <div className="columns-1 py-1" >
-                            <h2 className="font-semibold">{item.title}</h2>
-                            <p>{item.event.title}</p>
-                        </div>
-                        <div className="absolute right-0">
-                            <IconButton variant="text" className="mt-1 mr-1">
-                                <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6" />
-                            </IconButton>
-                        </div>
-                    </div> 
-                </div>)
-            })}
-        </div>
-    )
+    if (items.length > 0)
+        return (
+            <div className="divide-y divide-black">
+                {items.map((item, index) => {
+                    return (
+                    <div className="" key={index}>
+                        <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
+                            <div className="columns-1 py-1" >
+                                <h2 className="font-semibold">{item.title}</h2>
+                                <p>{item.event.title}</p>
+                            </div>
+                            <div className="absolute right-0">
+                                <IconButton variant="text" className="mt-1 mr-1">
+                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6" />
+                                </IconButton>
+                            </div>
+                        </div> 
+                    </div>)
+                })}
+            </div>
+        )
+    else 
+        return (
+            <Typography variant='small' className='font-semibold'>No Items</Typography>
+        )
 }
 
 
