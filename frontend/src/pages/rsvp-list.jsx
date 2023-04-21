@@ -1,7 +1,7 @@
-import { Typography, Avatar, IconButton, Button } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import Invitation from "../components/event-details/event-invitation";
 import axios from "axios";
@@ -101,7 +101,9 @@ function Responses({ header, invitations }) {
       <Typography variant='h4'>{header}</Typography>
       {invitations.length ? invitations.map((invitation, idx) => (
         <div className="flex items-start">
-          <div className=" self-center rounded-full flex items-center justify-center bg-blue-400 w-8 h-8"><p className="text-white m-1">{invitation.guest.initials}</p></div>
+          <div className=" self-center rounded-full flex items-center justify-center bg-blue-400 w-8 h-8">
+            {invitation.guest ? <p className="text-white m-1">{invitation.guest.initials}</p> :
+              <FontAwesomeIcon className="text-white" icon={faUser} />}</div>
           <div key={idx} className='mx-2 my-2'>
             {invitation.guest && <Typography variant='paragraph' className='font-semibold'>{invitation.guest.full_name}</Typography>}
             <Typography variant='paragraph'>Email: {invitation.email}</Typography>

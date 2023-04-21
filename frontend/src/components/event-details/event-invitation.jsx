@@ -32,12 +32,9 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
                 }
             };
                 
-            axios.request(options).then(function (response) {
-                console.log(response.data);
-            }).catch(function (error) {
-                console.error(error);
-            });
+            axios.request(options)
         }
+        location.reload()
     }
 
     return (
