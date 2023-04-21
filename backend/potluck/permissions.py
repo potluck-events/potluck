@@ -4,7 +4,7 @@ from rest_framework import permissions
 class IsHost(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
-        return request.user == obj.host
+        return obj.host == request.user
 
     def __or__(self, other):
         return OrPermission(self, other)
@@ -14,6 +14,21 @@ class IsGuest(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
         return obj.invitations.filter(guest=request.user).exists()
+
+
+class IsInvitationHost(permissions.IsAuthenticated):
+    def has_object_permission(self, request, view, obj):
+        breakpoint()
+        return obj.event.host == request.user
+
+    def __or__(self, other):
+        return OrPermission(self, other)
+
+
+class IsInvitationGuest(permissions.IsAuthenticated):
+
+    def has_object_permission(self, request, view, obj):
+        return obj.guest == request.user
 
 
 class ItemDetailPermission(permissions.BasePermission):

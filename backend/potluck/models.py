@@ -33,7 +33,7 @@ class Invitation(models.Model):
     event = models.ForeignKey(
         to='Event', on_delete=models.CASCADE, related_name='invitations')
     guest = models.ForeignKey(
-        to='User', on_delete=models.CASCADE, related_name='invited_to')
+        to='User', on_delete=models.CASCADE, related_name='invited_to', blank=True, null=True)
     email = models.EmailField(max_length=100)
     response = models.BooleanField(null=True, default=None)
 

@@ -9,13 +9,16 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, IsInvitationGuest, IsInvitationHost
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
-from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer, PostSerializer
+from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
+                          EventItemSerializer, UserItemSerializer,
+                          ReserveItemSerializer, UserInvitationSerializer,
+                          PostSerializer, InvitationSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -209,3 +212,42 @@ class DeletePost(generics.DestroyAPIView):
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
     permission_classes = [IsPostAuthorOrHost]
+
+
+class ListCreateInvitations(generics.ListCreateAPIView):
+    serializer_class = InvitationSerializer
+
+    def get_queryset(self):
+        event_pk = self.kwargs['pk']
+        return Invitation.objects.filter(event_id=event_pk)
+
+    def perform_create(self, serializer):
+        email = self.request.data.get('email')
+        print(email)
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            serializer.save(guest=user, event=event)
+        else:
+            serializer.save(event=event)
+
+    # def get_permissions(self):
+    #     if self.request.method == 'GET':
+    #         breakpoint()
+    #         return [IsInvitationHost() or IsInvitationGuest()]
+    #     else:
+    #         return [IsInvitationHost()]
+
+
+class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
+    pass
+
+
+class GetUserInfo(generics.ListAPIView):
+    serializer_class = UserSerializerShort
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = User.objects.filter(email=self.kwargs["email"])
+
+        return queryset
