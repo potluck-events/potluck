@@ -15,10 +15,7 @@ class IsHost(permissions.IsAuthenticated):
 class IsGuest(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
-        # breakpoint()
-        if obj.invitations.filter(guest=request.user).exists():
-            return True
-        return False
+        return obj.invitations.filter(guest=request.user).exists()
 
 
 class ItemDetailPermission(permissions.BasePermission):
