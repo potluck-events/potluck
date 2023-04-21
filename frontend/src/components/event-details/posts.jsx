@@ -13,7 +13,11 @@ import { useState, useContext } from "react";
 import "../../styles/eventdetails.css"
 import { useParams, useNavigate } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
-import axios from 'axios'
+import axios from 'axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 export default function Posts({posts}) {
@@ -69,6 +73,8 @@ function CreatePostForm({ handleUserPost }) {
   )
 }
 
+
+
 function Post({post}) {
   return (
     <>
@@ -80,7 +86,7 @@ function Post({post}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <Button></Button>
+      <Button className="w-fit absolute right-2 my-3"><FontAwesomeIcon icon={faX} /></Button>
     </Card>
     </>
   )
