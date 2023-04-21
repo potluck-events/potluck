@@ -209,3 +209,14 @@ class DeletePost(generics.DestroyAPIView):
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
     permission_classes = [IsPostAuthorOrHost]
+
+
+class CreateInvitation(generics.CreateAPIView):
+    queryset = Invitation.objects.all()
+    serializer_class = UserInvitationSerializer
+    permission_classes = [IsHost]
+
+    def perform_create(self, serializer):
+        if User.objects.filter(email=self.email).exists:
+            user = User.objects.get(email=self.email)
+            serializer.save(user=user)
