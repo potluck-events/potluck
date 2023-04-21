@@ -4,7 +4,7 @@ import { Typography } from "@material-tailwind/react";
 import moment from "moment";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "../styles/eventdetails.css"
+import "../../styles/eventdetails.css"
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 

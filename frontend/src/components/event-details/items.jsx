@@ -2,7 +2,7 @@ import { faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser } from "@fortawe
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsBody, TabPanel, Typography } from "@material-tailwind/react";
 import { useState } from "react";
-import "../styles/eventdetails.css"
+import "../../styles/eventdetails.css"
 import Checkbox from '@mui/material/Checkbox';
 
 

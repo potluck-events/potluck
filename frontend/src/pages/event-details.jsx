@@ -5,7 +5,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/eventdetails.css"
-import CreateItemModal from "../components/create-item";
+import CreateItemModal from "../components/event-details/create-item";
 import { AuthContext } from "../context/authcontext";
 import EventHeader from "../components/event-details/event-header";
 import RSVP from "../components/event-details/rsvp";
