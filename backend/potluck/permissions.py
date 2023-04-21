@@ -1,4 +1,6 @@
 from rest_framework import permissions
+from django.shortcuts import get_object_or_404
+from .models import Event
 
 
 class IsHost(permissions.IsAuthenticated):
@@ -16,27 +18,36 @@ class IsGuest(permissions.IsAuthenticated):
         return obj.invitations.filter(guest=request.user).exists()
 
 
-class IsInvitationHost(permissions.IsAuthenticated):
-    def has_object_permission(self, request, view, obj):
-        breakpoint()
-        return obj.event.host == request.user
-
-    def __or__(self, other):
-        return OrPermission(self, other)
-
-
-class IsInvitationGuest(permissions.IsAuthenticated):
-
-    def has_object_permission(self, request, view, obj):
-        return obj.guest == request.user
-
-
 class ItemDetailPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.method != 'GET':
             return request.user == obj.created_by or request.user == obj.event.host
         return True
+
+
+class IsInvitationHost(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        kwargs = view.kwargs
+        event_pk = kwargs.get('pk')
+        event = Event.objects.get(pk=event_pk)
+        return request.user == event.host
+
+    def __or__(self, other):
+        return OrPermission(self, other)
+
+
+class IsInvitationGuest(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        kwargs = view.kwargs
+        event_pk = kwargs.get('pk')
+        event = Event.objects.get(pk=event_pk)
+        return event.invitations.filter(guest=request.user).exists()
+
+    def __or__(self, other):
+        return OrPermission(self, other)
 
 
 class IsPostAuthorOrHost(permissions.BasePermission):
