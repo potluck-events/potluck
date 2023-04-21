@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/eventdetails.css"
 import CreateItemModal from "../components/event-details/create-item";
 import { AuthContext } from "../context/authcontext";
@@ -19,6 +19,7 @@ export default function EventDetails() {
   const [itemModalOpen, setItemModalOpen] = useState(false)
   const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
   const token = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
   
@@ -40,6 +41,9 @@ export default function EventDetails() {
       }
     }).catch(function (error) {
       console.error(error);
+      if (error.response.status === 403) {
+        navigate("/")
+      }
     });
   }, [])
 
