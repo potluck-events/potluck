@@ -1,7 +1,7 @@
 import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
 import { useState, useContext } from "react";
 import "../../styles/eventdetails.css"
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
 import axios from 'axios'
 
@@ -9,6 +9,7 @@ import axios from 'axios'
 export default function Posts({posts}) {
   const { pk } = useParams()
   const token = useContext(AuthContext)
+  const navigate = useNavigate()
   
   function handleUserPost(userPost){
     console.log(`user post: ${userPost}`)
@@ -21,7 +22,10 @@ export default function Posts({posts}) {
       },
       data: {text: userPost}
     };
-    axios.request(options)
+    axios.request(options).then(response => {
+      navigate(`/events/${pk}`) 
+    }
+    )
   }
 
   return (
@@ -43,7 +47,6 @@ function CreatePostForm({ handleUserPost }) {
   const [userPost, setUserPost] = useState('')
 
   function handleSubmit(event){
-    event.preventDefault();
     handleUserPost(userPost);
     setUserPost('')
   }
