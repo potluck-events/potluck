@@ -146,10 +146,15 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
 
 # add permissions
 # users can only create items for events they are hosting or attending
-class CreateItem(generics.CreateAPIView):
-    queryset = Item.objects.all()
+class ListCreateItem(generics.ListCreateAPIView):
+    # queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
+    permission_classes = [PostInvitationGuest | PostInvitationHost]
+
+    def get_queryset(self):
+        event_pk = self.kwargs['pk']
+        return Item.objects.filter(event_id=event_pk)
 
     def perform_create(self, serializer):
         event = get_object_or_404(Event, pk=self.kwargs["pk"])
