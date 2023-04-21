@@ -29,7 +29,6 @@ class ItemDetailPermission(permissions.BasePermission):
 class IsInvitationHost(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        # event = Event.objects.get(id=request.data['event_id'])
         event = Event.objects.get(id=request.data['event_id'])
         # event_id = view.kwargs.get('event_id')
         # event = get_object_or_404(Event, pk=event_id)

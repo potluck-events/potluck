@@ -239,10 +239,10 @@ class ListCreateInvitations(generics.ListCreateAPIView):
     #     else:
     #         return [IsInvitationHost()]
 
-    # def get_permissions(self):
-    #     if self.request.method == 'POST':
-    #         return [IsInvitationHost()]
-    #     return [IsAuthenticated()]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsInvitationHost()]
+        return []
 
 
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
