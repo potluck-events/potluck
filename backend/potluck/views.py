@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, PostInvitationHost, PostInvitationGuest
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -150,7 +150,7 @@ class ListCreateItem(generics.ListCreateAPIView):
     # queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     # permission_classes = [IsAuthenticated]
-    permission_classes = [PostInvitationGuest | PostInvitationHost]
+    permission_classes = [ItemPostInvitationGuest | ItemPostInvitationHost]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
@@ -198,7 +198,7 @@ class ReserveItem(generics.UpdateAPIView):
 class ListCreatePost(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     # permission_classes = [IsAuthenticated]
-    permission_classes = [PostInvitationGuest | PostInvitationHost]
+    permission_classes = [ItemPostInvitationGuest | ItemPostInvitationHost]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
@@ -236,9 +236,9 @@ class ListCreateInvitations(generics.ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method != 'GET':
-            return [PostInvitationHost()]
+            return [ItemPostInvitationHost()]
         else:
-            return [PostInvitationGuest() | PostInvitationHost()]
+            return [ItemPostInvitationGuest() | ItemPostInvitationHost()]
 
 
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
