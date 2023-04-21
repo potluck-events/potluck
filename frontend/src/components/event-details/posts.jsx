@@ -64,7 +64,7 @@ function Post({post}) {
     <>
     <div className='my-2'>
       <div>
-        <p className="font-semibold">{post.author}</p>
+        <p className="font-semibold">{post.author.full_name}</p>
       </div>
       <p>{post.text}</p>
     </div>
