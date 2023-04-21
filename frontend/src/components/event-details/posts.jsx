@@ -1,12 +1,27 @@
 import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "../../styles/eventdetails.css"
+import { useParams } from 'react-router-dom'
+import { AuthContext } from "../../context/authcontext"
+import axios from 'axios'
 
 
 export default function Posts({posts}) {
+  const { pk } = useParams()
+  const token = useContext(AuthContext)
   
   function handleUserPost(userPost){
     console.log(`user post: ${userPost}`)
+    const options = {
+      method: 'POST',
+      url: `https://potluck.herokuapp.com/events/${pk}/posts`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      data: { posts: userPost }
+    };
+    axios.request(options)
   }
 
   return (
