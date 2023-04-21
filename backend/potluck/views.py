@@ -186,3 +186,14 @@ class ReserveItem(generics.UpdateAPIView):
             raise PermissionDenied()
         else:
             serializer.save()
+
+
+class CreatePost(generics.CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
+        author = self.request.user
+        serializer.save(event=event, author=author)
