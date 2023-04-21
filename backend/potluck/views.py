@@ -64,7 +64,7 @@ def CodeView(request):
 
 class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
@@ -72,7 +72,7 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
 
 class EventsHosting(generics.ListAPIView):
     serializer_class = EventSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -85,7 +85,7 @@ class EventsHosting(generics.ListAPIView):
 
 class EventsAttending(generics.ListAPIView):
     serializer_class = EventSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -99,7 +99,7 @@ class EventsAttending(generics.ListAPIView):
 
 class UserItems(generics.ListAPIView):
     serializer_class = UserItemSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -112,7 +112,7 @@ class UserItems(generics.ListAPIView):
 
 class UserInvitations(generics.ListAPIView):
     serializer_class = UserInvitationSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -126,7 +126,7 @@ class UserInvitations(generics.ListAPIView):
 class CreateEvent(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
@@ -135,7 +135,6 @@ class CreateEvent(generics.CreateAPIView):
 class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    # permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -144,12 +143,8 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
             return [IsHost()]
 
 
-# add permissions
-# users can only create items for events they are hosting or attending
 class ListCreateItem(generics.ListCreateAPIView):
-    # queryset = Item.objects.all()
     serializer_class = EventItemSerializer
-    # permission_classes = [IsAuthenticated]
     permission_classes = [ItemPostInvitationGuest | ItemPostInvitationHost]
 
     def get_queryset(self):
@@ -169,14 +164,13 @@ class ListCreateItem(generics.ListCreateAPIView):
 class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
-    # permission_classes = [IsAuthenticated]
     permission_classes = [ItemDetailPermission]
 
 
 class ReserveItem(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ReserveItemSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         pk = self.kwargs.get('pk')
@@ -197,7 +191,6 @@ class ReserveItem(generics.UpdateAPIView):
 
 class ListCreatePost(generics.ListCreateAPIView):
     serializer_class = PostSerializer
-    # permission_classes = [IsAuthenticated]
     permission_classes = [ItemPostInvitationGuest | ItemPostInvitationHost]
 
     def get_queryset(self):
@@ -213,13 +206,11 @@ class ListCreatePost(generics.ListCreateAPIView):
 class DeletePost(generics.DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # permission_classes = [IsAuthenticated]
     permission_classes = [IsPostAuthorOrHost]
 
 
 class ListCreateInvitations(generics.ListCreateAPIView):
     serializer_class = InvitationSerializer
-    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         event_pk = self.kwargs['pk']
