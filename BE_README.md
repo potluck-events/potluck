@@ -35,5 +35,13 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /events/pk/items/ --> | POST |
 -- user can create an item for an event. if user is a guest, they will be automatically set as the owner. if user is host, owner field will be null.
 
+/events/pk/posts/ --> | GET | POST |
+-- lists posts related to event pk
+-- user can create post related to event pk
+
 /invitations/ --> | GET |
 -- lists all invitations received by current user with a date_scheduled >= today
+
+/posts/pk/ --> | DELETE |
+-- user can delete post if user is author
+-- host can delete any post related to event they are host of
