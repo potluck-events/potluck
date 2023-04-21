@@ -19,7 +19,7 @@ export default function Posts({posts}) {
         'Content-Type': 'application/json',
         Authorization: token
       },
-      data: { posts: userPost }
+      data: {posts: userPost}
     };
     axios.request(options)
   }
