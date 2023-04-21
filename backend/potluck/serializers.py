@@ -51,6 +51,10 @@ class EventItemSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    host = serializers.SerializerMethodField()
+
+    def get_author(self, obj):
+        return f"{obj.author.first_name} {obj.author.last_name}"
 
     class Meta:
         model = Post
