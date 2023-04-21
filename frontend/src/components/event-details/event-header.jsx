@@ -26,7 +26,7 @@ export default function EventHeader({ event, mapsURL }) {
         </div>
         <div>
           <header className="text-lg font-bold">Event Details:</header>
-          <p className="mb-1 text-m"><FontAwesomeIcon icon={ faUser }/> Hosted by {event.host}</p>
+          <p className="mb-1 text-m"><FontAwesomeIcon icon={ faUser }/> Hosted by {event.host.full_name}</p>
           <p className="mb-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> Location: {event.location_name}</p>
           {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> Address: <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
         </div>
