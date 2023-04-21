@@ -64,7 +64,7 @@ class Item(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField(max_length=200)
+    text = models.TextField(max_length=1000)
     author = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='posts')
     event = models.ForeignKey(
