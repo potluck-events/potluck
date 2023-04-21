@@ -1,9 +1,23 @@
-import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
+import { 
+  TabsBody, 
+  TabPanel, 
+  Button, 
+  Textarea, 
+  Typography,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+} from "@material-tailwind/react";
 import { useState, useContext } from "react";
 import "../../styles/eventdetails.css"
 import { useParams, useNavigate } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
-import axios from 'axios'
+import axios from 'axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 export default function Posts({posts}) {
@@ -28,12 +42,28 @@ export default function Posts({posts}) {
     )
   }
 
+  function handleDelete(post) {
+    console.log(post)
+    const options = {
+      method: 'DELETE',
+      url: `https://potluck.herokuapp.com/posts/${post.id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+    };
+    axios.request(options).then(response => {
+      location.reload()
+    })
+  }
+  
+
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='posts'>
         <CreatePostForm  handleUserPost={handleUserPost}/>
         {posts.length ? posts.map((post, index) => (
-          <Post post = {post} key = {index} />
+          <Post post = {post} key = {index} handleDelete={handleDelete}/>
         )):
           <div className="flex items-center justify-center h-40">
             <Typography className="text-gray-500" variant="h3">No Posts</Typography>
@@ -59,16 +89,19 @@ function CreatePostForm({ handleUserPost }) {
   )
 }
 
-function Post({post}) {
+function Post({post, handleDelete}) {
   return (
     <>
-    <div className='my-2'>
-      <div>
-        <p className="font-semibold">{post.author.full_name}</p>
+    <Card color="blue" variant="gradient" className="my-1 px-2"
+    animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+      <div className='my-2'>
+        <div>
+          <Typography variant='h6'>{post.author.full_name}</Typography>
+        </div>
+        <Typography variant='small'>{post.text}</Typography>
       </div>
-      <p>{post.text}</p>
-    </div>
-    <div className="border-black border-t-2"></div>
+      <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />
+    </Card>
     </>
   )
 }
