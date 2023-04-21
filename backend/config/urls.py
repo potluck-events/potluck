@@ -30,13 +30,15 @@ urlpatterns = [
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
 
     path('users/me', views.UserProfile.as_view(), name='me'),
+    path('events', views.CreateEvent.as_view()),
     path('events/hosting', views.EventsHosting.as_view()),
     path('events/attending', views.EventsAttending.as_view()),
+    path('events/<int:pk>', views.EventDetails.as_view()),
+    path('events/<int:pk>/items', views.CreateItem.as_view()),
+    path('events/<int:pk>/posts', views.ListCreatePost.as_view()),
     path('items', views.UserItems.as_view()),
     path('items/<int:pk>', views.ItemDetails.as_view()),
     path('items/<int:pk>/reserved', views.ReserveItem.as_view()),
-    path('events', views.CreateEvent.as_view()),
-    path('events/<int:pk>', views.EventDetails.as_view()),
-    path('events/<int:pk>/items', views.CreateItem.as_view()),
     path('invitations', views.UserInvitations.as_view()),
+    path('posts/<int:pk>', views.DeletePost.as_view()),
 ]

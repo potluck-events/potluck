@@ -9,13 +9,13 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsGuest
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
-from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer
+from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer, PostSerializer
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -186,3 +186,26 @@ class ReserveItem(generics.UpdateAPIView):
             raise PermissionDenied()
         else:
             serializer.save()
+
+
+# add permissions
+# guests and hosts only
+class ListCreatePost(generics.ListCreateAPIView):
+    serializer_class = PostSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        event_pk = self.kwargs['pk']
+        return Post.objects.filter(event_id=event_pk)
+
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
+        author = self.request.user
+        serializer.save(event=event, author=author)
+
+
+class DeletePost(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsPostAuthorOrHost]
