@@ -10,13 +10,34 @@ function close () {
     setInviteModalOpen(false)
   }
 
-export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
+export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
+    const { pk } = useParams()
+    const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [show, setShow] = useState(true);
     const [emails, setEmails] = useState([]);
 
-    function handleSendClick() {
-        
+    function handleSendClick(event) {
+        event.preventDefault()
+        for (const e of emails) {
+            let options = {
+                method: 'POST',
+                url: `https://potluck.herokuapp.com/events/${pk}/invitations`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token
+                },
+                data: {
+                    email: e
+                }
+            };
+                
+            axios.request(options).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.error(error);
+            });
+        }
     }
 
     return (
@@ -95,7 +116,7 @@ export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
                             </Button>
                             </div>
                             <div className='flex justify-end mr-3'>
-                            <Button type="submit" className=" w-18" >Send</Button>
+                            <Button type="submit" onClick={(e) => handleSendClick(e)} className=" w-18" >Invite</Button>
                             </div>
                 </form>
                 </Dialog.Panel>
