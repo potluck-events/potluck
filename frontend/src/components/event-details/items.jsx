@@ -1,4 +1,4 @@
-import { faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsBody, TabPanel, Typography } from "@material-tailwind/react";
 import { useState } from "react";
@@ -11,9 +11,12 @@ export default function Items({ items, setEvent}) {
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='items' className="pl-0 divide-y">
-        {items.map((item, index) => (
+        {items.length ? items.map((item, index) => (
           <Item key = {index} item={item} setEvent = {setEvent}/>
-        ))}
+        )) :
+          <div className="flex items-center justify-center h-52">
+            <Typography className="text-gray-500" variant="h3">No Items</Typography>
+          </div>}
       </TabPanel>
     </TabsBody>
   )

@@ -1,4 +1,4 @@
-import { TabsBody, TabPanel, Button, Textarea } from "@material-tailwind/react";
+import { TabsBody, TabPanel, Button, Textarea, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import "../../styles/eventdetails.css"
 
@@ -9,9 +9,12 @@ export default function Posts({posts}) {
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='posts'>
         <CreatePostForm />
-        {posts.map((post, index) => (
+        {posts.length ? posts.map((post, index) => (
           <Post post = {post} key = {index} />
-        ))}
+        )):
+          <div className="flex items-center justify-center h-40">
+            <Typography className="text-gray-500" variant="h3">No Posts</Typography>
+          </div>}
       </TabPanel>
     </TabsBody>
   )
