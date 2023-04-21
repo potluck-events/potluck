@@ -17,9 +17,9 @@ class ItemDetailPermission(permissions.BasePermission):
         return True
 
 
-# class IsAttending(permissions.BasePermission):
+class IsAttending(permissions.BasePermission):
 
-#     def has_object_permission(self, request, view, obj):
-#         if request.user == obj.host or request.user == obj.invitations__guest:
-#             return True
-#         return False
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.host or request.user == obj.invitations.filter(guest=request.user).exists():
+            return True
+        return False
