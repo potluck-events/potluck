@@ -46,7 +46,7 @@ function Item({item, setEvent, setSelected}) {
 
   return (
     <div className="flex items-center py-1">
-      <Checkbox  disabled={item.owner} name={item.pk} value={item.pk} onClick={handleSelect} />
+      <Checkbox  disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />
       <div className="flex flex-auto flex-col pr-2 self-start " onClick={() => setExpanded(!expanded)}>
         <Typography variant="h6">{item.title}</Typography>
         <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
