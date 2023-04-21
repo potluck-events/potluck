@@ -36,15 +36,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializerShort(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
-
-    def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
 
     class Meta:
         model = User
         fields = (
             'full_name',
+            'initials'
             'email',
             'thumbnail',
         )
@@ -68,7 +65,7 @@ class EventItemSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.SerializerMethodField()
+    author = UserSerializerShort(many=False, read_only=True)
 
     def get_author(self, obj):
         return f"{obj.author.first_name} {obj.author.last_name}"
@@ -81,7 +78,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    host = serializers.SerializerMethodField()
+    host = UserSerializerShort(many=False, read_only=True)
     items = EventItemSerializer(many=True, read_only=True)
     posts = PostSerializer(many=True, read_only=True)
 
@@ -105,9 +102,6 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_rsvp_tbd(self, obj):
         return obj.invitations.filter(response=None).count()
-
-    def get_host(self, obj):
-        return f"{obj.host.first_name} {obj.host.last_name}"
 
     def get_user_is_host(self, obj):
         return obj.host == self.context['request'].user
@@ -191,6 +185,7 @@ class UserItemSerializer(serializers.ModelSerializer):
 
 
 class ReserveItemSerializer(serializers.ModelSerializer):
+    owner = UserSerializerShort(many=False)
 
     class Meta:
         model = Item
@@ -233,9 +228,12 @@ class UserInvitationSerializer(serializers.ModelSerializer):
 
 
 class InvitationSerializer(serializers.ModelSerializer):
+    guest = UserSerializerShort(many=False, read_only=True)
 
     class Meta:
         model = Invitation
-        fields = "__all__"
+        fields = ('guest',
+                  'email',
+                  'response',)
 
         read_only_fields = ('event',)
