@@ -114,7 +114,7 @@ class UserInvitations(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Invitation.objects.filter(
-            guest__id=user.id,
+            guest=user,
             event__date_scheduled__gte=timezone.now().date()
         )
         return queryset
