@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext } from "react";
-import "../styles/eventdetails.css"
+import "../../styles/eventdetails.css"
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../context/authcontext";
+import { AuthContext } from "../../context/authcontext";
 
 
 

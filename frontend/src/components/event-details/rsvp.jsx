@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
-import "../styles/eventdetails.css"
+import "../../styles/eventdetails.css"
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
