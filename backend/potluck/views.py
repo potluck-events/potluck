@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsAttending
+from .permissions import IsHost, ItemDetailPermission, IsGuest
 
 # MODELS IMPORTS
 from .models import User, Event, Invitation, Item, Post
@@ -134,11 +134,10 @@ class EventDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [IsAuthenticated]
-    permission_classes = [IsAttending]
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            return []
+            return [IsHost() | IsGuest()]
         else:
             return [IsHost()]
 
