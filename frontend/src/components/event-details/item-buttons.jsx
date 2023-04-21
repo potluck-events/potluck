@@ -11,7 +11,7 @@ import { AuthContext } from "../../context/authcontext";
 
 export function NewItemButton({setItemModalOpen}) {
     return (
-        <div className="absolute right-5 bottom-5 z-30">
+        <div className="fixed right-5 bottom-5 z-30">
             <Button onClick={() => setItemModalOpen(true)} className="rounded-full">
               <div className="flex justify-center items-center">
                 <FontAwesomeIcon icon={faPlus} className="w-5 h-5 mr-2" /> New Item            
@@ -45,7 +45,7 @@ export function ReserveItemsButton({ items }) {
   }
 
   return (
-    <div className="absolute right-5 bottom-5 z-30">
+    <div className="fixed right-5 bottom-5 z-30">
       <form>
         <Button type="submit" onClick={handleReserve} className="rounded-full">
           <div className="flex justify-center items-center">
