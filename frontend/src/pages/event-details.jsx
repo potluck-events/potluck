@@ -46,10 +46,8 @@ export default function EventDetails() {
 
   const hasSelected = () => { 
     let some = event?.items.some((item) => {
-      console.log(item);
       return item.selected === true
     })
-    console.log("some:", some);
     return some
   }
 
@@ -57,10 +55,12 @@ export default function EventDetails() {
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} />
 
-      <RSVP event={event} />
+      {event.user_is_guest && <RSVP event={event} />}
       
-      <EventBody event={event} setEvent = {setEvent} setItemsTabOpen={ setItemsTabOpen }/>
-      <CreateItemModal setItemModalOpen={ setItemModalOpen } itemModalOpen={ itemModalOpen } />
+      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} />
+      
+      <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} />
+      
       {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} />)}
       
     </div>  
