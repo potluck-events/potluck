@@ -15,7 +15,7 @@ from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGue
 from .models import User, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
-from .serializers import UserSerializer, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer, PostSerializer
+from .serializers import UserSerializer, UserSerializerShort, EventSerializer, EventItemSerializer, UserItemSerializer, ReserveItemSerializer, UserInvitationSerializer, PostSerializer
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -211,12 +211,25 @@ class DeletePost(generics.DestroyAPIView):
     permission_classes = [IsPostAuthorOrHost]
 
 
-class CreateInvitation(generics.CreateAPIView):
+class CreateInvitations(generics.RetrieveUpdateDestroyAPIView):
     queryset = Invitation.objects.all()
     serializer_class = UserInvitationSerializer
     permission_classes = [IsHost]
 
     def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs["pk"])
         if User.objects.filter(email=self.email).exists:
             user = User.objects.get(email=self.email)
-            serializer.save(user=user)
+            serializer.save(user=user, event=event)
+        else:
+            serializer.save(event=event)
+
+
+class GetUserInfo(generics.ListAPIView):
+    serializer_class = UserSerializerShort
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = User.objects.filter(email=self.kwargs["email"])
+
+        return queryset
