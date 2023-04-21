@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Invitation from "../components/event-invitation";
+import Invitation from "../components/event-details/event-invitation";
 
 // useEffect(() => {
 //   null

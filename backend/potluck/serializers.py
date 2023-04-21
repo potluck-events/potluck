@@ -120,11 +120,11 @@ class EventSerializer(serializers.ModelSerializer):
             'rsvp_yes',
             'rsvp_no',
             'rsvp_tbd',
-            'items',
-            'posts',
             'user_is_host',
             'user_is_guest',
             'user_response',
+            'items',
+            'posts',
         )
 
         read_only_fields = ('host',)

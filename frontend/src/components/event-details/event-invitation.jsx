@@ -2,7 +2,7 @@ import { Dialog, Transition, } from '@headlessui/react'
 import { Fragment, useState, useContext } from 'react'
 import { Input, Textarea, Button, Chip, Typography } from '@material-tailwind/react'
 import { useParams } from 'react-router-dom'
-import { AuthContext } from "../context/authcontext"
+import { AuthContext } from "../../context/authcontext"
 import axios from 'axios'
 import React from "react";
 
