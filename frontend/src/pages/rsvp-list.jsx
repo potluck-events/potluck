@@ -37,6 +37,7 @@ export default function RSVPList() {
       }
     });
 
+    //GET Event details to fill in title
     options = {
       method: 'GET',
       url: `https://potluck.herokuapp.com/events/${pk}`,
