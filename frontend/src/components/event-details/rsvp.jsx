@@ -4,17 +4,39 @@ import "../../styles/eventdetails.css"
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/authcontext";
+import axios from "axios"
 
 export default function RSVP({ event }) {
   const response = event.user_response === null ? "null" : event.user_response.toString()
   const [rsvp, setRsvp] = useState(response)
-  const handleRSVP = (event, newRsvp) => {
+  const token = useContext(AuthContext)
+
+  const handleRSVP = (e, newRsvp) => {
     if (newRsvp !== null) {
       setRsvp(newRsvp)
+    } else {
+      newRsvp = rsvp
     }
 
+    if (newRsvp != rsvp) {
+      const options = {
+        method: 'PATCH',
+        url: `https://potluck.herokuapp.com/invitations/${event.invitation_pk}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        data: { response: newRsvp }
+      };
+
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
   }
 
   if (event) return (
