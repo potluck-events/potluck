@@ -96,7 +96,7 @@ function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
             </Tab>
         </TabsHeader>
         <Items items={event.items} setEvent = {setEvent}/>
-        <Posts posts={event.posts} />
+        <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
     <div>
     {event.user_is_host && <Button onClick={handleEditButton}>Edit Event</Button>}
