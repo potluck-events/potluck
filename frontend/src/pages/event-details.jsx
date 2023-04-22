@@ -1,6 +1,6 @@
 import { faComment, faList, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
+import { Tabs, TabsHeader, Tab, Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
 import { NewItemButton, ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
+
 export default function EventDetails() {
   const { pk } = useParams()
   const [event, setEvent] = useState()
@@ -47,6 +48,10 @@ export default function EventDetails() {
     });
   }, [])
 
+  function handleEditButton() {
+    console.log('click')
+      navigate(`/events/${pk}/edit`)
+  }
 
   const hasSelected = () => { 
     let some = event?.items.some((item) => {
@@ -57,7 +62,7 @@ export default function EventDetails() {
 
   if (event) return (<>
     <div className="px-6">
-      <EventHeader event={event} mapsURL={mapsURL} />
+      <EventHeader event={event} mapsURL={mapsURL} handleEditButton={handleEditButton}/>
 
       {event.user_is_guest && <RSVP event={event} />}
       
@@ -74,9 +79,9 @@ export default function EventDetails() {
 }
 
 
-
-function EventBody({ event, setEvent, setItemsTabOpen }) {
+function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
   return (
+    <>
     <Tabs className='mt-3' value="items" >
         <TabsHeader>
             <Tab value='items' onClick={() => setItemsTabOpen(true)}>
@@ -93,6 +98,9 @@ function EventBody({ event, setEvent, setItemsTabOpen }) {
         <Items items={event.items} setEvent = {setEvent}/>
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
+    <div>
+    </div>
+    </>
   )
 }
 

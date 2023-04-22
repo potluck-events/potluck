@@ -1,6 +1,6 @@
 import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
-import { useContext, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {DatePicker} from '@mui/x-date-pickers/DatePicker'
@@ -11,7 +11,6 @@ import axios from "axios"
 export default function EventForm() {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
-
   const [title, setTitle] = useState('')
   const [theme, setTheme] = useState('')
   const [description, setDescription] = useState('')
@@ -23,7 +22,27 @@ export default function EventForm() {
   const [dateTime, setDateTime] = useState(moment().add(7, 'd'))
   const [error, setError] = useState('')
   const [showAddress, setShowAddress] = useState(false)
-  
+  const { pk } = useParams()
+
+  useEffect(() => {
+    if (pk) {
+    axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
+      headers: {
+        'Content-Type': 'applications/json',
+        Authorization: token
+      }
+    }).then((response) => {
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setLocationName(response.data?.location_name)
+      setStreet(response.data?.street_address)
+      setCity(response.data?.city)
+      setState(response.data?.state)
+      setZip(response.data?.zipcode)
+      setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
+    })
+  }
+  }, []) 
 
   function handleCreateEvent(e){
     e.preventDefault()
@@ -59,7 +78,7 @@ export default function EventForm() {
 
   return (<>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{pk ? "Create a new event" : "Edit event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -77,7 +96,7 @@ export default function EventForm() {
             </div>
             <div>
               <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
-              {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="sm" >Add address</Typography>}
+              {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="small" >Add address</Typography>}
             </div>
             {showAddress && <>
             <div>
@@ -93,7 +112,7 @@ export default function EventForm() {
               <Input value={zip} onChange={(e) => setZip(e.target.value)} label="Zip" size="lg" />
             </div>
             </>}
-            <Button type="submit" className="" fullWidth>{pk ? "Create" : "Save"} Event</Button>
+            <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>
         </div>
       </form>
