@@ -206,14 +206,11 @@ class ReserveItemSerializer(serializers.ModelSerializer):
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
-    event = serializers.SerializerMethodField()
+    event = EventSerializerShort()
     host = serializers.SerializerMethodField()
 
     def get_host(self, obj):
         return f"{obj.event.host.first_name} {obj.event.host.last_name}"
-
-    def get_event(self, obj):
-        return obj.event.title
 
     class Meta:
         model = Invitation
