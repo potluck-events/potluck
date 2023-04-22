@@ -12,6 +12,7 @@ import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
 import { NewItemButton, ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
+
 export default function EventDetails() {
   const { pk } = useParams()
   const [event, setEvent] = useState()
@@ -47,6 +48,11 @@ export default function EventDetails() {
     });
   }, [])
 
+  function handleEditButton({ pk, navigate }){
+
+    console.log('click')
+      navigate(`/events/${pk}/edit`)
+  }
 
   const hasSelected = () => { 
     let some = event?.items.some((item) => {
@@ -61,7 +67,7 @@ export default function EventDetails() {
 
       {event.user_is_guest && <RSVP event={event} />}
       
-      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} />
+      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen}  handleEditButton={handleEditButton}/>
       
       <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} />
       
@@ -74,8 +80,7 @@ export default function EventDetails() {
 }
 
 
-
-function EventBody({ event, setEvent, setItemsTabOpen }) {
+function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
   return (
     <>
     <Tabs className='mt-3' value="items" >
@@ -95,7 +100,7 @@ function EventBody({ event, setEvent, setItemsTabOpen }) {
         <Posts posts={event.posts} />
     </Tabs>
     <div>
-    {event.user_is_host && <Button>Edit Event</Button>}
+    {event.user_is_host && <Button onClick={handleEditButton}>Edit Event</Button>}
     </div>
     </>
   )
