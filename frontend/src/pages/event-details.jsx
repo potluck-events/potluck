@@ -1,6 +1,6 @@
 import { faComment, faList, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
+import { Tabs, TabsHeader, Tab, Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -77,6 +77,7 @@ export default function EventDetails() {
 
 function EventBody({ event, setEvent, setItemsTabOpen }) {
   return (
+    <>
     <Tabs className='mt-3' value="items" >
         <TabsHeader>
             <Tab value='items' onClick={() => setItemsTabOpen(true)}>
@@ -93,6 +94,10 @@ function EventBody({ event, setEvent, setItemsTabOpen }) {
         <Items items={event.items} setEvent = {setEvent}/>
         <Posts posts={event.posts} />
     </Tabs>
+    <div>
+    {event.user_is_host && <Button>Edit Event</Button>}
+    </div>
+    </>
   )
 }
 
