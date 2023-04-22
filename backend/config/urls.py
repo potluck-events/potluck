@@ -38,10 +38,10 @@ urlpatterns = [
     path('events/<int:pk>/items', views.ListCreateItem.as_view()),
     path('events/<int:pk>/posts', views.ListCreatePost.as_view()),
     path('events/<int:pk>/invitations', views.ListCreateInvitations.as_view()),
-    # path('invitations/<int:pk>', views.InvitationDetails.as_view()),
     path('items', views.UserItems.as_view()),
     path('items/<int:pk>', views.ItemDetails.as_view()),
     path('items/<int:pk>/reserved', views.ReserveItem.as_view()),
     path('invitations', views.UserInvitations.as_view()),
+    path('invitations/<int:pk>', views.InvitationDetails.as_view()),
     path('posts/<int:pk>', views.DeletePost.as_view()),
 ]

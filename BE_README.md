@@ -50,6 +50,11 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /invitations/ --> | GET |
 -- lists all invitations received by current user with a date_scheduled >= today
 
+/invitations/ --> | GET | PUT | PATCH | DELETE |
+-- host or guest can see invitation (get)
+-- host can delete invitation
+-- guest can accept/unaccept invitation
+
 /posts/pk/ --> | DELETE |
 -- user can delete post if user is author
 -- host can delete any post related to event they are host of
