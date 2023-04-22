@@ -60,7 +60,7 @@ function Invitations({ events }) {
   }
   
   if (events.length) return (events.map((event, index) => (
-    <div key={index} className="flex py-1" onClick={() => onClickViewEvent(event.pk)}>
+    <div key={index} className="flex py-1" onClick={() => onClickViewEvent(event.event.pk)}>
       <div className="columns-1 py-1">
         <Typography className="">
         {event.event}
@@ -69,7 +69,7 @@ function Invitations({ events }) {
         Host: {event.host}
         </Typography>
       </div>
-      <div className="absolute right-0" onClick={() => onClickViewEvent(event.pk)}>
+      <div className="absolute right-0" onClick={() => onClickViewEvent(event.event.pk)}>
         <IconButton variant="text" className="mt-5 mr-2">
           <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
         </IconButton>
