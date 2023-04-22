@@ -233,7 +233,9 @@ class ListCreateInvitations(generics.ListCreateAPIView):
 
 
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
-    pass
+    queryset = Invitation.objects.all()
+    serializer_class = UserInvitationSerializer
+    permission_classes = [InvitationDetailPermission]
 
 
 class GetUserInfo(generics.ListAPIView):
