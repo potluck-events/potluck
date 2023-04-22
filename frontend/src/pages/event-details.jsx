@@ -70,7 +70,7 @@ export default function EventDetails() {
     </div>  
   </>)
 
-  return <FontAwesomeIcon icon={faSpinner} spin/>
+  return (<div className="h-52 flex items-center justify-center"><FontAwesomeIcon icon={faSpinner} spin/></div>)
 }
 
 

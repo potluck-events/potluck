@@ -10,13 +10,54 @@ function close () {
     setInviteModalOpen(false)
   }
 
-export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
+export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
+    const { pk } = useParams()
+    const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [show, setShow] = useState(true);
-    const [emails, setEmails] = useState([]);
+    const [invites, setInvites] = useState([]);
 
-    function handleSendClick() {
+    async function handleSendClick(event) {
+        event.preventDefault()
+        for (const e of invites) {
+            let options = {
+                method: 'POST',
+                url: `https://potluck.herokuapp.com/events/${pk}/invitations`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token
+                },
+                data: {
+                    email: e
+                }
+            };
+                
+            const r = await axios.request(options)
+        }
+        location.reload()
+    }
+
+    function handleAddInvite() {
+        let username
         
+        axios.get(`https://potluck.herokuapp.com/users/info/${email}`, {
+        headers: {
+            Authorization: token
+        }
+        }).then((request) => {
+            username = request.data[0].full_name;
+        
+            let invite = {
+                email: email,
+            }
+            if (username) {
+                invite.name = username;
+            }
+
+            setInvites([...invites, invite]);
+            setEmail("");
+            setShow(true)
+        });
     }
 
     return (
@@ -55,16 +96,16 @@ export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
                 </Dialog.Title>
                 <form>
                     <div className='flex flex-wrap'>
-                        {emails.map((e) => (
-                            <div key={e}>
+                        {invites.map((invite, idx) => (
+                            <div key={idx}>
                                 <Chip
                                     className='w-fit mx-1 my-1'
                                     variant="gradient"
                                     show={show}
                                     dismissible={{
-                                    onClose: () => setEmails(emails.filter((m) => m !== e )),
+                                    onClose: () => setInvites(invites.filter((m) => m !== invite )),
                                     }}
-                                    value={e}
+                                    value={invite?.name ? `${invite.name} (${invite.email})` : invite.email}
                                 /> 
                         </div>
                         ))}
@@ -85,17 +126,12 @@ export default function Invitation({inviteModalOpen, setInviteModalOpen}) {
                                 color={email ? "blue" : "blue-gray"}
                                 disabled={!email}
                                 className="!absolute right-1 top-1 rounded"
-                                onClick={() => {
-                                    setEmails([...emails, email]);
-                                    setEmail("");
-                                    setShow(true)
-                                }}
-                            >
+                                onClick={handleAddInvite}>
                                 Add
                             </Button>
                             </div>
                             <div className='flex justify-end mr-3'>
-                            <Button type="submit" className=" w-18" >Send</Button>
+                            <Button type="submit" onClick={(e) => handleSendClick(e)} className=" w-18" >Invite</Button>
                             </div>
                 </form>
                 </Dialog.Panel>
