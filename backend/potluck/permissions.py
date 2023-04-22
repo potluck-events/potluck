@@ -18,7 +18,7 @@ class IsGuest(permissions.IsAuthenticated):
         return obj.invitations.filter(guest=request.user).exists()
 
 
-class ItemDetailPermission(permissions.BasePermission):
+class ItemDetailPermission(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
         if request.method != 'GET':
@@ -26,7 +26,7 @@ class ItemDetailPermission(permissions.BasePermission):
         return True
 
 
-class IsInvitationHost(permissions.BasePermission):
+class ItemPostInvitationHost(permissions.IsAuthenticated):
 
     def has_permission(self, request, view):
         kwargs = view.kwargs
@@ -38,7 +38,7 @@ class IsInvitationHost(permissions.BasePermission):
         return OrPermission(self, other)
 
 
-class IsInvitationGuest(permissions.BasePermission):
+class ItemPostInvitationGuest(permissions.IsAuthenticated):
 
     def has_permission(self, request, view):
         kwargs = view.kwargs
@@ -50,7 +50,7 @@ class IsInvitationGuest(permissions.BasePermission):
         return OrPermission(self, other)
 
 
-class IsPostAuthorOrHost(permissions.BasePermission):
+class IsPostAuthorOrHost(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
         if request.user == obj.author or request.user == obj.event.host:
