@@ -100,11 +100,11 @@ function Responses({ header, invitations }) {
     <div className='mx-5 my-5'>
       <Typography variant='h4'>{header}</Typography>
       {invitations.length ? invitations.map((invitation, idx) => (
-        <div className="flex items-start">
+        <div key={ idx} className="flex items-start">
           <div className=" self-center rounded-full flex items-center justify-center bg-blue-400 w-8 h-8">
             {invitation.guest ? <p className="text-white m-1">{invitation.guest.initials}</p> :
               <FontAwesomeIcon className="text-white" icon={faUser} />}</div>
-          <div key={idx} className='mx-2 my-2'>
+          <div className='mx-2 my-2'>
             {invitation.guest && <Typography variant='paragraph' className='font-semibold'>{invitation.guest.full_name}</Typography>}
             <Typography variant='paragraph'>Email: {invitation.email}</Typography>
           </div>
