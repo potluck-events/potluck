@@ -91,7 +91,7 @@ function EventBody({ event, setEvent, setItemsTabOpen }) {
             </Tab>
         </TabsHeader>
         <Items items={event.items} setEvent = {setEvent}/>
-        <Posts posts={event.posts} />
+        <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
   )
 }
