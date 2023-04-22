@@ -19,7 +19,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
 
     async function handleSendClick(event) {
         event.preventDefault()
-        for (const e of invites.email) {
+        for (const e of invites) {
             let options = {
                 method: 'POST',
                 url: `https://potluck.herokuapp.com/events/${pk}/invitations`,
@@ -28,7 +28,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
                     Authorization: token
                 },
                 data: {
-                    email: e
+                    email: e.email
                 }
             };
                 
