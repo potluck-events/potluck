@@ -11,7 +11,6 @@ import axios from "axios"
 export default function EventForm() {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
-
   const [title, setTitle] = useState('')
   const [theme, setTheme] = useState('')
   const [description, setDescription] = useState('')
@@ -25,14 +24,26 @@ export default function EventForm() {
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
 
-  // useEffect(({ pk }) => {
-  //   axios.get(`https://potluck.herokuapp.com/events/${pk}`), {
-  //     headers: {
-  //       'Content-Type': 'applications/json',
-  //       Authorization: token
-  //     }
-  //   }
-  // })
+  useEffect(() => {
+    axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
+      headers: {
+        'Content-Type': 'applications/json',
+        Authorization: token
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setLocationName(response.data?.location_name)
+      setStreet(response.data?.street_address)
+      setCity(response.data?.city)
+      setState(response.data?.state)
+      setZip(response.data?.zipcode)
+      setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
+    })
+  }, [])
+
+console.log(dateTime.toString())
 
   function handleCreateEvent(e){
     e.preventDefault()
@@ -86,7 +97,7 @@ export default function EventForm() {
             </div>
             <div>
               <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
-              {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="sm" >Add address</Typography>}
+              {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="small" >Add address</Typography>}
             </div>
             {showAddress && <>
             <div>
