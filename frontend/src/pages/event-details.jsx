@@ -48,8 +48,7 @@ export default function EventDetails() {
     });
   }, [])
 
-  function handleEditButton({ pk, navigate }){
-
+  function handleEditButton({ pk }){
     console.log('click')
       navigate(`/events/${pk}/edit`)
   }
