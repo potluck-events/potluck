@@ -1,6 +1,6 @@
 import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
-import { useContext, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {DatePicker} from '@mui/x-date-pickers/DatePicker'
@@ -23,7 +23,16 @@ export default function EventForm() {
   const [dateTime, setDateTime] = useState(moment().add(7, 'd'))
   const [error, setError] = useState('')
   const [showAddress, setShowAddress] = useState(false)
-  
+  const { pk } = useParams()
+
+  // useEffect(({ pk }) => {
+  //   axios.get(`https://potluck.herokuapp.com/events/${pk}`), {
+  //     headers: {
+  //       'Content-Type': 'applications/json',
+  //       Authorization: token
+  //     }
+  //   }
+  // })
 
   function handleCreateEvent(e){
     e.preventDefault()
