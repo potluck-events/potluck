@@ -20,7 +20,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 
 
-export default function Posts({posts}) {
+export default function Posts({posts, userIsHost}) {
   const { pk } = useParams()
   const token = useContext(AuthContext)
   const navigate = useNavigate()
@@ -37,7 +37,7 @@ export default function Posts({posts}) {
       data: {text: userPost}
     };
     axios.request(options).then(response => {
-      navigate(`/events/${pk}`) 
+      location.reload()
     }
     )
   }
@@ -63,7 +63,7 @@ export default function Posts({posts}) {
       <TabPanel value='posts'>
         <CreatePostForm  handleUserPost={handleUserPost}/>
         {posts.length ? posts.map((post, index) => (
-          <Post post = {post} key = {index} handleDelete={handleDelete}/>
+          <Post post={post} userIsHost={userIsHost} key = {index} handleDelete={handleDelete}/>
         )):
           <div className="flex items-center justify-center h-40">
             <Typography className="text-gray-500" variant="h3">No Posts</Typography>
@@ -76,7 +76,8 @@ export default function Posts({posts}) {
 function CreatePostForm({ handleUserPost }) {
   const [userPost, setUserPost] = useState('')
 
-  function handleSubmit(event){
+  function handleSubmit(event) {
+    event.preventDefault()
     handleUserPost(userPost);
     setUserPost('')
   }
@@ -89,7 +90,7 @@ function CreatePostForm({ handleUserPost }) {
   )
 }
 
-function Post({post, handleDelete}) {
+function Post({post, handleDelete, userIsHost}) {
   return (
     <>
     <Card color="light-blue" variant="gradient" className="my-1 px-2"
@@ -100,7 +101,7 @@ function Post({post, handleDelete}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />
+        { (post.user_is_author || userIsHost) && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3 cursor-pointer" icon={faX} />}
     </Card>
     </>
   )

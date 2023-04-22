@@ -28,7 +28,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
                     Authorization: token
                 },
                 data: {
-                    email: e
+                    email: e.email
                 }
             };
                 

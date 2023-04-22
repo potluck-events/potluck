@@ -65,9 +65,10 @@ class EventItemSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializerShort(many=False, read_only=True)
+    user_is_author = serializers.SerializerMethodField()
 
-    def get_author(self, obj):
-        return f"{obj.author.first_name} {obj.author.last_name}"
+    def get_user_is_author(self, obj):
+        return obj.author == self.context['request'].user
 
     class Meta:
         model = Post
