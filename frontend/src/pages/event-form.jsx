@@ -29,8 +29,8 @@ export default function EventForm() {
     e.preventDefault()
 
     const options = {
-      method: 'POST',
-      url: 'http://potluck.herokuapp.com/events',
+      method: pk ? "PATCH" : 'POST',
+      url: pk ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -59,7 +59,7 @@ export default function EventForm() {
 
   return (<>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">Create a new Event</Typography>
+      <Typography variant = 'h4' color="blue-gray">{pk ? "Create a new event" : "Edit event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -93,7 +93,7 @@ export default function EventForm() {
               <Input value={zip} onChange={(e) => setZip(e.target.value)} label="Zip" size="lg" />
             </div>
             </>}
-            <Button type="submit" className="" fullWidth>Create Event</Button>
+            <Button type="submit" className="" fullWidth>{pk ? "Create" : "Save"} Event</Button>
           </div>
         </div>
       </form>
