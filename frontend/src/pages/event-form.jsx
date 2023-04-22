@@ -79,7 +79,7 @@ console.log(dateTime.toString())
 
   return (<>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{pk ? "Create a new event" : "Edit event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -113,7 +113,7 @@ console.log(dateTime.toString())
               <Input value={zip} onChange={(e) => setZip(e.target.value)} label="Zip" size="lg" />
             </div>
             </>}
-            <Button type="submit" className="" fullWidth>{pk ? "Create" : "Save"} Event</Button>
+            <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>
         </div>
       </form>
