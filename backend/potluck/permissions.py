@@ -26,6 +26,18 @@ class ItemDetailPermission(permissions.IsAuthenticated):
         return True
 
 
+class InvitationDetailPermission(permissions.IsAuthenticated):
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'GET':
+            return request.user == obj.guest or request.user == obj.event.host
+        elif request.method == 'DELETE':
+            return request.user == obj.event.host
+        else:
+            return request.user == obj.guest
+        return True
+
+
 class ItemPostInvitationHost(permissions.IsAuthenticated):
 
     def has_permission(self, request, view):
