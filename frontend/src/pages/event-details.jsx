@@ -62,11 +62,11 @@ export default function EventDetails() {
 
   if (event) return (<>
     <div className="px-6">
-      <EventHeader event={event} mapsURL={mapsURL} />
+      <EventHeader event={event} mapsURL={mapsURL} handleEditButton={handleEditButton}/>
 
       {event.user_is_guest && <RSVP event={event} />}
       
-      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen}  handleEditButton={handleEditButton}/>
+      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} />
       
       <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} />
       
@@ -99,7 +99,6 @@ function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
     <div>
-    {event.user_is_host && <Button onClick={handleEditButton}>Edit Event</Button>}
     </div>
     </>
   )

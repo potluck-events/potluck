@@ -25,6 +25,7 @@ export default function EventForm() {
   const { pk } = useParams()
 
   useEffect(() => {
+    if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
       headers: {
         'Content-Type': 'applications/json',
@@ -40,7 +41,8 @@ export default function EventForm() {
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
     })
-  }, [])
+  }
+  }, []) 
 
   function handleCreateEvent(e){
     e.preventDefault()
