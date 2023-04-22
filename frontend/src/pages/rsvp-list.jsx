@@ -69,7 +69,7 @@ export default function RSVPList() {
 
 
 function EventTitle({title}){
-  return (
+  if (title) return (
     <div className="text-center my-2" color="black">
     <Typography variant='h3'>{title}</Typography>
     </div>
