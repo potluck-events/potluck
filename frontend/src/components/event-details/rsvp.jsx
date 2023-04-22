@@ -8,12 +8,13 @@ import { useState } from "react";
 
 
 export default function RSVP({ event }) {
-  const [rsvp, setRsvp] = useState(event.user_response.toString())
+  const response = event.user_response === null ? "null" : event.user_response.toString()
+  const [rsvp, setRsvp] = useState(response)
   const handleRSVP = (event, newRsvp) => {
-    //if (newRsvp !== null) {
+    if (newRsvp !== null) {
       setRsvp(newRsvp)
-    
-    console.log(newRsvp);
+    }
+
   }
 
   if (event) return (
