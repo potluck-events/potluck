@@ -37,7 +37,7 @@ export default function Posts({posts, userIsHost}) {
       data: {text: userPost}
     };
     axios.request(options).then(response => {
-      navigate(`/events/${pk}`) 
+      location.reload()
     }
     )
   }
@@ -76,7 +76,8 @@ export default function Posts({posts, userIsHost}) {
 function CreatePostForm({ handleUserPost }) {
   const [userPost, setUserPost] = useState('')
 
-  function handleSubmit(event){
+  function handleSubmit(event) {
+    event.preventDefault()
     handleUserPost(userPost);
     setUserPost('')
   }
@@ -100,7 +101,7 @@ function Post({post, handleDelete, userIsHost}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-        {post.user_is_author && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />}
+        { (post.user_is_author || userIsHost) && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3 cursor-pointer" icon={faX} />}
     </Card>
     </>
   )
