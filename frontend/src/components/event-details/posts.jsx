@@ -100,7 +100,7 @@ function Post({post, handleDelete}) {
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-      <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />
+        {post.user_is_author && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3" icon={faX} />}
     </Card>
     </>
   )
