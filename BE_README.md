@@ -10,11 +10,32 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /users/me/ --> | GET | PUT | PATCH | DELETE |
 -- details for logged in user
 
+/users/info/:email/ --> | GET |
+-- shows user info whose email is in the url
+
+/events/ --> | POST |
+-- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
+
 /events/hosting/ --> | GET |
 -- lists all events hosted by current user with a date_scheduled >= today
 
 /events/attending/ --> | GET |
 -- lists all events attended by current user with a date_scheduled >= today
+
+/events/pk/ --> | GET | PUT | PATCH | DELETE |
+-- shows event details. any user can make a GET request. only host can make PUT, PATCH, DELETE request.
+
+/events/pk/items/ --> | POST |
+-- shows items related to event pk
+-- user can create an item for an event. if user is a guest, they will be automatically set as the owner. if user is host, owner field will be null.
+
+/events/pk/posts/ --> | GET | POST |
+-- lists posts related to event pk
+-- user can create post related to event pk
+
+/events/pk/invitations/ --> | GET | POST |
+-- lists invitatinos related to event pk
+-- host can create invitations
 
 /items/ --> | GET |
 -- lists all items owned by current user attached to an event with a date_scheduled >= today
@@ -26,21 +47,13 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /items/pk/reserved/ --> | PATCH |
 -- guest can reserve/unreserve item
 
-/events/ --> | POST |
--- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
-
-/events/pk/ --> | GET | PUT | PATCH | DELETE |
--- shows event details. any user can make a GET request. only host can make PUT, PATCH, DELETE request.
-
-/events/pk/items/ --> | POST |
--- user can create an item for an event. if user is a guest, they will be automatically set as the owner. if user is host, owner field will be null.
-
-/events/pk/posts/ --> | GET | POST |
--- lists posts related to event pk
--- user can create post related to event pk
-
 /invitations/ --> | GET |
 -- lists all invitations received by current user with a date_scheduled >= today
+
+/invitations/ --> | GET | PUT | PATCH | DELETE |
+-- host or guest can see invitation (get)
+-- host can delete invitation
+-- guest can accept/unaccept invitation
 
 /posts/pk/ --> | DELETE |
 -- user can delete post if user is author

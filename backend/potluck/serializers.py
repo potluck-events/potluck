@@ -91,6 +91,8 @@ class EventSerializer(serializers.ModelSerializer):
     user_is_guest = serializers.SerializerMethodField()
     user_response = serializers.SerializerMethodField()
 
+    invitation_pk = serializers.SerializerMethodField()
+
     def get_count_invited(self, obj):
         return obj.invitations.count()
 
@@ -112,6 +114,11 @@ class EventSerializer(serializers.ModelSerializer):
     def get_user_response(self, obj):
         if obj.invitations.filter(guest=self.context['request'].user).exists():
             return obj.invitations.get(guest=self.context['request'].user).response
+        return None
+
+    def get_invitation_pk(self, obj):
+        if obj.invitations.filter(guest=self.context['request'].user).exists():
+            return obj.invitations.get(guest=self.context['request'].user).pk
         return None
 
     class Meta:
@@ -138,6 +145,7 @@ class EventSerializer(serializers.ModelSerializer):
             'user_response',
             'items',
             'posts',
+            'invitation_pk',
         )
 
         read_only_fields = ('host',)
@@ -206,14 +214,11 @@ class ReserveItemSerializer(serializers.ModelSerializer):
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
-    event = serializers.SerializerMethodField()
+    event = EventSerializerShort()
     host = serializers.SerializerMethodField()
 
     def get_host(self, obj):
         return f"{obj.event.host.first_name} {obj.event.host.last_name}"
-
-    def get_event(self, obj):
-        return obj.event.title
 
     class Meta:
         model = Invitation

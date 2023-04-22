@@ -57,7 +57,7 @@ export default function Login({setToken}) {
             <Button type="submit" className="" fullWidth>Login</Button>
             </div>
           </div>
-          <Typography variant = "small">Don't have an account? <Link to="/sign-up" className=" font-bold text-blue-800 hover:text-blue-500">Create one</Link></Typography>
+          <Typography variant="small">Don't have an account? <Link to="/sign-up" state={{ from: location.state?.from }} className=" font-bold text-blue-800 hover:text-blue-500">Create one</Link></Typography>
         </form>
       </div>
   

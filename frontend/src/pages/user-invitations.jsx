@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function UserInvitations() {
   const token = useContext(AuthContext)
-  const [going, setGoing] = useState([])
+  const [events, setEvents] = useState([])
 
 
   useEffect(() => {
@@ -20,7 +20,8 @@ export default function UserInvitations() {
       'Authorization': token
     }
     }).then((response) => {
-      setGoing(response.data)
+      console.log(response.data);
+      setEvents(response.data)
     })
     .catch(error => {
       console.error(error);
@@ -34,16 +35,16 @@ export default function UserInvitations() {
     </div>
     <div className='my-8 px-6'>
       <Typography variant='h4'>Pending</Typography>
-      < Invitations  events={going.filter((event) => event.response === null)}/>
+      < Invitations  events={events.filter((event) => event.response === null)}/>
 
     </div>
     <div className='my-8 px-6'>
       <Typography variant='h4'>Accepted</Typography>
-      < Invitations  events={going.filter((event) => event.response === true)}/>
+      < Invitations  events={events.filter((event) => event.response === true)}/>
     </div>
     <div className='my-8 px-6'>
       <Typography variant='h4'>Declined</Typography>
-      < Invitations  events={going.filter((event) => event.response === false)}/>
+      < Invitations  events={events.filter((event) => event.response === false)}/>
 
     </div>
     </>
@@ -59,17 +60,17 @@ function Invitations({ events }) {
       navigate(`/events/${pk}`)
   }
   
-  if (events.length) return (events.map((event, index) => (
-    <div key={index} className="flex py-1" onClick={() => onClickViewEvent(event.pk)}>
+  if (events.length) return (events.map((e, index) => (
+    <div key={index} className="flex py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
       <div className="columns-1 py-1">
         <Typography className="">
-        {event.event}
+        {e.event.title}
         </Typography>
         <Typography className=''>
-        Host: {event.host}
+        Host: {e.host}
         </Typography>
       </div>
-      <div className="absolute right-0" onClick={() => onClickViewEvent(event.pk)}>
+      <div className="absolute right-0" onClick={() => onClickViewEvent(e.event.pk)}>
         <IconButton variant="text" className="mt-5 mr-2">
           <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
         </IconButton>

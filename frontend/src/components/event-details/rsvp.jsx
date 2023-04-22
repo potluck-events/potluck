@@ -3,29 +3,49 @@ import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
 import "../../styles/eventdetails.css"
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/authcontext";
+import axios from "axios"
 
 export default function RSVP({ event }) {
-  const handleRSVP = (attending) => {
+  const response = event.user_response === null ? "null" : event.user_response.toString()
+  const [rsvp, setRsvp] = useState(response)
+  const token = useContext(AuthContext)
 
+  const handleRSVP = (e, newRsvp) => {
+    if (newRsvp !== null) {
+      setRsvp(newRsvp)
+    } else {
+      newRsvp = rsvp
+    }
+
+    if (newRsvp != rsvp) {
+      const options = {
+        method: 'PATCH',
+        url: `https://potluck.herokuapp.com/invitations/${event.invitation_pk}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        data: { response: newRsvp }
+      };
+
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
   }
-  
-  return (
+
+  if (event) return (
     <div className="mt-2 flex justify-between items-center">
       <p className="font-bold">RSVP:</p>
-        <Tabs value="">
-          <TabsHeader>
-            <Tab value='yes' onClick={() => handleRSVP(true)}>
-                <div className="flex items-center gap-2">
-                  <FontAwesomeIcon icon ={faCheck} className = "" /> Attending
-                </div>
-            </Tab>
-            <Tab value='no' onClick={() => handleRSVP(false)}>
-              <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon ={faXmark} className = "" /> Can't Go
-              </div>
-            </Tab>
-        </TabsHeader>
-      </Tabs>
+      <ToggleButtonGroup value={rsvp} exclusive size="small" color="primary" onChange={handleRSVP}>
+        <ToggleButton value="true"><FontAwesomeIcon icon ={faCheck} className="mr-1"/> Attending</ToggleButton>
+        <ToggleButton value="false"><FontAwesomeIcon icon ={faXmark} className="mr-1"/> Can't Go</ToggleButton>
+      </ToggleButtonGroup>
     </div>
   )
 }
