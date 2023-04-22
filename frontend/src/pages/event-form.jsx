@@ -31,7 +31,6 @@ export default function EventForm() {
         Authorization: token
       }
     }).then((response) => {
-      console.log(response.data)
       setTitle(response.data.title)
       setDescription(response.data.description)
       setLocationName(response.data?.location_name)
@@ -42,8 +41,6 @@ export default function EventForm() {
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
     })
   }, [])
-
-console.log(dateTime.toString())
 
   function handleCreateEvent(e){
     e.preventDefault()
