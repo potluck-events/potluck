@@ -18,6 +18,7 @@ export default function EventDetails() {
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
+  const [itemData, setItemData] = useState()
   const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
   const token = useContext(AuthContext)
   const navigate = useNavigate()
@@ -66,9 +67,9 @@ export default function EventDetails() {
 
       {event.user_is_guest && <RSVP event={event} />}
       
-      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} />
+      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={event.user_is_host} />
       
-      <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} />
+      <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} setItemData={setItemData} itemData={itemData}/>
       
       {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} />)}
       
@@ -79,7 +80,7 @@ export default function EventDetails() {
 }
 
 
-function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
+function EventBody({ event, setEvent, setItemsTabOpen, setItemData , setItemModalOpen, userIsHost}) {
   return (
     <>
     <Tabs className='mt-3' value="items" >
@@ -95,7 +96,7 @@ function EventBody({ event, setEvent, setItemsTabOpen, handleEditButton }) {
               </div>
             </Tab>
         </TabsHeader>
-        <Items items={event.items} setEvent = {setEvent}/>
+        <Items items={event.items} setEvent={setEvent} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={userIsHost} />
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
     <div>

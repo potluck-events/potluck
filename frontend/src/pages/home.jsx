@@ -23,6 +23,7 @@ export default function Home() {
     const [hostingEvents, setHostingEvents] = useState()
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
+    const [pending, setPending] = useState()
     
     useEffect(() => {
         axios.get('https://potluck.herokuapp.com/events/hosting', {
@@ -60,6 +61,19 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
+
+
+        axios.get('https://potluck.herokuapp.com/invitations', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+        }).then((response) => {
+            setPending(response.data.filter((event) => event.response === null).length)
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }, [])
     
     return (
@@ -79,7 +93,7 @@ export default function Home() {
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events' className='py-0'>
-                <InvitationsButton className=''/>
+                <InvitationsButton className='' pending={ pending} />
                 <Typography variant="h2" className='py-2'>Hosting</Typography>
                 {hostingEvents && <Events events={hostingEvents} />}
                 <Typography variant="h2" className='py-2'>Attending</Typography>
@@ -185,7 +199,7 @@ function NewEventButton() {
 }
 
 
-function InvitationsButton() {
+function InvitationsButton({pending}) {
     const navigate = useNavigate()
 
     function onClickHandleInvitations(){
@@ -195,7 +209,7 @@ function InvitationsButton() {
     return (
         <div className="text-center">
             <Button onClick={onClickHandleInvitations} variant='outlined' className="flex m-auto pb-7 h-2 mt-3">
-                Invitations (# pending)
+                Invitations ({pending} pending)
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 pb-2">
                     <path fillRule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clipRule="evenodd" />
                 </svg>
