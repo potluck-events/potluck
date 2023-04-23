@@ -36,7 +36,16 @@ class CustomRegisterView(RegisterView):
     def create(self, request, *args, **kwargs):
         # perform additional actions here
         response = super().create(request, *args, **kwargs)
-        # perform additional actions here
+        # user = self.request.data.get('user')
+        # email = self.request.data.get('email')
+        # if Invitation.objects.filter(email=email).exists():
+        #     serializer = self.serializer_class(data=request.data)
+        #     serializer.is_valid(raise_exception=True)
+        #     serializer.save(email=email, guest=user)
+        # else:
+        #     serializer = self.serializer_class(data=request.data)
+        #     serializer.is_valid(raise_exception=True)
+        #     serializer.save()
         return response
 
 
