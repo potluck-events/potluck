@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'phonenumber_field',
+    'storages',
 
     'potluck',
 ]
