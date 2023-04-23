@@ -49,6 +49,14 @@ class UserSerializerShort(serializers.ModelSerializer):
 
 
 class EventItemSerializer(serializers.ModelSerializer):
+    user_is_creator = serializers.SerializerMethodField()
+    user_is_owner = serializers.SerializerMethodField()
+
+    def get_user_is_creator(self, obj):
+        return obj.created_by == self.context['request'].user
+
+    def get_user_is_owner(self, obj):
+        return obj.owner == self.context['request'].user
 
     class Meta:
         model = Item
@@ -58,9 +66,15 @@ class EventItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
             'owner',
+            'user_is_creator',
+            'user_is_owner',
         )
 
-        read_only_fields = ('created_by',)
+        read_only_fields = (
+            'created_by',
+            'user_is_creator',
+            'user_is_owner',
+        )
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -194,6 +208,14 @@ class UserItemSerializer(serializers.ModelSerializer):
 
 class ReserveItemSerializer(serializers.ModelSerializer):
     owner = UserSerializerShort(many=False)
+    user_is_creator = serializers.SerializerMethodField()
+    user_is_owner = serializers.SerializerMethodField()
+
+    def get_user_is_creator(self, obj):
+        return obj.created_by == self.context['request'].user
+
+    def get_user_is_owner(self, obj):
+        return obj.owner == self.context['request'].user
 
     class Meta:
         model = Item
@@ -203,6 +225,8 @@ class ReserveItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
             'owner',
+            'user_is_creator',
+            'user_is_owner',
         )
 
         read_only_fields = (
@@ -210,6 +234,8 @@ class ReserveItemSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'created_by',
+            'user_is_creator',
+            'user_is_owner',
         )
 
 
