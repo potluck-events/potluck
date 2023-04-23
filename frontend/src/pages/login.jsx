@@ -36,6 +36,7 @@ export default function Login({setToken}) {
     }).catch((error) => {
       console.error(error);
       setError(error.response.data)
+      navigate("/page404")
     }); 
   }
 

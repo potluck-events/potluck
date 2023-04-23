@@ -44,7 +44,7 @@ export default function EventDetails() {
     }).catch(function (error) {
       console.error(error);
       if (error.response.status === 403) {
-        navigate("/")
+        navigate("/page403")
       }
     });
   }, [])
