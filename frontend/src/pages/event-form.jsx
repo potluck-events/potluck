@@ -73,6 +73,7 @@ export default function EventForm() {
       navigate(`/events/${response.data.pk}`)
     }).catch(function (error) {
       console.error(error);
+      navigate("/page404")
     });
   }
 
