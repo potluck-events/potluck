@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from rest_framework import serializers
 from .models import User, Event, Invitation, Item, Post
 
 
