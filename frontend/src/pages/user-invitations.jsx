@@ -25,6 +25,7 @@ export default function UserInvitations() {
     })
     .catch(error => {
       console.error(error);
+      navigate("/page404")
     });
   }, [])
 

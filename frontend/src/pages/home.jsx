@@ -36,6 +36,7 @@ export default function Home() {
         })
         .catch(error => {
             console.error(error);
+            navigate("/page404")
         });
         
         axios.get('https://potluck.herokuapp.com/events/attending', {
@@ -48,6 +49,7 @@ export default function Home() {
         })
         .catch(error => {
             console.error(error);
+            navigate("/page404")
         });
         
         axios.get('https://potluck.herokuapp.com/items', {
@@ -60,6 +62,7 @@ export default function Home() {
         })
         .catch(error => {
             console.error(error);
+            navigate("/page404")
         });
 
 
@@ -73,6 +76,7 @@ export default function Home() {
         })
         .catch(error => {
             console.error(error);
+            navigate("/page404")
         });
     }, [])
     

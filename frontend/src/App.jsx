@@ -12,6 +12,8 @@ import UserInvitations from './pages/user-invitations';
 import RSVPList from './pages/rsvp-list';
 import Home from './pages/home'
 import useLocalStorageState from 'use-local-storage-state'
+import { Error404, Error403 } from './pages/error-pages'
+
 
 function App() {
   const [token, setToken] = useLocalStorageState('token', { defaultValue: null })
@@ -31,6 +33,8 @@ function App() {
             <Route path='/events/:pk/edit' element={<EventForm />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
           </Route>
+          <Route path='/page404' element={<Error404 />}/>
+          <Route path='/page403' element={<Error403 />}/>
           <Route path='*' element={token ? <Home /> : <Landing/>} />   
         </Route>
       </Routes>
