@@ -29,7 +29,7 @@ export function Error404 () {
         <Typography variant='h2' className='py-10 text-center'>SORRY</Typography>
         <div className="">
             <div style={{ width: '100%', height: 0, paddingBottom: '75%', position: 'relative' }}>
-                <iframe src="https://giphy.com/embed/B1oMSRJiTq63e" width="100%" height="100%" style={{ position: 'absolute' }} frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/B1oMSRJiTq63e" width="100%" height="100%" style={{ position: 'absolute' }} allowFullScreen></iframe>
                 <p><a href="https://giphy.com/gifs/reaction-fresh-prince-of-bel-air-B1oMSRJiTq63e">via GIPHY</a></p>
             </div>
         </div>
