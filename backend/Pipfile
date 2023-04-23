@@ -20,6 +20,7 @@ django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 dj-rest-auth = {extras = ["with_social"], version = "*"}
 django-allauth = "*"
 django-storages = "*"
+boto3 = "*"
 
 [dev-packages]
 
