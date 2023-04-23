@@ -12,6 +12,8 @@ import UserInvitations from './pages/user-invitations';
 import RSVPList from './pages/rsvp-list';
 import Home from './pages/home'
 import useLocalStorageState from 'use-local-storage-state'
+import { Error404, Error403 } from './pages/error-pages'
+
 
 function App() {
   const [token, setToken] = useLocalStorageState('token', { defaultValue: null })
