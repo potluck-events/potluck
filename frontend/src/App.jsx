@@ -31,6 +31,8 @@ function App() {
             <Route path='/events/:pk/edit' element={<EventForm />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
           </Route>
+          <Route path='/page404' element={<Error404 />}/>
+          <Route path='/page403' element={<Error403 />}/>
           <Route path='*' element={token ? <Home /> : <Landing/>} />   
         </Route>
       </Routes>
