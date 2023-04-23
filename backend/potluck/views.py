@@ -33,20 +33,14 @@ import requests
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
 
-    def create(self, request, *args, **kwargs):
-        # perform additional actions here
-        response = super().create(request, *args, **kwargs)
-        # user = self.request.data.get('user')
-        # email = self.request.data.get('email')
-        # if Invitation.objects.filter(email=email).exists():
-        #     serializer = self.serializer_class(data=request.data)
-        #     serializer.is_valid(raise_exception=True)
-        #     serializer.save(email=email, guest=user)
-        # else:
-        #     serializer = self.serializer_class(data=request.data)
-        #     serializer.is_valid(raise_exception=True)
-        #     serializer.save()
-        return response
+    def perform_create(self, serializer):
+        email = self.request.data.get('email')
+        if Invitation.objects.filter(email=email).exists():
+            created_user = serializer.save(request=self.request)
+            updated_invitations = Invitation.objects.filter(email=email)
+            for invitation in updated_invitations:
+                invitation.guest = created_user
+                invitation.save()
 
 
 class GoogleLogin(SocialLoginView):
