@@ -1,5 +1,5 @@
 import { Dialog, Transition, } from '@headlessui/react'
-import { Fragment, useState, useContext } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
 import { Input, Textarea, Button } from '@material-tailwind/react'
 import { useParams } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
@@ -7,7 +7,7 @@ import axios from 'axios'
 
 
 
-export default function CreateItemModal({itemModalOpen, setItemModalOpen}) {
+export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemData, setItemData}) {
 const [title, setTitle] = useState('')
 const [description, setDescription] = useState('')
 const { pk } = useParams()
@@ -17,10 +17,17 @@ const token = useContext(AuthContext)
     setItemModalOpen(false)
   }
 
+  useEffect(() => {
+    if (itemData) {
+      setTitle(itemData.title)
+      setDescription(itemData.description)
+    }
+  }, [itemData]) 
+
   function handleCreateItem(i) {
     const options = {
-      method: 'POST',
-      url: `https://potluck.herokuapp.com/events/${pk}/items`,
+      method: itemData ? 'PATCH' : 'POST',
+      url: itemData ? `https://potluck.herokuapp.com/items/${itemData.pk}`: `https://potluck.herokuapp.com/events/${pk}/items`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: token
@@ -29,6 +36,7 @@ const token = useContext(AuthContext)
     };
 
     axios.request(options).then(function (response) {
+      setItemData(null)
       console.log(response.data);
     }).catch(function (error) {
       console.error(error);
