@@ -25,7 +25,7 @@ class User(AbstractUser):
     )
 
     nickname = models.CharField(max_length=50, blank=True, null=True)
-    thumbnail = models.ImageField(blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='media', blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)

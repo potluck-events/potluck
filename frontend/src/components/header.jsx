@@ -48,7 +48,7 @@ export default function Header({setToken}) {
     .catch(error => {
       console.error(error);
     });
-  }, [])
+  }, [token])
   
  
   
