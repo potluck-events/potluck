@@ -53,7 +53,7 @@ export default function UserInvitations() {
       <Typography variant='h4'>Declined</Typography>
       < Invitations  events={events.filter((event) => event.response === false)}/>
     </div>
-    <div className="text-right mr-5" onClick={goBack}>
+    <div className="text-right mr-5 cursor-pointer" onClick={goBack}>
         <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
     </div>
     </>
@@ -72,11 +72,11 @@ function Invitations({ events }) {
   if (events.length) return (events.map((e, index) => (
     <div key={index} className="flex py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
       <div className="columns-1 py-1">
-        <Typography className="">
+        <Typography className="font-semibold">
         {e.event.title}
         </Typography>
         <Typography className=''>
-        Host: {e.host}
+        {e.host}
         </Typography>
       </div>
       <div className="absolute right-0" onClick={() => onClickViewEvent(e.event.pk)}>
