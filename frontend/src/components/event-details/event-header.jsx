@@ -150,12 +150,12 @@ function EditMenu({ handleEditButton, handleDelete }){
       </Transition>
     </Menu>
       {isConfirmDeleteOpen && (
-        <div>
-          <Dialog onClose={handleDeleteCancel} open={true}>
+        <div className="w-fit">
+          <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="fixed px-2 min-w-fit w-fit">
             <Card>
               <Typography className='pt-2 text-center' variant='h5'>Are you sure?</Typography>
               <div className="flex py-2 self-center space-x-4">
-                <Button className="" color="red" onClick={handleDeleteConfirmed}>
+                <Button className="" color="blue" onClick={handleDeleteConfirmed}>
                   Yes
                 </Button>
                 <Button onClick={handleDeleteCancel}>
