@@ -51,19 +51,19 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
       </div>
         <div className="border-b-2">
           <p className="mb-1 text-m"><FontAwesomeIcon icon={ faUser }/> Hosted by {event.host.full_name}</p>
-          <p className="mb-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> Location: {event.location_name}</p>
-          {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> Address: <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
+          <p className="mb-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> {event.location_name}</p>
+          {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
         </div>
         <div className="mt-2">
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
         </div>
         <div onClick={handleClickAttendees} className="mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
           <div className="">
-            <p className="font-bold">Attendees:</p>
+            <p className="font-bold">Attendees</p>
             <div className="flex justify-around gap-2">
-              <p>Going: { event.rsvp_yes}</p>
-              <p>Can't go: { event.rsvp_no}</p>
-              <p>TBD: { event.rsvp_tbd}</p>
+              <p>Going { event.rsvp_yes}</p>
+              <p>Can't go { event.rsvp_no}</p>
+              <p>TBD { event.rsvp_tbd}</p>
             </div>
           </div>  
         
