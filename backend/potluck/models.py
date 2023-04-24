@@ -1,37 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.postgres.fields import ArrayField
 from django.db.models.constraints import UniqueConstraint
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
-    DIETARY_RESTRICTION_CHOICES = (
-        ('vegetarian', 'Vegetarian'),
-        ('pescitarian', 'Pescitarian'),
-        ('vegan', 'Vegan'),
-        ('gluten-free', 'Gluten-Free'),
-        ('dairy-free', 'Dairy-Free'),
-        ('kosher', 'Kosher'),
-        ('egg-allergy', 'Egg Allergy'),
-        ('fish-allergy', 'Fish Allergy'),
-        ('milk-allergy', 'Milk Allergy'),
-        ('shellfish-allergy', 'Shellfish Allergy'),
-        ('peanut-allergy', 'Peanut Allergy'),
-        ('tree-nut-allergy', 'Tree Nut Allergy'),
-        ('wheat-allergy', 'Wheat Allergy'),
-        ('soybean-allergy', 'Soybean Allergy'),
-        ('sesame-allergy', 'Sesame Allergy'),
-    )
-
     nickname = models.CharField(max_length=50, blank=True, null=True)
     thumbnail = models.ImageField(upload_to='media', blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
-    dietary_restrictions = ArrayField(models.CharField(
-        max_length=100, choices=DIETARY_RESTRICTION_CHOICES), blank=True, null=True)
+    dietary_restrictions = models.ManyToManyField(
+        to='DietaryRestriction', blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
@@ -41,6 +22,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class DietaryRestriction(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Event(models.Model):
