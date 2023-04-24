@@ -29,6 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
             'city',
             'thumbnail',
             'date_joined',
+            'full_name',
+            'initials',
         )
 
         read_only_fields = ('date_joined',)
