@@ -72,11 +72,11 @@ function Invitations({ events }) {
   if (events.length) return (events.map((e, index) => (
     <div key={index} className="flex py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
       <div className="columns-1 py-1">
-        <Typography className="">
+        <Typography className="font-semibold">
         {e.event.title}
         </Typography>
         <Typography className=''>
-        Host: {e.host}
+        <span className=" font-semibold">By </span> {e.host}
         </Typography>
       </div>
       <div className="absolute right-0" onClick={() => onClickViewEvent(e.event.pk)}>
