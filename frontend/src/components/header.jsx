@@ -77,7 +77,6 @@ export default function Header({setToken}) {
               <button
                 type="button"
                 className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(true)}
               >
                 <UserAvatar user={userData} className='w-6 h-6' />
               </button>
@@ -85,7 +84,7 @@ export default function Header({setToken}) {
             </MenuHandler>
             <MenuList>
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </MenuList>
           </Menu>
           }
