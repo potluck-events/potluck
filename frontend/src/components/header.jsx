@@ -18,11 +18,14 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import UserAvatar from './avatar';
+import { useNavigate } from "react-router-dom";
 
 export default function Header({setToken}) {
   const token = useContext(AuthContext)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userData, setUserData] = useState()
+  const navigate = useNavigate()
+
     
   function handleLogout() {
     const options = {
@@ -58,7 +61,9 @@ export default function Header({setToken}) {
     });
   }, [])
   
- 
+  function handleProfile() {
+    navigate('/profile')
+  }
   
   return (
     <>
@@ -83,7 +88,7 @@ export default function Header({setToken}) {
             </div>
             </MenuHandler>
             <MenuList>
-              <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </MenuList>
           </Menu>
