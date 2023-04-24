@@ -37,7 +37,7 @@ export default function Profile() {
     function EmailAddress() {
         return (
         <div className="text-center" color="black">
-        <Typography variant='paragraph' className='font-semibold'>{userData.email}</Typography>
+        <Typography variant='paragraph' className='font-semibold'>{userData.email} </Typography>
         </div>
         )
     }
