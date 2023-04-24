@@ -35,7 +35,7 @@ function App() {
           </Route>
           <Route path='/page404' element={<Error404 />}/>
           <Route path='/page403' element={<Error403 />}/>
-          <Route path='*' element={token ? <Home /> : <Landing/>} />   
+          <Route path='*' element={<Error404 />} />   
         </Route>
       </Routes>
     </AuthContext.Provider>
