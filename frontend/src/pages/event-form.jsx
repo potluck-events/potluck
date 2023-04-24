@@ -7,6 +7,8 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker'
 import {TimePicker} from '@mui/x-date-pickers/TimePicker'
 import moment from "moment"
 import axios from "axios"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBackwardStep } from "@fortawesome/free-solid-svg-icons"
 
 export default function EventForm() {
   const token = useContext(AuthContext)
@@ -77,6 +79,10 @@ export default function EventForm() {
     });
   }
 
+  function goBack() {
+    navigate(-1)
+  }
+
   return (<>
     <div className="mt-8 flex flex-col items-center justify-center">
       <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
@@ -114,6 +120,9 @@ export default function EventForm() {
             </div>
             </>}
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
+            <div className="text-right" onClick={goBack}>
+            <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
+            </div>
           </div>
         </div>
       </form>
