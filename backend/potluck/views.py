@@ -42,6 +42,8 @@ class CustomRegisterView(RegisterView):
             for invitation in updated_invitations:
                 invitation.guest = created_user
                 invitation.save()
+        else:
+            serializer.save(request=self.request)
 
 
 class GoogleLogin(SocialLoginView):
