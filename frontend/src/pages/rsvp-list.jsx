@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Invitation from "../components/event-details/event-invitation";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
+import UserAvatar from "../components/avatar";
 
 
 export default function RSVPList() {
@@ -55,7 +56,7 @@ export default function RSVPList() {
   if (invitations) return (
     <>
       <EventTitle title={eventTitle} />
-      <Invitations invitees={invitations.length !== 0} />
+      <Invitations invitees={invitations.length} />
       <Invitation setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
       <InviteButton setInviteModalOpen={setInviteModalOpen} />
       <Responses header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
@@ -101,9 +102,7 @@ function Responses({ header, invitations }) {
       <Typography variant='h4'>{header}</Typography>
       {invitations.length !== 0 ? invitations.map((invitation, idx) => (
         <div key={ idx} className="flex items-start">
-          <div className=" self-center rounded-full flex items-center justify-center bg-blue-400 w-8 h-8">
-            {invitation.guest ? <p className="text-white m-1">{invitation.guest.initials}</p> :
-              <FontAwesomeIcon className="text-white" icon={faUser} />}</div>
+          <UserAvatar user={invitation.guest}/>
           <div className='mx-2 my-2'>
             {invitation.guest && <Typography variant='paragraph' className='font-semibold'>{invitation.guest.full_name}</Typography>}
             <Typography variant='paragraph'>Email: {invitation.email}</Typography>
