@@ -17,7 +17,7 @@ from .models import User, Event, Invitation, Item, Post
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
-                          ReserveItemSerializer, UserInvitationSerializer,
+                          UserInvitationSerializer,
                           PostSerializer, InvitationSerializer)
 from .serializers import CustomRegisterSerializer
 
@@ -173,7 +173,7 @@ class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
 
 class ReserveItem(generics.UpdateAPIView):
     queryset = Item.objects.all()
-    serializer_class = ReserveItemSerializer
+    serializer_class = EventItemSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
