@@ -39,7 +39,6 @@ export default function SignUp({setToken}) {
     }).catch((error) => {
       console.error(error);
       setError(error.response.data);
-      navigate("/page404")
     });
   }
 
@@ -66,7 +65,6 @@ export default function SignUp({setToken}) {
     }).catch((error) => {
       console.error(error);
       setError(error.response.data)
-      navigate("/page404")
     }); 
   }
 
