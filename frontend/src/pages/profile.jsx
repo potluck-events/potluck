@@ -11,33 +11,6 @@ import {
     XMarkIcon,
   } from '@heroicons/react/24/outline'
 
-    function UserName({userData}) {
-        return (
-        <div className="py-6 text-center" color="black">
-        <Typography variant='h2'>{userData.first_name} {userData.last_name}</Typography>
-        </div>
-        )
-    }
-
-
-    function EmailAddress({userData}) {
-        return (
-        <div className="text-center" color="black">
-        <Typography variant='paragraph' className='font-semibold'>{userData.email}</Typography>
-        </div>
-        )
-    }
-
-    function UserLocation({userData}) {
-        return (
-        <div className="text-center mb-5" color="black">
-        <Typography variant='paragraph' className='font-semibold'>{userData.city} </Typography>
-        </div>
-        )
-    }
-
-    
-
 export default function Profile() {
     const token = useContext(AuthContext)
     const [userData, setUserData] = useState()
@@ -99,3 +72,29 @@ export default function Profile() {
     </div>
 </>
 )}
+
+
+function UserName({userData}) {
+    return (
+    <div className="py-6 text-center" color="black">
+    <Typography variant='h2'>{userData.first_name} {userData.last_name}</Typography>
+    </div>
+    )
+}
+
+
+function EmailAddress({userData}) {
+    return (
+    <div className="text-center" color="black">
+    <Typography variant='paragraph' className='font-semibold'>{userData.email}</Typography>
+    </div>
+    )
+}
+
+function UserLocation({userData}) {
+    return (
+    <div className="text-center mb-5" color="black">
+    <Typography variant='paragraph' className='font-semibold'>{userData.city} </Typography>
+    </div>
+    )
+}
