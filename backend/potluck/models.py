@@ -13,15 +13,15 @@ class User(AbstractUser):
         ('gluten-free', 'Gluten-Free'),
         ('dairy-free', 'Dairy-Free'),
         ('kosher', 'Kosher'),
-        ('egg-allergy', 'Egg-Allergy'),
-        ('fish-allergy', 'Fish-Allergy'),
-        ('dairy-allergy', 'Dairy-Allergy'),
-        ('shellfish-allergy', 'Shellfish-Allergy'),
-        ('peanut-allergy', 'Peanut-Allergy'),
-        ('', ''),
-        ('', ''),
-        ('', ''),
-        ('', ''),
+        ('egg-allergy', 'Egg Allergy'),
+        ('fish-allergy', 'Fish Allergy'),
+        ('milk-allergy', 'Milk Allergy'),
+        ('shellfish-allergy', 'Shellfish Allergy'),
+        ('peanut-allergy', 'Peanut Allergy'),
+        ('tree-nut-allergy', 'Tree Nut Allergy'),
+        ('wheat-allergy', 'Wheat Allergy'),
+        ('soybean-allergy', 'Soybean Allergy'),
+        ('sesame-allergy', 'Sesame Allergy'),
     )
 
     nickname = models.CharField(max_length=50, blank=True, null=True)
@@ -30,6 +30,8 @@ class User(AbstractUser):
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
+    dietary_restrictions = ArrayField(models.CharField(
+        max_length=100, choices=DIETARY_RESTRICTION_CHOICES), blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
