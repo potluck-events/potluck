@@ -1,10 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 from django.db.models.constraints import UniqueConstraint
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
+    DIETARY_RESTRICTION_CHOICES = (
+        ('vegetarian', 'Vegetarian'),
+        ('pescitarian', 'Pescitarian'),
+        ('vegan', 'Vegan'),
+        ('gluten-free', 'Gluten-Free'),
+        ('dairy-free', 'Dairy-Free'),
+        ('kosher', 'Kosher'),
+        ('egg-allergy', 'Egg-Allergy'),
+        ('fish-allergy', 'Fish-Allergy'),
+        ('dairy-allergy', 'Dairy-Allergy'),
+        ('shellfish-allergy', 'Shellfish-Allergy'),
+        ('peanut-allergy', 'Peanut-Allergy'),
+        ('', ''),
+        ('', ''),
+        ('', ''),
+        ('', ''),
+    )
+
     nickname = models.CharField(max_length=50, blank=True, null=True)
     thumbnail = models.ImageField(blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
