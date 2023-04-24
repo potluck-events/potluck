@@ -184,9 +184,9 @@ class ReserveItem(generics.UpdateAPIView):
         item = get_object_or_404(Item, pk=self.kwargs["pk"])
         if self.request.user == item.owner:
             serializer.save(owner=None)
-        elif item.owner == None:
+        elif item.owner is None:
             serializer.save(owner=self.request.user)
-        elif item.owner != self.request.user and item.owner != None:
+        elif item.owner != self.request.user and item.owner is not None:
             raise PermissionDenied()
         else:
             serializer.save()
