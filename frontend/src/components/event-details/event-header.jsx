@@ -1,6 +1,6 @@
 import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Button } from "@material-tailwind/react";
+import { Typography, Button, Dialog, Card } from "@material-tailwind/react";
 import moment from "moment";
 import { useState, Fragment, useRef, useContext } from "react";
 import { useNavigate, useParams, } from "react-router-dom";
@@ -75,7 +75,25 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
   )
 }
 
+
 function EditMenu({ handleEditButton, handleDelete }){
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
+  function handleDeleteConfirmation() {
+    setIsConfirmDeleteOpen(true);
+  };
+
+  function handleDeleteCancel() {
+    setIsConfirmDeleteOpen(false);
+  };
+
+  function handleDeleteConfirmed() {
+    handleDelete();
+    setIsConfirmDeleteOpen(false);
+  };
+
+  
+
   return (
     <div className="text-right">
     <Menu as="div" className="relative inline-block text-left">
@@ -117,7 +135,7 @@ function EditMenu({ handleEditButton, handleDelete }){
             <Menu.Item>
               {({ active }) => (
                 <button
-                onClick={handleDelete}
+                  onClick={handleDeleteConfirmation}
                   className={`${
                     active ? 'bg-violet-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -131,6 +149,23 @@ function EditMenu({ handleEditButton, handleDelete }){
         </Menu.Items>
       </Transition>
     </Menu>
-  </div>
+      {isConfirmDeleteOpen && (
+        <div>
+          <Dialog onClose={handleDeleteCancel} open={true}>
+            <Card>
+              <Typography className='pt-2 text-center' variant='h5'>Are you sure?</Typography>
+              <div className="flex py-2 self-center space-x-4">
+                <Button className="" color="red" onClick={handleDeleteConfirmed}>
+                  Yes
+                </Button>
+                <Button onClick={handleDeleteCancel}>
+                  Cancel
+                  </Button>
+              </div>
+            </Card>
+          </Dialog>
+        </div>
+        )}
+    </div>
 )
 }
