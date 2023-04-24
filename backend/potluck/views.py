@@ -49,22 +49,24 @@ class CustomRegisterView(RegisterView):
 class GoogleLogin(SocialLoginView):
     # SOCIAL AUTH CODE IN PROGRESS
     adapter_class = GoogleOAuth2Adapter
-    callback_url = 'http://localhost:8000/dj-rest-auth/google/code'
+    callback_url = 'http://localhost:8000/accounts/google/code'
     client_class = OAuth2Client
 
 
 @api_view(['GET'])
-def CodeView(request):
+def CodeView(request, code):
     # SOCIAL AUTH CODE IN PROGRESS
     """
     List all code snippets, or create a new snippet.
     """
 
     if request.method == 'GET':
-        code = urllib.parse.unquote(request.query_params['code'])
-
-        url = request.build_absolute_uri('/dj-rest-auth/google/')
+        print(code)
+        url = request.build_absolute_uri('/accounts/google/')
         response = requests.post(url, json={"code": code})
+        print("yes")
+        print("yes", response)
+        breakpoint()
         return (response.json())
 
 
