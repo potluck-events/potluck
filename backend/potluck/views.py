@@ -33,6 +33,7 @@ from .email import send
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
+    parser_classes = [MultiPartParser]
 
     def perform_create(self, serializer):
         email = self.request.data.get('email')
