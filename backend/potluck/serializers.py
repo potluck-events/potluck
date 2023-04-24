@@ -29,11 +29,11 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'city',
-            'thumbnail',
             'date_joined',
             'full_name',
             'initials',
-            'thumbnail'
+            'thumbnail',
+            'dietary_restrictions',
         )
 
         read_only_fields = ('date_joined',)
