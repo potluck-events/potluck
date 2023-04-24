@@ -120,7 +120,7 @@ export default function EventForm() {
             </div>
             </>}
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
-            <div className="text-right" onClick={goBack}>
+            <div className="text-right cursor-pointer" onClick={goBack}>
             <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
             </div>
           </div>
