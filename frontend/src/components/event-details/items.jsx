@@ -13,7 +13,7 @@ export default function Items({ items, setEvent, setItemData, setItemModalOpen, 
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-      <TabPanel value='items' className="pl-0 divide-y">
+      <TabPanel value='true' className="pl-0 divide-y">
         {items.length ? items.map((item, index) => (
           <Item key = {index} item={item} setEvent = {setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />
         )) :
@@ -84,6 +84,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
 
       axios.request(options).then(function (response) {
         console.log(response.data);
+        location.reload()
       }).catch(function (error) {
         console.error(error);
       });

@@ -25,7 +25,7 @@ export default function Posts({posts, userIsHost}) {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
   
-  function handleUserPost(userPost){
+  function handleUserPost(userPost) {
     console.log(`user post: ${userPost}`)
     const options = {
       method: 'POST',
@@ -34,10 +34,10 @@ export default function Posts({posts, userIsHost}) {
         'Content-Type': 'application/json',
         Authorization: token
       },
-      data: {text: userPost}
+      data: { text: userPost }
     };
     axios.request(options).then(response => {
-      location.reload()
+      navigate(0)
     }
     )
   }
@@ -60,7 +60,7 @@ export default function Posts({posts, userIsHost}) {
 
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-      <TabPanel value='posts'>
+      <TabPanel value='false'>
         <CreatePostForm  handleUserPost={handleUserPost}/>
         {posts.length ? posts.map((post, index) => (
           <Post post={post} userIsHost={userIsHost} key = {index} handleDelete={handleDelete}/>
