@@ -1,6 +1,6 @@
 import { Typography, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faBackwardStep } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../context/authcontext";
@@ -11,6 +11,8 @@ import axios from "axios";
 export default function UserInvitations() {
   const token = useContext(AuthContext)
   const [events, setEvents] = useState([])
+  const navigate = useNavigate()
+
 
 
   useEffect(() => {
@@ -29,6 +31,10 @@ export default function UserInvitations() {
     });
   }, [])
 
+  function goBack() {
+    navigate(-1)
+  }
+
   return (
     <>
     <div className="text-center my-1">
@@ -46,7 +52,9 @@ export default function UserInvitations() {
     <div className='my-8 px-6'>
       <Typography variant='h4'>Declined</Typography>
       < Invitations  events={events.filter((event) => event.response === false)}/>
-
+    </div>
+    <div className="text-right mr-5" onClick={goBack}>
+        <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
     </div>
     </>
   )
