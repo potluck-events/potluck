@@ -37,7 +37,7 @@ export default function Posts({posts, userIsHost}) {
       data: { text: userPost }
     };
     axios.request(options).then(response => {
-      navigate(0)
+      location.reload()
     }
     )
   }

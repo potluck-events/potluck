@@ -75,7 +75,6 @@ export default function EventForm() {
       navigate(`/events/${response.data.pk}`)
     }).catch(function (error) {
       console.error(error);
-      navigate("/page404")
     });
   }
 
@@ -102,7 +101,7 @@ export default function EventForm() {
               <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Date/Time" size="lg" />
             </div>
             <div>
-              <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
+              <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
               {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="small" >Add address</Typography>}
             </div>
             {showAddress && <>
