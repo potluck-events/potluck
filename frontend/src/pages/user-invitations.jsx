@@ -76,7 +76,7 @@ function Invitations({ events }) {
         {e.event.title}
         </Typography>
         <Typography className=''>
-        <span className=" font-semibold">By </span> {e.host}
+        {e.host}
         </Typography>
       </div>
       <div className="absolute right-0" onClick={() => onClickViewEvent(e.event.pk)}>
