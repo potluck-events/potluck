@@ -36,6 +36,9 @@ class Event(models.Model):
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
 
+    class Meta:
+        ordering = ['-date_scheduled']
+
     def __str__(self):
         return f'{self.title} hosted by {self.host}'
 
