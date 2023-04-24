@@ -29,6 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
             'city',
             'thumbnail',
             'date_joined',
+            'full_name',
+            'initials',
         )
 
         read_only_fields = ('date_joined',)
@@ -51,6 +53,7 @@ class UserSerializerShort(serializers.ModelSerializer):
 class EventItemSerializer(serializers.ModelSerializer):
     user_is_creator = serializers.SerializerMethodField()
     user_is_owner = serializers.SerializerMethodField()
+    owner = UserSerializerShort()
 
     def get_user_is_creator(self, obj):
         return obj.created_by == self.context['request'].user
@@ -74,6 +77,7 @@ class EventItemSerializer(serializers.ModelSerializer):
             'created_by',
             'user_is_creator',
             'user_is_owner',
+            'owner',
         )
 
 

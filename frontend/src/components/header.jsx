@@ -9,6 +9,7 @@ import { AuthContext } from '../context/authcontext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import UserAvatar from './avatar';
 
 export default function Header({setToken}) {
   const token = useContext(AuthContext)
@@ -41,6 +42,7 @@ export default function Header({setToken}) {
       'Authorization': token
     }
     }).then((response) => {
+      console.log(response.data);
       setUserData(response.data)
     })
     .catch(error => {
@@ -67,7 +69,7 @@ export default function Header({setToken}) {
                 className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <FontAwesomeIcon icon={faUser} className='w-6 h-6' />
+                <UserAvatar user={userData} className='w-6 h-6' />
               </button>
             </div>
           }

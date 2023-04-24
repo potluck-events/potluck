@@ -1,4 +1,4 @@
-import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsBody, TabPanel, Typography } from "@material-tailwind/react";
 import { useContext, useState } from "react";
@@ -6,13 +6,14 @@ import "../../styles/eventdetails.css"
 import Checkbox from '@mui/material/Checkbox';
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
+import UserAvatar from "../avatar";
 
 
 export default function Items({ items, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-      <TabPanel value='items' className="pl-0 divide-y">
+      <TabPanel value='true' className="pl-0 divide-y">
         {items.length ? items.map((item, index) => (
           <Item key = {index} item={item} setEvent = {setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />
         )) :
@@ -71,6 +72,26 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
     setItemModalOpen(true)
   }
 
+  function handleReleaseOwner() {
+    const options = {
+        method: 'PATCH',
+        url: `https://potluck.herokuapp.com/items/${item.pk}/reserved`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      };
+
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+        location.reload()
+      }).catch(function (error) {
+        console.error(error);
+      });
+
+    
+  }
+
   return (
     <div className="flex items-center py-1">
       <Checkbox  disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />
@@ -79,11 +100,14 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
         <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
       </div>
       <div className="flex flex-col gap-3">
-        {item.owner && <FontAwesomeIcon icon={faUser} />}
-        {(userIsHost && expanded) &&
+        {item.owner &&
+          <UserAvatar user={item.owner}>
+            {item.user_is_owner && <FontAwesomeIcon onClick={handleReleaseOwner} icon={faXmarkCircle} className="bg-white cursor-pointer rounded-full absolute -top-1 -right-1 h-4 w-4" />}
+          </UserAvatar>}
+        {((userIsHost || item.user_is_creator)&& expanded) &&
           <>
-            <FontAwesomeIcon icon={faPenToSquare} onClick={handleEditItem} />
-            <FontAwesomeIcon icon={faTrash} onClick={handleDeleteItem}/>
+            <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
+            <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem}/>
           </>}
         <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
       </div>
