@@ -151,7 +151,7 @@ function EditMenu({ handleEditButton, handleDelete }){
     </Menu>
       {isConfirmDeleteOpen && (
         <div>
-          <Dialog onClose={handleDeleteCancel} open={true}>
+          <Dialog onClose={handleDeleteCancel} open={true} className=" fixed px-2 min-w-fit">
             <Card>
               <Typography className='pt-2 text-center' variant='h5'>Are you sure?</Typography>
               <div className="flex py-2 self-center space-x-4">
