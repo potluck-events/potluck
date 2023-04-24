@@ -53,7 +53,7 @@ export default function UserInvitations() {
       <Typography variant='h4'>Declined</Typography>
       < Invitations  events={events.filter((event) => event.response === false)}/>
     </div>
-    <div className="text-right mr-5" onClick={goBack}>
+    <div className="text-right mr-5 cursor-pointer" onClick={goBack}>
         <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
     </div>
     </>
