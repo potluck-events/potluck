@@ -92,7 +92,7 @@ export default function SignUp({setToken}) {
                 <Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} label="First Name" size="lg" type="text" />
               </div>
               <div>
-                <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="First Name" size="lg" type="text" />
+                <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
               </div>
             <Button type="submit" className="" fullWidth>Sign-up</Button>
             </div>
