@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsHeader, Tab, Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../styles/eventdetails.css"
 import CreateItemModal from "../components/event-details/create-item";
 import { AuthContext } from "../context/authcontext";
@@ -12,17 +12,18 @@ import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
 import { NewItemButton, ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function EventDetails() {
+  const location = useLocation()
   const { pk } = useParams()
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
   const [itemData, setItemData] = useState()
-  const [itemsTabOpen, setItemsTabOpen] = useState(true) //Is the "tab" on items?
+  const [itemsTabOpen, setItemsTabOpen] = useLocalStorageState('tabState', { defaultValue: true }) //Is the "tab" on items?
   const token = useContext(AuthContext)
   const navigate = useNavigate()
-
   useEffect(() => {
   
     const options = {
@@ -67,7 +68,7 @@ export default function EventDetails() {
 
       {event.user_is_guest && <RSVP event={event} />}
       
-      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={event.user_is_host} />
+      <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} itemsTabOpen={itemsTabOpen} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={event.user_is_host} />
       
       <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} setItemData={setItemData} itemData={itemData}/>
       
@@ -80,17 +81,17 @@ export default function EventDetails() {
 }
 
 
-function EventBody({ event, setEvent, setItemsTabOpen, setItemData , setItemModalOpen, userIsHost}) {
+function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData , setItemModalOpen, userIsHost}) {
   return (
     <>
-    <Tabs className='mt-3' value="items" >
+    <Tabs className='mt-3' value={itemsTabOpen.toString()} >
         <TabsHeader>
-            <Tab value='items' onClick={() => setItemsTabOpen(true)}>
+            <Tab value='true' onClick={() => setItemsTabOpen(true)}>
                 <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Items
                 </div>
             </Tab>
-            <Tab value='posts' onClick={() => setItemsTabOpen(false)}>
+            <Tab value='false' onClick={() => setItemsTabOpen(false)}>
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon ={faComment} className = "w-5 h-5" /> Posts
               </div>

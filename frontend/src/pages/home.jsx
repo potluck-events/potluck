@@ -10,7 +10,7 @@ import {
     Typography
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
@@ -24,7 +24,6 @@ export default function Home() {
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
     const [pending, setPending] = useState()
-    
     useEffect(() => {
         axios.get('https://potluck.herokuapp.com/events/hosting', {
             headers: {
