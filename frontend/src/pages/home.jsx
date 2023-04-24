@@ -144,7 +144,7 @@ function Events({ events }) {
             </div>)
     else
         return (
-            <Typography variant='small' className='font-semibold'>😢 No Events</Typography>
+            <Typography variant='small' className='font-semibold'>No Events</Typography>
         )
 }
 
