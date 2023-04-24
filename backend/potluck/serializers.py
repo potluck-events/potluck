@@ -77,6 +77,7 @@ class EventItemSerializer(serializers.ModelSerializer):
             'created_by',
             'user_is_creator',
             'user_is_owner',
+            'owner',
         )
 
 
