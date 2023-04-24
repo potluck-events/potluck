@@ -25,6 +25,7 @@ const token = useContext(AuthContext)
   }, [itemData]) 
 
   function handleCreateItem(i) {
+    i.preventDefault()
     const options = {
       method: itemData ? 'PATCH' : 'POST',
       url: itemData ? `https://potluck.herokuapp.com/items/${itemData.pk}`: `https://potluck.herokuapp.com/events/${pk}/items`,
@@ -37,6 +38,7 @@ const token = useContext(AuthContext)
 
     axios.request(options).then(function (response) {
       setItemData(null)
+      location.reload()
       console.log(response.data);
     }).catch(function (error) {
       console.error(error);
