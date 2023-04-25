@@ -45,7 +45,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
             Authorization: token
         }
         }).then((request) => {
-            username = request.data[0].full_name;
+            username = request.data[0]?.full_name;
         
             let invite = {
                 email: email,
@@ -57,7 +57,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
             setInvites([...invites, invite]);
             setEmail("");
             setShow(true)
-        });
+        }).catch();
     }
 
     return (
