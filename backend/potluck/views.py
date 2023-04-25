@@ -83,12 +83,13 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
         dietary_restrictions = []
         dietary_restrictions_names_json = self.request.data.get(
             'dietary_restrictions_names')
-        dietary_restrictions_names = json.loads(
-            dietary_restrictions_names_json)
-        for dr in dietary_restrictions_names:
-            dietary_restrictions.append(get_object_or_404(
-                DietaryRestriction, name=dr))
-        serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
         serializer.save()
 
 
