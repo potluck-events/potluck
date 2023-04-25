@@ -1,8 +1,9 @@
+from collections import Counter
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from .models import User, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -17,7 +18,25 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save(update_fields=['first_name', 'last_name'])
 
 
+class DietaryRestrictionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DietaryRestriction
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
+    # dietary_restrictions = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     queryset=DietaryRestriction.objects.all(),
+    #     required=False,
+    # )
+
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     class Meta:
         model = User
@@ -29,10 +48,12 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'city',
-            'thumbnail',
             'date_joined',
             'full_name',
             'initials',
+            'thumbnail',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
         )
 
         read_only_fields = ('date_joined',)
@@ -112,6 +133,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_response = serializers.SerializerMethodField()
 
     invitation_pk = serializers.SerializerMethodField()
+    dietary_restrictions_count = serializers.SerializerMethodField()
 
     def get_count_invited(self, obj):
         return obj.invitations.count()
@@ -141,6 +163,12 @@ class EventSerializer(serializers.ModelSerializer):
             return obj.invitations.get(guest=self.context['request'].user).pk
         return None
 
+    def get_dietary_restrictions_count(self, obj):
+        guests = obj.invitations.filter(response=True).values_list(
+            'guest__dietary_restrictions__name', flat=True)
+        counter = Counter(guests)
+        return dict(counter)
+
     class Meta:
         model = Event
         fields = (
@@ -166,6 +194,7 @@ class EventSerializer(serializers.ModelSerializer):
             'items',
             'posts',
             'invitation_pk',
+            'dietary_restrictions_count',
         )
 
         read_only_fields = ('host',)

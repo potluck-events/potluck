@@ -11,6 +11,8 @@ class User(AbstractUser):
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
+    dietary_restrictions = models.ManyToManyField(
+        to='DietaryRestriction', blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
@@ -20,6 +22,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class DietaryRestriction(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Event(models.Model):
