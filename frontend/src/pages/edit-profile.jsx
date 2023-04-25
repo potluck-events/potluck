@@ -23,6 +23,9 @@ export default function EditProfile(){
             }
             }).then((response) => {
                 console.log(response)
+                setFirstName(response.data.first_name)
+                setLastName(response.data.last_name)
+                setCity(response.data.city)
             })
         }, []) 
 
@@ -36,25 +39,29 @@ export default function EditProfile(){
                     setAllergies(allergies.filter(a => a !== name))
                 }}
 
-            console.log(allergies)
+            console.log(allergies.toString())
 
             const handleUpdate = () => {
-
-                const form = new FormData();
-                form.append("thumbnail", pfp);
-                form.append("first_name", firstName);
-                form.append("last_name", lastName);
-                form.append("city", city);
-                const selectedAllergies = allergies.filter(a => a.checked).map(a => a.name);
-                form.append("dietary_restrictions_names", selectedAllergies);
+                e.preventDefault()
+                // const form = new FormData();
+                // form.append("thumbnail", pfp);
+                // form.append("first_name", firstName);
+                // form.append("last_name", lastName);
+                // form.append("city", city);
+                // form.append("dietary_restrictions_names", allergies.toString());
                 const options = {
                 method: 'PATCH',
                 url: 'https://potluck.herokuapp.com/users/me',
                 headers: {
-                    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+                    'Content-Type': 'application/json',
                     Authorization: token
                 },
-                data: form
+                data: {
+                    first_name: firstName,
+                    last_name: lastName,
+                    city: city,
+                    dietary_restrictions_names: allergies
+                }
                 };
                 console.log(options);
             
@@ -69,7 +76,7 @@ export default function EditProfile(){
         <>
         <div className="mt-8 flex flex-col items-center justify-center">
             <Typography variant = 'h4' color="blue-gray">Edit your account</Typography>
-            <form onSubmit={(e) => handleSignup(e)}>
+            <form onSubmit={(e) => handleUpdate(e)}>
             <div className="mt-8 mb-4 w-80">
                 <div className="flex flex-col gap-6">
                 <div>
