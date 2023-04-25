@@ -29,6 +29,7 @@ from django.utils import timezone
 import urllib.parse
 import requests
 from .email import send
+import json
 
 
 class CustomRegisterView(RegisterView):
@@ -76,6 +77,19 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def perform_update(self, serializer):
+        serializer.save()
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        dietary_restrictions_names = json.loads(
+            dietary_restrictions_names_json)
+        for dr in dietary_restrictions_names:
+            dietary_restrictions.append(get_object_or_404(
+                DietaryRestriction, name=dr))
+        serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
 
 
 class EventsHosting(generics.ListAPIView):
