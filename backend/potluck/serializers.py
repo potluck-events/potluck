@@ -209,6 +209,12 @@ class EventSerializer(serializers.ModelSerializer):
 class EventSerializerShort(serializers.ModelSerializer):
     host = serializers.SlugRelatedField(
         read_only=True, slug_field='username')
+    user_response = serializers.SerializerMethodField()
+
+    def get_user_response(self, obj):
+        if obj.invitations.filter(guest=self.context['request'].user).exists():
+            return obj.invitations.get(guest=self.context['request'].user).response
+        return None
 
     class Meta:
         model = Event
@@ -221,6 +227,7 @@ class EventSerializerShort(serializers.ModelSerializer):
             'date_scheduled',
             'time_scheduled',
             'host',
+            'user_response',
         )
 
 
