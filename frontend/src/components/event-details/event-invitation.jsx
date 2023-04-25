@@ -32,7 +32,9 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
                 }
             };
                 
-            const r = await axios.request(options)
+            const r = await axios.request(options).catch((r) => {
+                console.log(r);
+            })
         }
         location.reload()
     }
