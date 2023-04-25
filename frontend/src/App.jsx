@@ -14,6 +14,7 @@ import Home from './pages/home'
 import useLocalStorageState from 'use-local-storage-state'
 import { Error404, Error403 } from './pages/error-pages'
 import Profile from './pages/profile';
+import EditProfile from './pages/edit-profile';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path='/events/:pk/edit' element={<EventForm />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/profile/edit' element={<EditProfile />} />
           </Route>
           <Route path='/page404' element={<Error404 />}/>
           <Route path='/page403' element={<Error403 />}/>
