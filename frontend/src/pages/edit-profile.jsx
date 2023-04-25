@@ -11,6 +11,7 @@ export default function EditProfile(){
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [pfp, setPfp] = useState()
+    const [city, setCity] = useState('')
 
 
     useEffect(() => {
@@ -30,6 +31,7 @@ export default function EditProfile(){
                 form.append("thumbnail", pfp);
                 form.append("first_name", firstName);
                 form.append("last_name", lastName);
+                form.append("city", city);
                 const options = {
                 method: 'PATCH',
                 url: 'https://potluck.herokuapp.com/users/me',
@@ -62,8 +64,11 @@ export default function EditProfile(){
                     <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
                 </div>
                 <div>
+                    <Input value={lastName} onChange={(e) => setCity(e.target.value)} label="City" size="lg" type="text" />
                 </div>
-                <label htmlFor="raised-button-file">
+                <div>
+                </div>
+                <label htmlFor="raised-button-file" className=" text-center">
                     <MButton variant="contained" component="span" className="">
                     Upload
                     </MButton>
@@ -75,7 +80,8 @@ export default function EditProfile(){
                     type="file"
                     onChange={(i) => handleUpload(i)}
                 />
-                <Button type="submit" className="" fullWidth>Update</Button>
+                
+                <Button type="submit" className=" center" fullWidth>Update</Button>
                 </div>
             </div>
             </form>
