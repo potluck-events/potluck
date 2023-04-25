@@ -8,7 +8,7 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker'
 import moment from "moment"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBackwardStep } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faBackwardStep, faX, faXmark } from "@fortawesome/free-solid-svg-icons"
 
 export default function EventForm() {
   const token = useContext(AuthContext)
@@ -42,11 +42,15 @@ export default function EventForm() {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
+
+      if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
+        setShowAddress(true)
+      }
     })
   }
   }, []) 
 
-  function handleCreateEvent(e){
+  function handleCreateEvent(e) {
     e.preventDefault()
 
     const options = {
@@ -83,6 +87,9 @@ export default function EventForm() {
   }
 
   return (<>
+      <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
+        <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
+      </div>
     <div className="mt-8 flex flex-col items-center justify-center">
       <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
@@ -119,9 +126,6 @@ export default function EventForm() {
             </div>
             </>}
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
-            <div className="text-right cursor-pointer" onClick={goBack}>
-            <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
-            </div>
           </div>
         </div>
       </form>

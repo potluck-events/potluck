@@ -187,7 +187,7 @@ function NewEventButton() {
     }
 
     return (
-        <div className="absolute bottom-5 right-5">
+        <div className="fixed bottom-5 right-5 z-50">
             <Button onClick={onClickNewEvent} className="w-20 rounded-full">
                 <div className="flex justify-center">
                 <FontAwesomeIcon icon={faCalendarPlus} className="w-10 h-14"/>
