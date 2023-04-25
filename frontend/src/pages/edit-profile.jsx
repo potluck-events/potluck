@@ -1,18 +1,19 @@
 import { useEffect, useContext, useState, Fragment } from "react"
 import axios from "axios"
 import { AuthContext } from "../context/authcontext"
-import { Typography, Button, Input, Checkbox } from "@material-tailwind/react";
+import { Typography, Button, Input } from "@material-tailwind/react";
 import { Button as MButton } from '@mui/material/';
 import { Link, useLocation, useNavigate } from "react-router-dom"
-
+import Checkbox from '@mui/material/Checkbox';
 
 export default function EditProfile(){
     const token = useContext(AuthContext)
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [pfp, setPfp] = useState()
-    const [city, setCity] = useState('')
+    const [city, setCity] = useState(' ')
     const [allergies, setAllergies] = useState([])
+    const [allergy, setAllergy] = useState('')
 
 
     useEffect(() => {
@@ -27,7 +28,18 @@ export default function EditProfile(){
                 setLastName(response.data.last_name)
                 setCity(response.data.city)
             })
+            axios.get(`https://potluck.herokuapp.com/dietary-restrictions`, {
+                headers: {
+                    'Content-Type': 'applications/json',
+                    Authorization: token
+                }
+            }).then((response) => {
+                console.log(response.data)
+                setAllergy(response.data)
+            })
         }, []) 
+
+   
 
             function handleCheckboxChange(e) {
                 const name = e.target.value;
@@ -42,37 +54,34 @@ export default function EditProfile(){
             console.log(allergies.toString())
 
             function handleUpdate(e) {
+                console.log('click')
                 e.preventDefault()
-                // const form = new FormData();
-                // form.append("thumbnail", pfp);
-                // form.append("first_name", firstName);
-                // form.append("last_name", lastName);
-                // form.append("city", city);
-                // form.append("dietary_restrictions_names", allergies.toString());
+                const form = new FormData();
+                form.append("thumbnail", pfp);
+                form.append("first_name", firstName);
+                form.append("last_name", lastName);
+                form.append("city", city);
+                form.append("dietary_restrictions_names", allergies.toString());
                 const options = {
                 method: 'PATCH',
                 url: 'https://potluck.herokuapp.com/users/me',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
                     Authorization: token
                 },
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    city: city,
-                    dietary_restrictions_names: allergies,
-                }
+                data: form 
                 };
                 console.log(options);
+                console.log(form)
             
                 axios.request(options).then(function (response) {
                 console.log(response.data);
-                console.log('click)')
                 }).catch(function (error) {
                 console.error(error);
                 });
             }
 
+            if (allergy.length > 0)
     return (
         <>
         <div className="mt-8 flex flex-col items-center justify-center">
@@ -95,20 +104,12 @@ export default function EditProfile(){
                         <Fragment>
                             <Typography variant='h5' className=' text-center'>Allergies</Typography>
                             <div className=" columns-2">
-                                <Typography><Checkbox 
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Dairy Allergy" value="Dairy Allergy" ripple={true} /></Typography>
-                                <Typography><Checkbox    
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Egg Allergy" value="Egg Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox    
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Tree-nut Allergy" value="Tree-nut Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Peanut Allergy" value="Peanut Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox 
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Vegetarian" value="Vegetarian" ripple={false} /></Typography>
-                                <Typography><Checkbox 
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Gluten-Free" value="Gluten-Free" ripple={false} /></Typography>
-                                <Typography><Checkbox   
-                                    onChange={handleCheckboxChange} id="ripple-on" label="Vegan" value="Vegan" ripple={false} /></Typography>
+                                {allergy.map((a) => {
+                                    return (
+                                <Typography className='flex justify-start items-center'><Checkbox 
+                                    onChange={handleCheckboxChange} value={a.name} id="ripple-on" />{a.name}</Typography>
+                                ) })
+                                }
                             </div>
                         </Fragment>
                     </div>
