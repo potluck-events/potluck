@@ -12,7 +12,7 @@ class User(AbstractUser):
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
     dietary_restrictions = models.ManyToManyField(
-        to='DietaryRestriction', blank=True, null=True)
+        to='DietaryRestriction', blank=True, null=True, related_name="user")
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
