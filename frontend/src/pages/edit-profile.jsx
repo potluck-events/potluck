@@ -51,17 +51,17 @@ export default function EditProfile(){
                     setAllergies(allergies.filter(a => a !== name))
                 }}
 
-            console.log(allergies.toString())
-
             function handleUpdate(e) {
                 console.log('click')
                 e.preventDefault()
                 const form = new FormData();
+                if (pfp) {
                 form.append("thumbnail", pfp);
+                }
                 form.append("first_name", firstName);
                 form.append("last_name", lastName);
                 form.append("city", city);
-                form.append("dietary_restrictions_names", allergies.toString());
+                form.append("dietary_restrictions_names", allergies)
                 const options = {
                 method: 'PATCH',
                 url: 'https://potluck.herokuapp.com/users/me',
@@ -81,12 +81,16 @@ export default function EditProfile(){
                 });
             }
 
+            function handleUpload(event) {
+                setPfp(event.target.files[0])
+            }
+
             if (allergy.length > 0)
     return (
         <>
         <div className="mt-8 flex flex-col items-center justify-center">
             <Typography variant = 'h4' color="blue-gray">Edit your account</Typography>
-            <form onSubmit={() => handleUpdate()}>
+            <form onSubmit={(e) => handleUpdate(e)}>
             <div className="mt-8 mb-4 w-80">
                 <div className="flex flex-col gap-6">
                 <div>
@@ -117,7 +121,6 @@ export default function EditProfile(){
                     <MButton variant="contained" component="span" className="">
                     Upload
                     </MButton>
-                </label> 
                 <input
                     className="input"
                     style={{ display: 'none' }}
@@ -125,6 +128,7 @@ export default function EditProfile(){
                     type="file"
                     onChange={(i) => handleUpload(i)}
                 />
+                </label> 
                 <Button type="submit" className=" center" fullWidth>Update</Button>
                 </div>
             </div>
