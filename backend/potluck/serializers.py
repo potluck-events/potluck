@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from .models import User, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -17,7 +17,18 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save(update_fields=['first_name', 'last_name'])
 
 
+class DietaryRestrictionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DietaryRestriction
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
+    dietary_restrictions = serializers.SerializerMethodField()
+
+    def get_dietary_restrictions(self, obj):
+        return [dietary_restriction.name for dietary_restriction in obj.dietary_restrictions.all()]
 
     class Meta:
         model = User
