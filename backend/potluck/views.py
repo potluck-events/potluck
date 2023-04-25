@@ -79,7 +79,7 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
         return self.request.user
 
     def perform_update(self, serializer):
-        serializer.save()
+        # serializer.save()
         dietary_restrictions = []
         dietary_restrictions_names_json = self.request.data.get(
             'dietary_restrictions_names')
