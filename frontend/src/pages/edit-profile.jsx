@@ -69,6 +69,14 @@ export default function EditProfile(){
                 </div>
                 <div>
                 </div>
+                    <div className=" border-light-blue-700 border-2 p-4 mb-6">
+                        <Fragment>
+                            <Typography variant='h5' className=' text-center'>Allergies</Typography>
+                            <Checkbox id="ripple-on" label="Ripple Effect On" ripple={true} />
+                            <Checkbox id="ripple-on" label="Ripple Effect Off" ripple={false} />
+                            <Checkbox id="ripple-on" label="Ripple Effect Off" ripple={false} />
+                        </Fragment>
+                    </div>
                 <label htmlFor="raised-button-file" className=" text-center">
                     <MButton variant="contained" component="span" className="">
                     Upload
@@ -81,7 +89,6 @@ export default function EditProfile(){
                     type="file"
                     onChange={(i) => handleUpload(i)}
                 />
-                
                 <Button type="submit" className=" center" fullWidth>Update</Button>
                 </div>
             </div>
