@@ -25,7 +25,7 @@ urlpatterns = [
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
     path('accounts/google/', views.GoogleLogin.as_view(),
          name='google_login'),  # google auth location
-    path('accounts/google/code/<str:code>', views.CodeView),
+    path('accounts/google/code/', views.CodeView),
     path('accounts/registration/',
          views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),

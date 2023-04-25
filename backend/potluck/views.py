@@ -29,6 +29,7 @@ from django.utils import timezone
 import urllib.parse
 import requests
 from .email import send
+from rest_framework.response import Response
 
 
 class CustomRegisterView(RegisterView):
@@ -48,27 +49,34 @@ class CustomRegisterView(RegisterView):
 
 
 class GoogleLogin(SocialLoginView):
-    # SOCIAL AUTH CODE IN PROGRESS
-    adapter_class = GoogleOAuth2Adapter
-    callback_url = 'http://localhost:8000/accounts/google/code'
+    # https://dj-rest-auth.readthedocs.io/en/latest/installation.html#social-authentication-optional
+    class GoogleAdapter(GoogleOAuth2Adapter):
+        access_token_url = "https://oauth2.googleapis.com/token"
+        authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
+        profile_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+    adapter_class = GoogleAdapter
+    # Callback URL was used by mobile app
+    callback_url = "http://localhost:8000/accounts/google/code"
     client_class = OAuth2Client
 
 
 @api_view(['GET'])
-def CodeView(request, code):
+def CodeView(request):
     # SOCIAL AUTH CODE IN PROGRESS
     """
     List all code snippets, or create a new snippet.
     """
 
     if request.method == 'GET':
-        print(code)
-        url = request.build_absolute_uri('/accounts/google/')
-        response = requests.post(url, json={"code": code})
-        print("yes")
-        print("yes", response)
-        breakpoint()
-        return (response.json())
+        # code = urllib.parse.unquote(request.query_params['code'])
+
+        # url = request.build_absolute_uri('/dj-rest-auth/google/')
+        # response = requests.post(url, json={"code": code})
+        # return (response.json())
+        code = urllib.parse.unquote(request.query_params['code'])
+        return Response({
+            "code": code,
+            "curl": "curl -H 'code " + code + "' http://localhost:8000/accounts/google/"})
 
 
 class UserProfile(generics.RetrieveUpdateDestroyAPIView):
