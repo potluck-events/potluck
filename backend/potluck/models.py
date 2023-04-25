@@ -63,7 +63,7 @@ class Invitation(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['event', 'guest'],
+                fields=['event', 'email'],
                 name='invitation_constraints'
             )
         ]
