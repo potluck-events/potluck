@@ -55,7 +55,7 @@ export default function Profile() {
     <div className="mt-6 flow-root">
         <div className="-my-6 divide-y divide-gray-500/10">
         <div className="columns-1 flex my-8 justify-center">
-            <Avatar className="h-80 aspect-square rounded-full w-auto mt-4" src="/temp-img/winnie.png" t="avatar" size="md" variant="circular"  />
+            <Avatar className="h-40 aspect-square rounded-full w-auto mt-4" src="/temp-img/winnie.png" t="avatar" size="md" variant="circular"  />
         </div >
             <UserName userData={userData} />
             <div>
@@ -69,6 +69,9 @@ export default function Profile() {
                 Location: 
             </Typography>
                 <UserLocation userData={userData} />
+            </div>
+            <div className="absolute right-5 bottom-5">
+                <a className=" text-light-blue-700" href='/profile/edit' >Edit Profile</a>
             </div>
         </div>
     </div>
