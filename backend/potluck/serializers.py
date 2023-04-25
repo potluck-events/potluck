@@ -1,3 +1,4 @@
+from collections import Counter
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -132,6 +133,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_response = serializers.SerializerMethodField()
 
     invitation_pk = serializers.SerializerMethodField()
+    dietary_restrictions_count = serializers.SerializerMethodField()
 
     def get_count_invited(self, obj):
         return obj.invitations.count()
@@ -161,6 +163,12 @@ class EventSerializer(serializers.ModelSerializer):
             return obj.invitations.get(guest=self.context['request'].user).pk
         return None
 
+    def get_dietary_restrictions_count(self, obj):
+        guests = obj.invitations.filter(response=True).values_list(
+            'guest__dietary_restrictions__name', flat=True)
+        counter = Counter(guests)
+        return dict(counter)
+
     class Meta:
         model = Event
         fields = (
@@ -186,6 +194,7 @@ class EventSerializer(serializers.ModelSerializer):
             'items',
             'posts',
             'invitation_pk',
+            'dietary_restrictions_count',
         )
 
         read_only_fields = ('host',)
