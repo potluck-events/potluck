@@ -82,6 +82,9 @@ class Item(models.Model):
     owner = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='items', blank=True, null=True)
 
+    class Meta:
+        ordering = ['created_by']
+
     def __str__(self):
         return f'{self.title} for {self.event}'
 
