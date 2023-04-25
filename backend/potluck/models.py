@@ -81,9 +81,10 @@ class Item(models.Model):
         to='User', on_delete=models.CASCADE, related_name='creator')
     owner = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='items', blank=True, null=True)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['created_by']
+        ordering = ['-time_created']
 
     def __str__(self):
         return f'{self.title} for {self.event}'
