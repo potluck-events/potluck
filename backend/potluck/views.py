@@ -12,13 +12,13 @@ from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
 
 # MODELS IMPORTS
-from .models import User, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post
 
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
                           UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer)
+                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -257,3 +257,8 @@ class GetUserInfo(generics.ListAPIView):
         queryset = User.objects.filter(email=self.kwargs["email"])
 
         return queryset
+
+
+class ListDietaryRestrictions(generics.ListAPIView):
+    serializer_class = DietaryRestrictionSerializer
+    queryset = DietaryRestriction.objects.all()
