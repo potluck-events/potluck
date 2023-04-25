@@ -16,6 +16,7 @@ export default function EditProfile(){
     const [allergy, setAllergy] = useState('')
 
 
+
     useEffect(() => {
             axios.get(`https://potluck.herokuapp.com/users/me`, {
             headers: {
@@ -52,7 +53,6 @@ export default function EditProfile(){
                 }}
 
             function handleUpdate(e) {
-                console.log('click')
                 e.preventDefault()
                 const form = new FormData();
                 if (pfp) {
@@ -61,15 +61,15 @@ export default function EditProfile(){
                 form.append("first_name", firstName);
                 form.append("last_name", lastName);
                 form.append("city", city);
-                form.append("dietary_restrictions_names", allergies)
+                form.append("dietary_restrictions_names", JSON.stringify(allergies))
                 const options = {
                 method: 'PATCH',
-                url: 'https://potluck.herokuapp.com/users/me',
+                url: 'http://potluck.herokuapp.com/users/me',
                 headers: {
                     'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
                     Authorization: token
                 },
-                data: form 
+                data: form
                 };
                 console.log(options);
                 console.log(form)
@@ -79,6 +79,24 @@ export default function EditProfile(){
                 }).catch(function (error) {
                 console.error(error);
                 });
+//  const form = new FormData();
+// form.append("dietary_restrictions_names", "[\"vegan\"]");
+
+// const options = {
+//   method: 'PATCH',
+//   url: 'http://127.0.0.1:8000/users/me',
+//   headers: {
+//     'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+//     Authorization: 'token ffdb97c678caf49ca887990b658200fde2018938'
+//   },
+//   data: '[form]'
+// };
+
+// axios.request(options).then(function (response) {
+//   console.log(response.data);
+// }).catch(function (error) {
+//   console.error(error);
+// });
             }
 
             function handleUpload(event) {
@@ -119,7 +137,7 @@ export default function EditProfile(){
                     </div>
                 <label htmlFor="raised-button-file" className=" text-center">
                     <MButton variant="contained" component="span" className="">
-                    Upload
+                    {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
                     </MButton>
                 <input
                     className="input"
