@@ -25,10 +25,17 @@ class DietaryRestrictionSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    dietary_restrictions = serializers.SerializerMethodField()
+    dietary_restrictions = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=DietaryRestriction.objects.all(),
+        required=False,
+    )
 
-    def get_dietary_restrictions(self, obj):
-        return [dietary_restriction.name for dietary_restriction in obj.dietary_restrictions.all()]
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     class Meta:
         model = User
@@ -45,6 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
             'initials',
             'thumbnail',
             'dietary_restrictions',
+            'dietary_restrictions_names',
         )
 
         read_only_fields = ('date_joined',)
