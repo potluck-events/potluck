@@ -33,7 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined',
             'full_name',
             'initials',
-            'thumbnail'
         )
 
         read_only_fields = ('date_joined',)
