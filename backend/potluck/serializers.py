@@ -25,11 +25,11 @@ class DietaryRestrictionSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    dietary_restrictions = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=DietaryRestriction.objects.all(),
-        required=False,
-    )
+    # dietary_restrictions = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     queryset=DietaryRestriction.objects.all(),
+    #     required=False,
+    # )
 
     dietary_restrictions_names = serializers.StringRelatedField(
         many=True,
