@@ -1,10 +1,12 @@
-import { Typography, IconButton } from "@material-tailwind/react";
+import { Typography, IconButton, Card, CardHeader, CardBody } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight, faBackwardStep } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faArrowLeft, faBackwardStep } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../context/authcontext";
 import axios from "axios";
+import moment from "moment";
+import RSVP from "../components/event-details/rsvp";
 
 
 
@@ -36,25 +38,16 @@ export default function UserInvitations() {
 
   return (
     <>
+      <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
+        <FontAwesomeIcon className="" icon={faArrowLeft} /> Home
+      </div>
     <div className="text-center my-1">
       <Typography variant='h2'>Invitations</Typography>
     </div>
     <div className='my-8 px-6'>
-      <Typography variant='h4'>Pending</Typography>
-      < Invitations  events={events.filter((event) => event.response === null)}/>
-
+      < Invitations  events={events}/>
     </div>
-    <div className='my-8 px-6'>
-      <Typography variant='h4'>Accepted</Typography>
-      < Invitations  events={events.filter((event) => event.response === true)}/>
-    </div>
-    <div className='my-8 px-6'>
-      <Typography variant='h4'>Declined</Typography>
-      < Invitations  events={events.filter((event) => event.response === false)}/>
-    </div>
-    <div className="text-right mr-5 cursor-pointer" onClick={goBack}>
-        <FontAwesomeIcon className=" text-right" icon={faBackwardStep} /> Go Back
-    </div>
+=
     </>
   )
 }
@@ -69,20 +62,29 @@ function Invitations({ events }) {
   }
   
   if (events.length) return (events.map((e, index) => (
-    <div key={index} className="flex py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
-      <div className="columns-1 py-1">
-        <Typography className="font-semibold">
-        {e.event.title}
-        </Typography>
-        <Typography className=''>
-        {e.host}
-        </Typography>
-      </div>
-      <div className="absolute right-0" onClick={() => onClickViewEvent(e.event.pk)}>
-        <IconButton variant="text" className="mt-5 mr-2">
-          <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-        </IconButton>
-      </div>
+    <div key={index} className="py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
+      <Card>
+        <CardBody className="flex">
+          {/* <CardHeader floated={false} > */}
+          <div className="flex-grow">
+          <Typography className="font-semibold">
+            {e.event.title}
+          </Typography>
+              {moment(e.event.date_scheduled).format("M/d/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
+        {/* </CardHeader> */}
+          <div className="py-1">
+            <Typography className=''>
+            </Typography>
+             <Typography>Hosted by {e.host}</Typography> 
+          </div>
+          </div><div className="" onClick={() => onClickViewEvent(e.event.pk)}>
+            <RSVP event={e.event} />
+            <IconButton variant="text" className="mt-5 mr-2">
+              <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+            </IconButton>
+          </div>
+        </CardBody>
+      </Card>
     </div>
   )))
 
