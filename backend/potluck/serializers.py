@@ -166,7 +166,12 @@ class EventSerializer(serializers.ModelSerializer):
     def get_dietary_restrictions_count(self, obj):
         guests = obj.invitations.filter(response=True).values_list(
             'guest__dietary_restrictions__name', flat=True)
-        counter = Counter(guests)
+        users = User.objects.filter(pk=obj.host.pk).values_list(
+            'dietary_restrictions__name', flat=True)
+        # guests = guests.add(Event.objects.filter(pk=obj.pk).values_list(
+        #     'host__dietary_restrictions__name', flat=True))
+        counter = Counter(users)
+        breakpoint()
         return dict(counter)
 
     class Meta:
