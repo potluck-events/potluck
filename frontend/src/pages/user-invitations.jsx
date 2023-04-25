@@ -47,7 +47,6 @@ export default function UserInvitations() {
     <div className='my-8 px-6'>
       < Invitations  events={events}/>
     </div>
-=
     </>
   )
 }
@@ -73,15 +72,14 @@ function Invitations({ events }) {
               {moment(e.event.date_scheduled).format("M/d/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
         {/* </CardHeader> */}
           <div className="py-1">
-            <Typography className=''>
-            </Typography>
              <Typography>Hosted by {e.host}</Typography> 
           </div>
-          </div><div className="" onClick={() => onClickViewEvent(e.event.pk)}>
-            <RSVP event={e.event} />
-            <IconButton variant="text" className="mt-5 mr-2">
+          </div>
+          <div className=" self-center" onClick={() => onClickViewEvent(e.event.pk)}>
+            <RSVP event={e.event} orientation={"vertical"} response={e.response === null ? "null" : e.response.toString()}/>
+            {/* <IconButton variant="text" className="mt-5 mr-2">
               <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-            </IconButton>
+            </IconButton> */}
           </div>
         </CardBody>
       </Card>
