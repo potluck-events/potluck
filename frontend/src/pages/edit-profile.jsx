@@ -72,9 +72,15 @@ export default function EditProfile(){
                     <div className=" border-light-blue-700 border-2 p-4 mb-6">
                         <Fragment>
                             <Typography variant='h5' className=' text-center'>Allergies</Typography>
-                            <Checkbox id="ripple-on" label="Ripple Effect On" ripple={true} />
-                            <Checkbox id="ripple-on" label="Ripple Effect Off" ripple={false} />
-                            <Checkbox id="ripple-on" label="Ripple Effect Off" ripple={false} />
+                            <div className=" columns-2">
+                                <Typography><Checkbox id="ripple-on" label="Dairy Allergy" ripple={true} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Egg Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Tree-nut Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Peanut Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Vegetarian" ripple={false} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Gluten-Free" ripple={false} /></Typography>
+                                <Typography><Checkbox id="ripple-on" label="Vegan" ripple={false} /></Typography>
+                            </div>
                         </Fragment>
                     </div>
                 <label htmlFor="raised-button-file" className=" text-center">
