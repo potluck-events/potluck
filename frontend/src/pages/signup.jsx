@@ -20,6 +20,8 @@ export default function SignUp({setToken}) {
   
   const handleSignup = (e) => {
     e.preventDefault()
+    
+
     const options = {
       method: 'POST',
       url: 'https://potluck.herokuapp.com/accounts/registration/',
@@ -46,6 +48,7 @@ export default function SignUp({setToken}) {
       setError(error.response.data);
     });
   }
+
   
   const handleLogin = () => {
     
@@ -63,7 +66,9 @@ export default function SignUp({setToken}) {
     
     axios.request(options).then((response) => {
       setToken('Token ' + response.data.key);
-      
+      if (pfp) {
+        handleThumbnailUpload('Token ' + response.data.key)
+      }
       //this code sends you to the page the user was redirected from visa-cis the ProtectedRoute component if it is stored in the location context
       const origin = location.state?.from?.pathname || '/'
       navigate(origin)
@@ -73,6 +78,31 @@ export default function SignUp({setToken}) {
     }); 
   }
   
+  const handleThumbnailUpload = (token) => {
+
+    const form = new FormData();
+    console.log(pfp);
+    form.append("thumbnail", pfp);
+    console.log(form);
+    const options = {
+      method: 'PATCH',
+      url: 'https://potluck.herokuapp.com/users/me',
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+        Authorization: token
+      },
+      data: form
+    };
+    console.log(options);
+
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
+
+
   function handleUpload(event) {
     setPfp(event.target.files[0])
   }
@@ -108,11 +138,9 @@ export default function SignUp({setToken}) {
                 </MButton>
               </label> 
               <input
-                accept="image/*"
                 className="input"
                 style={{ display: 'none' }}
                 id="raised-button-file"
-                multiple
                 type="file"
                 onChange={(i) => handleUpload(i)}
               />
