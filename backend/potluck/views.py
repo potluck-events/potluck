@@ -30,6 +30,7 @@ import urllib.parse
 import requests
 from .email import send
 import json
+from django.db.models import Q
 
 
 class CustomRegisterView(RegisterView):
@@ -116,6 +117,47 @@ class EventsAttending(generics.ListAPIView):
             invitations__guest__id=user.id,
             invitations__response=True,
             date_scheduled__gte=timezone.now().date()
+        )
+        return queryset
+
+
+class HostingHistory(generics.ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            host__id=user.id,
+            date_scheduled__lt=timezone.now().date()
+        )
+        return queryset
+
+
+class AttendingHistory(generics.ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            invitations__guest__id=user.id,
+            invitations__response=True,
+            date_scheduled__lt=timezone.now().date()
+        )
+        return queryset
+
+
+class EventHistory(generics.ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            Q(host__id=user.id) | Q(
+                invitations__guest__id=user.id, invitations__response=True),
+            date_scheduled__lt=timezone.now().date()
         )
         return queryset
 
