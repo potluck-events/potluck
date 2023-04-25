@@ -4,6 +4,7 @@ from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from .models import User, DietaryRestriction, Event, Invitation, Item, Post
+from itertools import chain
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -166,7 +167,11 @@ class EventSerializer(serializers.ModelSerializer):
     def get_dietary_restrictions_count(self, obj):
         guests = obj.invitations.filter(response=True).values_list(
             'guest__dietary_restrictions__name', flat=True)
-        counter = Counter(guests)
+        host = User.objects.filter(pk=obj.host.pk).values_list(
+            'dietary_restrictions__name', flat=True)
+        users = chain(host, guests)
+        counter = Counter(users)
+
         return dict(counter)
 
     class Meta:
