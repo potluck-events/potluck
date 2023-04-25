@@ -14,7 +14,7 @@ export default function RSVPList() {
   const { pk } = useParams()
   const token = useContext(AuthContext)
   const [invitations, setInvitation] = useState()
-  const [eventTitle, setEventTitle] = useState()
+  const [event, setEvent] = useState()
 
 
 
@@ -49,19 +49,19 @@ export default function RSVPList() {
 
     axios.request(options).then(function (response) {
       console.log(response.data);
-      setEventTitle(response.data.title)
+      setEvent(response.data)
     })
   }, [])
 
-  if (invitations) return (
+  if (invitations && event) return (
     <>
-      <EventTitle title={eventTitle} />
+      <EventTitle title={event.title} />
       <Invitations invitees={invitations.length} />
       <Invitation setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
-      <InviteButton setInviteModalOpen={setInviteModalOpen} />
-      <Responses header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
-      <Responses header={"TBD"} invitations={invitations.filter((i) => i.response === null)} />
-      <Responses header={"Declined"} invitations={invitations.filter((i) => i.response === false)} />
+      {event.user_is_host && <InviteButton setInviteModalOpen={setInviteModalOpen} />}
+      <Responses event={event} header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
+      <Responses event={event} header={"TBD"} invitations={invitations.filter((i) => i.response === null)} />
+      <Responses event={event} header={"Declined"} invitations={invitations.filter((i) => i.response === false)} />
 
     </>
   )
@@ -95,7 +95,7 @@ function InviteButton({setInviteModalOpen}){
   )
 }
 
-function Responses({ header, invitations }) {
+function Responses({ header, invitations, event }) {
 
   return (
     <div className='mx-5 my-5'>
