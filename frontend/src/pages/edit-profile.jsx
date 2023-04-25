@@ -12,7 +12,7 @@ export default function EditProfile(){
     const [lastName, setLastName] = useState('')
     const [pfp, setPfp] = useState()
     const [city, setCity] = useState('')
-    const [allergies, setAllergies] = useState()
+    const [allergies, setAllergies] = useState([])
 
 
     useEffect(() => {
@@ -26,6 +26,18 @@ export default function EditProfile(){
             })
         }, []) 
 
+            function handleCheckboxChange(e) {
+                const name = e.target.value;
+                const checked = e.target.checked;
+                if (checked) {
+                    setAllergies(allergies.concat(name))
+                }
+                else {
+                    setAllergies(allergies.filter(a => a !== name))
+                }}
+
+            console.log(allergies)
+
             const handleUpdate = () => {
 
                 const form = new FormData();
@@ -33,6 +45,8 @@ export default function EditProfile(){
                 form.append("first_name", firstName);
                 form.append("last_name", lastName);
                 form.append("city", city);
+                const selectedAllergies = allergies.filter(a => a.checked).map(a => a.name);
+                form.append("dietary_restrictions_names", selectedAllergies);
                 const options = {
                 method: 'PATCH',
                 url: 'https://potluck.herokuapp.com/users/me',
@@ -59,13 +73,13 @@ export default function EditProfile(){
             <div className="mt-8 mb-4 w-80">
                 <div className="flex flex-col gap-6">
                 <div>
-                    <Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} label="First Name" size="lg" type="text" />
+                    <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} label="First Name" size="lg" type="text" />
                 </div>
                 <div>
-                    <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
+                    <Input value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
                 </div>
                 <div>
-                    <Input value={lastName} onChange={(e) => setCity(e.target.value)} label="City" size="lg" type="text" />
+                    <Input value={city} onChange={(e) => setCity(e.target.value)} label="City" size="lg" type="text" />
                 </div>
                 <div>
                 </div>
@@ -73,13 +87,20 @@ export default function EditProfile(){
                         <Fragment>
                             <Typography variant='h5' className=' text-center'>Allergies</Typography>
                             <div className=" columns-2">
-                                <Typography><Checkbox id="ripple-on" label="Dairy Allergy" ripple={true} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Egg Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Tree-nut Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Peanut Allergy" ripple={false} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Vegetarian" ripple={false} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Gluten-Free" ripple={false} /></Typography>
-                                <Typography><Checkbox id="ripple-on" label="Vegan" ripple={false} /></Typography>
+                                <Typography><Checkbox 
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Dairy Allergy" value="Dairy Allergy" ripple={true} /></Typography>
+                                <Typography><Checkbox    
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Egg Allergy" value="Egg Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox    
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Tree-nut Allergy" value="Tree-nut Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Peanut Allergy" value="Peanut Allergy" ripple={false} /></Typography>
+                                <Typography><Checkbox 
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Vegetarian" value="Vegetarian" ripple={false} /></Typography>
+                                <Typography><Checkbox 
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Gluten-Free" value="Gluten-Free" ripple={false} /></Typography>
+                                <Typography><Checkbox   
+                                    onChange={handleCheckboxChange} id="ripple-on" label="Vegan" value="Vegan" ripple={false} /></Typography>
                             </div>
                         </Fragment>
                     </div>
