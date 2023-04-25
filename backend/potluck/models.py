@@ -13,7 +13,7 @@ class User(AbstractUser):
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
     dietary_restrictions = models.ManyToManyField(
-        to='DietaryRestriction', blank=True, null=True)
+        to='DietaryRestriction', blank=True)
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
@@ -68,6 +68,7 @@ class Invitation(models.Model):
                 name='invitation_constraints'
             )
         ]
+        ordering = ['-event__date_scheduled']
 
     def __str__(self):
         return f"{self.guest}'s invitation to {self.event}"
