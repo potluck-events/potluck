@@ -8,10 +8,12 @@ from .models import User, Event, Invitation, Item, Post
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
+    thumbnail = serializers.ImageField(required=False)
 
     def custom_signup(self, request, user):
         user.first_name = self.validated_data['first_name']
         user.last_name = self.validated_data['last_name']
+        user.thumbnail = self.validated_data['thumbnail']
         user.save(update_fields=['first_name', 'last_name'])
 
 

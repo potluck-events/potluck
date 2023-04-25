@@ -1,4 +1,4 @@
-
+from rest_framework.parsers import MultiPartParser
 
 # AUTHENTICATION IMPORTS
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -33,6 +33,7 @@ from .email import send
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
+    parser_classes = [MultiPartParser]
 
     def perform_create(self, serializer):
         email = self.request.data.get('email')
@@ -72,6 +73,7 @@ def CodeView(request, code):
 
 class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
+    parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
