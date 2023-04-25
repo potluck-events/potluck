@@ -12,7 +12,7 @@ from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
 
 # MODELS IMPORTS
-from .models import User, Event, Invitation, Item, Post
+from .models import User, Event, Invitation, Item, Post, DietaryRestriction
 
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
@@ -76,6 +76,12 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def perform_update(self, serializer):
+        print(self.request.data.get('dietary_restrictions_name'))
+        dietary_restriction = get_object_or_404(
+            DietaryRestriction, name=self.request.data.get('dietary_restrictions_name'))
+        serializer.save(dietary_restrictions.add(dietary_restriction))
 
 
 class EventsHosting(generics.ListAPIView):
