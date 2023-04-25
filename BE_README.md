@@ -58,3 +58,6 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /posts/pk/ --> | DELETE |
 -- user can delete post if user is author
 -- host can delete any post related to event they are host of
+
+/dietary-restrictions/ --> | GET |
+-- lists all DietaryRestriction objects
