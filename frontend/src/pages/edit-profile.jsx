@@ -1,7 +1,7 @@
-import { useEffect, useContext, useState } from "react"
+import { useEffect, useContext, useState, Fragment } from "react"
 import axios from "axios"
 import { AuthContext } from "../context/authcontext"
-import { Typography, Button, Input } from "@material-tailwind/react";
+import { Typography, Button, Input, Checkbox } from "@material-tailwind/react";
 import { Button as MButton } from '@mui/material/';
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
@@ -12,6 +12,7 @@ export default function EditProfile(){
     const [lastName, setLastName] = useState('')
     const [pfp, setPfp] = useState()
     const [city, setCity] = useState('')
+    const [allergies, setAllergies] = useState()
 
 
     useEffect(() => {
