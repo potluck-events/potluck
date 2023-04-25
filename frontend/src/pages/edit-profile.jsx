@@ -41,7 +41,7 @@ export default function EditProfile(){
 
             console.log(allergies.toString())
 
-            const handleUpdate = () => {
+            function handleUpdate(e) {
                 e.preventDefault()
                 // const form = new FormData();
                 // form.append("thumbnail", pfp);
@@ -60,13 +60,14 @@ export default function EditProfile(){
                     first_name: firstName,
                     last_name: lastName,
                     city: city,
-                    dietary_restrictions_names: allergies
+                    dietary_restrictions_names: allergies,
                 }
                 };
                 console.log(options);
             
                 axios.request(options).then(function (response) {
                 console.log(response.data);
+                console.log('click)')
                 }).catch(function (error) {
                 console.error(error);
                 });
@@ -76,14 +77,14 @@ export default function EditProfile(){
         <>
         <div className="mt-8 flex flex-col items-center justify-center">
             <Typography variant = 'h4' color="blue-gray">Edit your account</Typography>
-            <form onSubmit={(e) => handleUpdate(e)}>
+            <form onSubmit={() => handleUpdate()}>
             <div className="mt-8 mb-4 w-80">
                 <div className="flex flex-col gap-6">
                 <div>
                     <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} label="First Name" size="lg" type="text" />
                 </div>
                 <div>
-                    <Input value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
+                    <Input value= {lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
                 </div>
                 <div>
                     <Input value={city} onChange={(e) => setCity(e.target.value)} label="City" size="lg" type="text" />
