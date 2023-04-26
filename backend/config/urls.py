@@ -32,11 +32,11 @@ urlpatterns = [
     path('users/me', views.UserProfile.as_view(), name='me'),
     path('users/info/<str:email>', views.GetUserInfo.as_view()),
 
-    path('events', views.CreateEvent.as_view()),
+    path('events', views.ListCreateEvent.as_view()),
     path('events/history', views.EventHistory.as_view()),
-    path('events/hosting', views.EventsHosting.as_view()),
+    # path('events/hosting', views.EventsHosting.as_view()),
     # path('events/hosting/history', views.HostingHistory.as_view()),
-    path('events/attending', views.EventsAttending.as_view()),
+    # path('events/attending', views.EventsAttending.as_view()),
     # path('events/attending/history', views.AttendingHistory.as_view()),
 
     path('events/<int:pk>', views.EventDetails.as_view()),
