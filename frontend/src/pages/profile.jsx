@@ -38,11 +38,11 @@ export default function Profile() {
                 <Link className=" self-end" to='/profile/edit' >Edit Profile</Link>
             </Button>
         </div>
-        <div className="my-6 divide-y divide-gray-500/10">
+        <div className="my-6 mx-6 divide-y divide-gray-500/10">
             <div className="columns-1 flex flex-col mt-8 justify-center">
                 <div className="relative self-center rounded-full flex items-center justify-center bg-gray-400 w-40 h-40">
                     {user.thumbnail ?
-                    <img src={user.thumbnail} alt="user thumbnail" /> :
+                    <img src={user.thumbnail} alt="user thumbnail" className="rounded-full h-40 w-40 object-cover" /> :
                     <p className="text-white text-sm font-bold m-1 text-6xl">{user.initials}</p>}
                 </div>
                 <UserName user={user} />
@@ -99,10 +99,12 @@ export default function Profile() {
 
 function Restrictions({ user }) {
     return (
-        user.dietary_restrictions_names.map((r, index) => (
+        <div className="flex gap-3 flex-wrap justify-center max-w-4xl mt-2">
+        {user.dietary_restrictions_names.map((r, index) => (
             <div key={index}>
                 <Chip value={r} />
             </div>
             ))
-        )
+            }
+            </div>)
     }

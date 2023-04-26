@@ -210,10 +210,16 @@ class EventSerializerShort(serializers.ModelSerializer):
     host = serializers.SlugRelatedField(
         read_only=True, slug_field='username')
     user_response = serializers.SerializerMethodField()
+    invitation_pk = serializers.SerializerMethodField()
 
     def get_user_response(self, obj):
         if obj.invitations.filter(guest=self.context['request'].user).exists():
             return obj.invitations.get(guest=self.context['request'].user).response
+        return None
+
+    def get_invitation_pk(self, obj):
+        if obj.invitations.filter(guest=self.context['request'].user).exists():
+            return obj.invitations.get(guest=self.context['request'].user).pk
         return None
 
     class Meta:
@@ -228,6 +234,7 @@ class EventSerializerShort(serializers.ModelSerializer):
             'time_scheduled',
             'host',
             'user_response',
+            'invitation_pk',
         )
 
 

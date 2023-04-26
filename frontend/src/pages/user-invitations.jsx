@@ -41,11 +41,17 @@ export default function UserInvitations() {
       <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Home
       </div>
-    <div className="text-center my-1">
+    <div className="text-center mb-3">
       <Typography variant='h2'>Invitations</Typography>
     </div>
-    <div className='my-8 px-6'>
-      < Invitations  events={events}/>
+    <div className="divide-y">
+      <div className='py-4 mx-6'>
+        <Typography variant='h4' className="text-center">Pending Invitations</Typography>
+        < Invitations  events={events.filter((e) => e.response === null)}/>
+      </div>
+      <div className='py-4 mx-6'>
+        < Invitations  events={events.filter((e) => e.response !== null)}/>
+      </div>
     </div>
     </>
   )
@@ -69,7 +75,7 @@ function Invitations({ events }) {
           <Typography className="font-semibold">
             {e.event.title}
           </Typography>
-              {moment(e.event.date_scheduled).format("M/d/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
+              {moment(e.event.date_scheduled).format("M/D/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
         {/* </CardHeader> */}
           <div className="py-1">
              <Typography>Hosted by {e.host}</Typography> 
