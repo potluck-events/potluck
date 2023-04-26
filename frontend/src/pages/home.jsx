@@ -86,7 +86,7 @@ export default function Home() {
             </Tab>
             <Tab value='items'>
                 <div className="flex items-center gap-2">
-                <ListBulletIcon className = "w-5 h-5" /> Items
+                <ListBulletIcon className = "w-5 h-5" /> Shopping List
                 </div>
             </Tab>
         </TabsHeader>
@@ -101,7 +101,7 @@ export default function Home() {
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='items'>
-            <Typography variant="h2" className='py-2'>Items</Typography>
+            <Typography variant="h2" className='py-2'>Shopping List</Typography>
                 {items &&  <Items items={items}/>}
             </TabPanel>
         </TabsBody>
