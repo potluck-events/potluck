@@ -26,6 +26,7 @@ export default function Posts({posts, userIsHost}) {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
   
+  
   function handleUserPost(userPost) {
     console.log(`user post: ${userPost}`)
     const options = {

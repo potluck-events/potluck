@@ -14,7 +14,7 @@ import {
     Menu,
     MenuHandler,
     MenuList,
-    MenuItem
+    Chip,
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
 import UserAvatar from "../components/avatar";
@@ -30,36 +30,36 @@ import RSVP from "../components/event-details/rsvp";
 
 export default function Home() {
     const token = useContext(AuthContext)
-    const [hostingEvents, setHostingEvents] = useState()
-    const [attendingEvents, setAttendingEvents] =useState()
+    const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [selected, setSelected] = useState('Future Events')
 
     useEffect(() => {
-        axios.get('https://potluck.herokuapp.com/events/hosting', {
+        axios.get('https://potluck.herokuapp.com/events', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
             }
         }).then((response) => {
-            setHostingEvents(response.data)
+            setEvents(response.data)
+            console.log(response.data)
         })
         .catch(error => {
             console.error(error);
         });
         
-        axios.get('https://potluck.herokuapp.com/events/attending', {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-            }
-        }).then((response) => {
-            setAttendingEvents(response.data)
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        // axios.get('https://potluck.herokuapp.com/events/attending', {
+        // headers: {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': token
+        //     }
+        // }).then((response) => {
+        //     setAttendingEvents(response.data)
+        // })
+        // .catch(error => {
+        //     console.error(error);
+        // });
         
         axios.get('https://potluck.herokuapp.com/items', {
         headers: {
@@ -92,6 +92,7 @@ export default function Home() {
         setSelected(event.target.value);
         }
 
+        
     return (
     <>
     <Tabs className='mt-3 px-6' value="events" >
@@ -123,10 +124,10 @@ export default function Home() {
                         </Menu>
                     </div>
                 </div>
-                <Typography variant="h2" className='py-2'>Hosting</Typography>
-                {hostingEvents && <Events events={hostingEvents} />}
-                <Typography variant="h2" className='py-2'>Attending</Typography>
-                {attendingEvents && <Events events={attendingEvents} />}
+                <div>
+                    <Typography variant="h2" className='py-2'>Events</Typography>
+                    {events && <Events events={events} />}
+                </div>
             </TabPanel>
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
@@ -151,22 +152,29 @@ function Events({ events }) {
     if (events.length > 0)
         return (
             <>
-            <div className="divide-y divide-black">
+            <div className="">
                 {events.map((event, index) => {
                     return (
-                    <div className="" key={index}>
-                        <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                            <div className="columns-1 py-1" >
-                                <h2 className="font-semibold">{event.title}</h2>
-                                <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                    <Card className="my-3">
+                        <CardBody className="flex">
+                            <div className="" key={index}>
+                                <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
+                                    <div className="columns-1 py-1" >
+                                        <h2 className="font-semibold">{event.title}</h2>
+                                        <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                                    </div>
+                                        <div className="absolute right-20">
+                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
+                                        </div>
+                                    <div className="absolute right-0">
+                                        <IconButton variant="text" className="mt-1 mr-1">
+                                            <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                                        </IconButton>
+                                    </div>
+                                </div> 
                             </div>
-                            <div className="absolute right-0">
-                                <IconButton variant="text" className="mt-1 mr-1">
-                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-                                </IconButton>
-                            </div>
-                        </div> 
-                    </div>)
+                        </CardBody>
+                    </Card>)
                 })}
             </div>
             </>)
