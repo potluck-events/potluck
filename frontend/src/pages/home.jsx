@@ -26,36 +26,36 @@ import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
     const token = useContext(AuthContext)
-    const [hostingEvents, setHostingEvents] = useState()
+    const [events, setEvents] = useState()
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
     const [pending, setPending] = useState()
     const [selected, setSelected] = useState('Future Events')
 
     useEffect(() => {
-        axios.get('https://potluck.herokuapp.com/events/hosting', {
+        axios.get('https://potluck.herokuapp.com/events', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
             }
         }).then((response) => {
-            setHostingEvents(response.data)
+            setEvents(response.data)
         })
         .catch(error => {
             console.error(error);
         });
         
-        axios.get('https://potluck.herokuapp.com/events/attending', {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-            }
-        }).then((response) => {
-            setAttendingEvents(response.data)
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        // axios.get('https://potluck.herokuapp.com/events/attending', {
+        // headers: {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': token
+        //     }
+        // }).then((response) => {
+        //     setAttendingEvents(response.data)
+        // })
+        // .catch(error => {
+        //     console.error(error);
+        // });
         
         axios.get('https://potluck.herokuapp.com/items', {
         headers: {
@@ -119,10 +119,8 @@ export default function Home() {
                         </Menu>
                     </div>
                 </div>
-                <Typography variant="h2" className='py-2'>Hosting</Typography>
-                {hostingEvents && <Events events={hostingEvents} />}
-                <Typography variant="h2" className='py-2'>Attending</Typography>
-                {attendingEvents && <Events events={attendingEvents} />}
+                <Typography variant="h2" className='py-2'>Events</Typography>
+                {events && <Events events={events} />}
             </TabPanel>
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
