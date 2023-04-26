@@ -68,7 +68,7 @@ export default function EditProfile(){
 
         const options = {
         method: 'PATCH',
-        url: 'http://potluck.herokuapp.com/users/me',
+        url: 'https://potluck.herokuapp.com/users/me',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
             Authorization: token

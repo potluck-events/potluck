@@ -26,7 +26,8 @@ export default function EventForm() {
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
   const location = useLocation()
-
+  const [endTime, setEndTime] = useState(moment().add(7, 'd'))
+  
   console.log(location);
   useEffect(() => {
     if (pk) {
@@ -57,7 +58,7 @@ export default function EventForm() {
 
     const options = {
       method: location.pathname.includes("edit") ? "PATCH" : 'POST',
-      url: location.pathname.includes("edit") ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
+      url: location.pathname.includes("edit") ? `https://potluck.herokuapp.com/events/${pk}` : 'https://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -72,7 +73,8 @@ export default function EventForm() {
         state: state,
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
-        time_scheduled: dateTime.format("HH:MM")
+        time_scheduled: dateTime.format("HH:MM"),
+        end_time: endTime.format("HH:MM")
       }
     };
 
@@ -107,7 +109,10 @@ export default function EventForm() {
               <DatePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Date/Time" size="lg" />
             </div>
             <div>
-              <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Date/Time" size="lg" />
+              <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Start Time" size="lg" />
+            </div>
+            <div>
+              <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />

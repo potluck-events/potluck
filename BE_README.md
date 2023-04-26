@@ -20,12 +20,6 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /events/history/ --> | GET |
 -- list all past events that the user has attended OR hosted
 
-/events/hosting/ --> | GET |
--- lists all events hosted by current user with a date_scheduled >= today
-
-/events/attending/ --> | GET |
--- lists all events attended by current user with a date_scheduled >= today
-
 /events/pk/ --> | GET | PUT | PATCH | DELETE |
 -- shows event details. any user can make a GET request. only host can make PUT, PATCH, DELETE request.
 
@@ -54,7 +48,7 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /invitations/ --> | GET |
 -- lists all invitations received by current user with a date_scheduled >= today
 
-/invitations/ --> | GET | PUT | PATCH | DELETE |
+/invitations/pk --> | GET | PUT | PATCH | DELETE |
 -- host or guest can see invitation (get)
 -- host can delete invitation
 -- guest can accept/unaccept invitation

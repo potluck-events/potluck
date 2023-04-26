@@ -46,7 +46,8 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       <div className="flex">
         <div className="pb-2 flex-auto">
           <Typography variant="h4">{event.title}</Typography>
-          <Typography variant="lead"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')}</Typography>
+          <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
+          {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>
         </div>
         {event.user_is_host && 
           <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile}/> }

@@ -21,6 +21,7 @@ dj-rest-auth = {extras = ["with_social"], version = "*"}
 django-allauth = "*"
 django-storages = "*"
 boto3 = "*"
+icalendar = "*"
 
 [dev-packages]
 
