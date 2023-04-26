@@ -12,7 +12,9 @@ import {
     Menu,
     MenuHandler,
     MenuList,
-    Chip
+    Chip,
+    Card,
+    CardBody
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -148,25 +150,29 @@ function Events({ events }) {
     if (events.length > 0)
         return (
             <>
-            <div className="divide-y divide-black">
+            <div className="">
                 {events.map((event, index) => {
                     return (
-                    <div className="" key={index}>
-                        <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                            <div className="columns-1 py-1" >
-                                <h2 className="font-semibold">{event.title}</h2>
-                                <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                    <Card>
+                        <CardBody className="flex">
+                            <div className="" key={index}>
+                                <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
+                                    <div className="columns-1 py-1" >
+                                        <h2 className="font-semibold">{event.title}</h2>
+                                        <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                                    </div>
+                                        <div className="absolute right-20">
+                                            {event.user_is_host === true && <Chip value='Host' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
+                                        </div>
+                                    <div className="absolute right-0">
+                                        <IconButton variant="text" className="mt-1 mr-1">
+                                            <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                                        </IconButton>
+                                    </div>
+                                </div> 
                             </div>
-                                <div className="absolute right-20">
-                                    {event.user_is_host === true && <Chip value='Host' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
-                                </div>
-                            <div className="absolute right-0">
-                                <IconButton variant="text" className="mt-1 mr-1">
-                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-                                </IconButton>
-                            </div>
-                        </div> 
-                    </div>)
+                        </CardBody>
+                    </Card>)
                 })}
             </div>
             </>)
