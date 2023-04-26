@@ -50,11 +50,6 @@ export default function EventDetails() {
     });
   }, [])
 
-  function handleEditButton() {
-    console.log('click')
-      navigate(`/events/${pk}/edit`)
-  }
-
   const hasSelected = () => { 
     let some = event?.items.some((item) => {
       return item.selected === true
@@ -64,7 +59,7 @@ export default function EventDetails() {
 
   if (event) return (<>
     <div className="px-6">
-      <EventHeader event={event} mapsURL={mapsURL} handleEditButton={handleEditButton}/>
+      <EventHeader event={event} mapsURL={mapsURL} />
 
       {event.user_is_guest &&
           <div className="flex justify-between items-center">
