@@ -112,7 +112,7 @@ export default function EventForm() {
               <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Start Time" size="lg" />
             </div>
             <div>
-              <TimePicker className="w-full" required value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
+              <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
