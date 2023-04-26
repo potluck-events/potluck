@@ -17,6 +17,7 @@ import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
 import { faAnglesRight, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
     const token = useContext(AuthContext)
@@ -24,6 +25,7 @@ export default function Home() {
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
     const [pending, setPending] = useState()
+
     useEffect(() => {
         axios.get('https://potluck.herokuapp.com/events/hosting', {
             headers: {
@@ -55,6 +57,7 @@ export default function Home() {
             'Authorization': token
             }
         }).then((response) => {
+            console.log(response.data);
             setItems(response.data)
         })
         .catch(error => {
@@ -154,7 +157,7 @@ function Items({ items }) {
     if (items.length > 0)
         return (
             <div className="divide-y divide-black">
-                {items.map((item, index) => {
+                {false && items.map((item, index) => {
                     return (
                     <div className="" key={index}>
                         <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
