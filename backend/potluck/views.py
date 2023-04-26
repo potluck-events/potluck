@@ -157,7 +157,7 @@ class EventHistory(generics.ListAPIView):
             Q(host__id=user.id) | Q(
                 invitations__guest__id=user.id, invitations__response=True),
             date_scheduled__lt=timezone.now().date()
-        )
+        ).distinct().order_by('-date_scheduled')
         return queryset
 
 
