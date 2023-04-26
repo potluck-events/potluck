@@ -10,11 +10,16 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-export default function EventHeader({ event, mapsURL }) {
+export default function EventHeader({ event, mapsURL, calFile }) {
   const [showMore, setShowMore] = useState(false)
+
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
+
+  useEffect(() => {
+    
+  },[event])
 
   function handleDelete(){
     const options = {
@@ -35,6 +40,7 @@ export default function EventHeader({ event, mapsURL }) {
     navigate(`/events/${pk}/invitations`)
   }
 
+
   return (
     <div className="">
       <div className="flex">
@@ -43,7 +49,7 @@ export default function EventHeader({ event, mapsURL }) {
           <Typography variant="lead"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')}</Typography>
         </div>
         {event.user_is_host && 
-          <EditMenu pk={event.pk} handleDelete={handleDelete}/> }
+          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile}/> }
       </div>
         <div className="border-b-2 pb-1">
           <div className="mb-1 text-m">
@@ -86,7 +92,7 @@ export default function EventHeader({ event, mapsURL }) {
 }
 
 
-function EditMenu({ pk, handleDelete }){
+function EditMenu({ pk, handleDelete, calFile }){
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -135,6 +141,22 @@ function EditMenu({ pk, handleDelete }){
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="px-1 py-1 ">
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href={ calFile.url}
+                  download={ calFile.download}
+                  className={`${
+                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
+                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                >
+                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
+                  Add to Calendar
+                </a>
+              )}
+            </Menu.Item>
+          </div>
           <div className="px-1 py-1 ">
             <Menu.Item>
               {({ active }) => (
