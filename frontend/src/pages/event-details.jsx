@@ -91,7 +91,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         <TabsHeader>
             <Tab value='true' onClick={() => setItemsTabOpen(true)}>
                 <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Items
+                <FontAwesomeIcon icon ={faList} className = "w-5 h-5" /> Up-For-Grabs
                 </div>
             </Tab>
             <Tab value='false' onClick={() => setItemsTabOpen(false)}>
