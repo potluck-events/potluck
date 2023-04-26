@@ -10,20 +10,11 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-
-
-
 export default function EventHeader({ event, mapsURL, handleEditButton }) {
   const [showMore, setShowMore] = useState(false)
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
-  const [allergies, setAllergies] = useState()
-
-
-
-  console.log(event)
- 
 
   function handleDelete(){
     const options = {
