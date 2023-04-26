@@ -155,7 +155,7 @@ function Events({ events }) {
             <div className="">
                 {events.map((event, index) => {
                     return (
-                    <Card>
+                    <Card className="my-3">
                         <CardBody className="flex">
                             <div className="" key={index}>
                                 <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
@@ -164,7 +164,7 @@ function Events({ events }) {
                                         <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                                     </div>
                                         <div className="absolute right-20">
-                                            {event.user_is_host === true && <Chip value='Host' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
+                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
                                         </div>
                                     <div className="absolute right-0">
                                         <IconButton variant="text" className="mt-1 mr-1">
