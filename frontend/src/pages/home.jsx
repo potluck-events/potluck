@@ -33,10 +33,10 @@ export default function Home() {
     const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
-    const [selected, setSelected] = useState('Future Events')
+    const [isFilterFuture, setIsFilterFuture] = useState(true)
 
     useEffect(() => {
-        axios.get('https://potluck.herokuapp.com/events', {
+        axios.get(`https://potluck.herokuapp.com/events${isFilterFuture ? "" :"/history"}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -49,17 +49,7 @@ export default function Home() {
             console.error(error);
         });
         
-        // axios.get('https://potluck.herokuapp.com/events/attending', {
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': token
-        //     }
-        // }).then((response) => {
-        //     setAttendingEvents(response.data)
-        // })
-        // .catch(error => {
-        //     console.error(error);
-        // });
+
         
         axios.get('https://potluck.herokuapp.com/items', {
         headers: {
@@ -86,10 +76,10 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
-    }, [])
+    }, [isFilterFuture])
     
-    function handleRadio (event) {
-        setSelected(event.target.value);
+    function handleRadio (state) {
+        setIsFilterFuture(state);
         }
 
         
@@ -118,14 +108,14 @@ export default function Home() {
                                 <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
                             <MenuList className='flex flex-col'>
-                                <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
-                                <Radio id="Past Events" name="type" label="Past Events" value="Past Events" onChange={handleRadio} checked={selected === 'Past Events'}/>
+                                <Radio id="Future Events" name="type" label="Future Events" value="1" onChange={() => handleRadio(true)} checked={isFilterFuture}/>
+                                <Radio id="Past Events" name="type" label="Past Events" value="0" onChange={() => handleRadio(false)} checked={!isFilterFuture}/>
                             </MenuList>
                         </Menu>
                     </div>
                 </div>
                 <div>
-                    <Typography variant="h2" className='py-2'>Events</Typography>
+                    <Typography variant="h3" className='pt-4 -mb-4 text-center'>{isFilterFuture ? "My Events" : "Past Events"}</Typography>
                     {events && <Events events={events} />}
                 </div>
             </TabPanel>
@@ -156,20 +146,20 @@ function Events({ events }) {
                 {events.map((event, index) => {
                     return (
                     <Card className="my-3">
-                        <CardBody className="flex">
+                        <CardBody className="">
                             <div className="" key={index}>
-                                <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                                    <div className="columns-1 py-1" >
+                                <div onClick={() => onClickViewEvent(event.pk)} className="flex justify-between py-1 cursor-pointer">
+                                    <div className="py-1 flex-grow" >
                                         <h2 className="font-semibold">{event.title}</h2>
                                         <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
-                                    </div>
-                                        <div className="absolute right-20">
-                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
-                                        </div>
-                                    <div className="absolute right-0">
+                                  </div>
+                                    <div className="flex flex-col items-end justify-center">
                                         <IconButton variant="text" className="mt-1 mr-1">
                                             <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
                                         </IconButton>
+                                        <div className="">
+                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
+                                        </div>
                                     </div>
                                 </div> 
                             </div>
