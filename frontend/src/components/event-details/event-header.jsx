@@ -68,10 +68,10 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
         <div className="mt-2">
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
         </div>
-        <div className="flex space-x-1 flex-wrap">
+        <div className="flex space-x-1 flex-wrap justify-start">
           {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
           .filter((key) => key !== 'null').map((key) => (
-            <Chip color='red' key={key}
+            <Chip color='red' key={key} className="h-fit my-1"
               value={`${key}: ${event.dietary_restrictions_count[key]}`}
             />
           ))}
