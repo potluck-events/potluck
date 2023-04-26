@@ -7,6 +7,7 @@ import { AuthContext } from "../context/authcontext";
 import axios from "axios";
 import moment from "moment";
 import RSVP from "../components/event-details/rsvp";
+import UserAvatar from "../components/avatar";
 
 
 
@@ -72,12 +73,12 @@ function Invitations({ events }) {
       <Card>
         <CardBody className="flex">
           <div onClick={() => onClickViewEvent(e.event.pk)} className="flex-grow">
-            <Typography className="font-semibold">
+            <Typography className="font-semibold mb-1" variant="h5">
               {e.event.title}
-            </Typography>
+            </Typography >
                 {moment(e.event.date_scheduled).format("M/D/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
-            <div className="py-1">
-              <Typography>Hosted by {e.host}</Typography> 
+            <div className="flex flex-row items-center">
+               <UserAvatar user={e.host} className=" "/><Typography className="ml-1"> Hosted by {e.host}</Typography> 
             </div>
           </div>
           <div className=" self-center">
