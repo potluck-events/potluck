@@ -50,13 +50,13 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
           <EditMenu handleEditButton={handleEditButton} handleDelete={handleDelete}/> }
       </div>
         <div className="border-b-2 pb-1">
-          <p className="mb-1 text-m">
+          <div className="mb-1 text-m">
             <div className="flex items-center justify-start rounded-full">
             {event.host.thumbnail ?
               <img src={event.host.thumbnail} alt="user thumbnail" className="rounded-full h-5 w-5 object-cover -ml-1 mr-1" /> :
               <FontAwesomeIcon className="mr-1" icon={faUser} />} Hosted by {event.host.full_name}
             </div>
-          </p> 
+          </div> 
           <p className="mb-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> {event.location_name}</p>
           {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
         </div>
