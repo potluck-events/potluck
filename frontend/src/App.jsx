@@ -33,6 +33,7 @@ function App() {
             <Route path='/events/new' element={<EventForm />} />
             <Route path='/events/:pk' element={<EventDetails />} />
             <Route path='/events/:pk/edit' element={<EventForm />} />
+            <Route path='/events/:pk/copy' element={<EventForm />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/edit' element={<EditProfile />} />
