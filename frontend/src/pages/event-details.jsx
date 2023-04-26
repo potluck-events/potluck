@@ -101,7 +101,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
     <div className="fixed left-5 bottom-5 z-30 border-2 border-green-600 rounded-full p-2">
       <Tooltip content="Leave a tip for the host?" placement='right'>
         <button className="">
-          <a href="https://venmo.com/yourusername"><FontAwesomeIcon size='2xl' style={{color: "#26c51b"}}icon={faMoneyBill} /></a>
+          <a href="https://venmo.com/yourusername" target="_blank"><FontAwesomeIcon size='2xl' style={{color: "#26c51b"}}icon={faMoneyBill} /></a>
         </button>
       </Tooltip>
     </div>
