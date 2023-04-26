@@ -16,6 +16,9 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /events/ --> | POST |
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
 
+/events/history/ --> | GET |
+-- list all past events that the user has attended OR hosted
+
 /events/hosting/ --> | GET |
 -- lists all events hosted by current user with a date_scheduled >= today
 
