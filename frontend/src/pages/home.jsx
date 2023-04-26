@@ -110,7 +110,7 @@ export default function Home() {
                     <div className="absolute right-1 h-full flex items-center">
                         <Menu>
                             <MenuHandler>
-                                <FontAwesomeIcon className='mt-3' icon={faFilter}/>
+                                <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
                             <MenuList className='flex flex-col'>
                                 <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
