@@ -43,7 +43,6 @@ export default function Home() {
             }
         }).then((response) => {
             setEvents(response.data)
-            console.log(response.data)
         })
         .catch(error => {
             console.error(error);
@@ -57,7 +56,6 @@ export default function Home() {
             'Authorization': token
             }
         }).then((response) => {
-            console.log(response.data);
             setItemsEvents(response.data)
         })
         .catch(error => {
@@ -145,9 +143,9 @@ function Events({ events }) {
             <div className="">
                 {events.map((event, index) => {
                     return (
-                    <Card className="my-3">
+                    <Card className="my-3" key={index}>
                         <CardBody className="">
-                            <div className="" key={index}>
+                            <div className="" >
                                 <div onClick={() => onClickViewEvent(event.pk)} className="flex justify-between py-1 cursor-pointer">
                                     <div className="py-1 flex-grow" >
                                         <h2 className="font-semibold">{event.title}</h2>
