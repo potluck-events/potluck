@@ -2,7 +2,7 @@ import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Typography, Button, Dialog, Card } from "@material-tailwind/react";
 import moment from "moment";
-import { useState, Fragment, useRef, useContext } from "react";
+import { useState, Fragment, useRef, useContext, useEffect } from "react";
 import { useNavigate, useParams, } from "react-router-dom";
 import "../../styles/eventdetails.css"
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +18,12 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
+  const [allergies, setAllergies] = useState()
 
+
+
+  console.log(event)
+ 
 
   function handleDelete(){
     const options = {
@@ -62,6 +67,13 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
         </div>
         <div className="mt-2">
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
+        </div>
+        <div>
+          {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count).map((key) => (
+            <p key={key}>
+              {key}: {event.dietary_restrictions_count[key]}
+            </p>
+          ))}
         </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
           <div className="">
