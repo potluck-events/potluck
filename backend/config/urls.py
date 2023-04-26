@@ -34,12 +34,8 @@ urlpatterns = [
 
     path('events', views.ListCreateEvent.as_view()),
     path('events/history', views.EventHistory.as_view()),
-    # path('events/hosting', views.EventsHosting.as_view()),
-    # path('events/hosting/history', views.HostingHistory.as_view()),
-    # path('events/attending', views.EventsAttending.as_view()),
-    # path('events/attending/history', views.AttendingHistory.as_view()),
-
     path('events/<int:pk>', views.EventDetails.as_view()),
+
     path('events/<int:pk>/items', views.ListCreateItem.as_view()),
     path('events/<int:pk>/posts', views.ListCreatePost.as_view()),
     path('events/<int:pk>/invitations', views.ListCreateInvitations.as_view()),
