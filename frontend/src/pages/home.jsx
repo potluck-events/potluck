@@ -27,7 +27,6 @@ import useLocalStorageState from "use-local-storage-state";
 export default function Home() {
     const token = useContext(AuthContext)
     const [events, setEvents] = useState()
-    const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
     const [pending, setPending] = useState()
     const [selected, setSelected] = useState('Future Events')
@@ -40,6 +39,7 @@ export default function Home() {
             }
         }).then((response) => {
             setEvents(response.data)
+            console.log(response.data)
         })
         .catch(error => {
             console.error(error);
@@ -88,6 +88,7 @@ export default function Home() {
         setSelected(event.target.value);
         }
 
+        
     return (
     <>
     <Tabs className='mt-3 px-6' value="events" >
@@ -119,8 +120,10 @@ export default function Home() {
                         </Menu>
                     </div>
                 </div>
-                <Typography variant="h2" className='py-2'>Events</Typography>
-                {events && <Events events={events} />}
+                <div>
+                    <Typography variant="h2" className='py-2'>Events</Typography>
+                    {events && <Events events={events} />}
+                </div>
             </TabPanel>
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
@@ -154,6 +157,9 @@ function Events({ events }) {
                                 <h2 className="font-semibold">{event.title}</h2>
                                 <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                             </div>
+                                <div>
+                                    {event.user_is_host === true && 'Host'}
+                                </div>
                             <div className="absolute right-0">
                                 <IconButton variant="text" className="mt-1 mr-1">
                                     <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
