@@ -71,9 +71,9 @@ export default function Header({setToken}) {
       <header className="bg-white">
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-            <Link to="/" className="-m-1.5 p-1.5 flex">
-              <img className="h-10 w-auto mr-1.5" src="/temp-img/champagne-glasses.png" alt="" />
-              <span className='mt-2 text-xl font-bold'>Bash</span>
+            <Link to="/" className="-m-1.5 p-1.5 flex items-center">
+              <img className="h-8 w-auto" src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/My+project.png" alt="" />
+              <span className=' text-3xl font-bold'>Bash</span>
             </Link>
           </div>
           {token &&
