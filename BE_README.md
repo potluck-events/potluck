@@ -13,7 +13,8 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /users/info/:email/ --> | GET |
 -- shows user info whose email is in the url
 
-/events/ --> | POST |
+/events/ --> | GET | POST |
+-- shows a list of all upcoming events that the user is hosting or attending
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
 
 /events/history/ --> | GET |
