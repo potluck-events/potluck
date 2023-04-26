@@ -105,17 +105,19 @@ export default function Home() {
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events' className='py-0'>
-                <InvitationsButton className='' pending={ pending} />
-                <div className=" flex justify-end">
-                    <Menu>
-                        <MenuHandler>
-                            <FontAwesomeIcon icon={faFilter}/>
-                        </MenuHandler>
-                        <MenuList className='flex flex-col'>
-                            <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
-                            <Radio id="Past Events" name="type" label="Past Events" value="Past Events" onChange={handleRadio} checked={selected === 'Past Events'}/>
-                        </MenuList>
-                    </Menu>
+                <div className=" flex items-center justify-between">
+                    <InvitationsButton className='' pending={ pending} />
+                    <div className="self-end">
+                        <Menu>
+                            <MenuHandler>
+                                <FontAwesomeIcon icon={faFilter}/>
+                            </MenuHandler>
+                            <MenuList className='flex flex-col'>
+                                <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
+                                <Radio id="Past Events" name="type" label="Past Events" value="Past Events" onChange={handleRadio} checked={selected === 'Past Events'}/>
+                            </MenuList>
+                        </Menu>
+                    </div>
                 </div>
                 <Typography variant="h2" className='py-2'>Hosting</Typography>
                 {hostingEvents && <Events events={hostingEvents} />}
