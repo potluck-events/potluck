@@ -13,6 +13,8 @@ import Items from "../components/event-details/items";
 import { NewItemButton, ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
 import useLocalStorageState from "use-local-storage-state";
+import { createEvent } from 'ics'
+import moment from "moment";
 
 export default function EventDetails() {
   const location = useLocation()
@@ -20,10 +22,12 @@ export default function EventDetails() {
   const [event, setEvent] = useState()
   const [mapsURL, setMapsURL] = useState()
   const [itemModalOpen, setItemModalOpen] = useState(false)
+  const [calFile, setCalFile] = useState(false)
   const [itemData, setItemData] = useState()
   const [itemsTabOpen, setItemsTabOpen] = useLocalStorageState('tabState', { defaultValue: true }) //Is the "tab" on items?
   const token = useContext(AuthContext)
   const navigate = useNavigate()
+  console.log(location);
   useEffect(() => {
   
     const options = {
@@ -37,7 +41,7 @@ export default function EventDetails() {
     axios.request(options).then(function (response) {
       console.log(response.data);
       setEvent(response.data)
-
+      createICS(response.data)
       if (response.data.street_address) {
         let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`
         setMapsURL(url)
@@ -57,9 +61,49 @@ export default function EventDetails() {
     return some
   }
 
+  function createICS(event) {
+    let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
+    let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
+    console.log(start);
+    const options = {
+      start: start,
+      startOutputType:"local",
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      url: `https://bash-events.netlify.app/events/${event.pk}`,
+    }
+    end ? options.end = end : ""
+
+    handleDownload()
+
+    async function handleDownload() {
+      const filename = `${event.title}.ics`
+      const file = await new Promise((resolve, reject) => {
+        createEvent(options, (error, value) => {
+          if (error) {
+            reject(error)
+          }
+          
+          resolve(new File([value], filename, { type: 'plain/text' }))
+        })
+      })
+      
+      const url = URL.createObjectURL(file);
+      
+      // trying to assign the file URL to a window could cause cross-site
+      // issues so this is a workaround using HTML5
+      setCalFile({url: url, download: filename})
+ 
+      
+      // URL.revokeObjectURL(url);
+    }
+  }
+
+
   if (event) return (<>
     <div className="px-6">
-      <EventHeader event={event} mapsURL={mapsURL} />
+      <EventHeader event={event} mapsURL={mapsURL} calFile={calFile} />
 
       {event.user_is_guest &&
           <div className="flex justify-between items-center">
