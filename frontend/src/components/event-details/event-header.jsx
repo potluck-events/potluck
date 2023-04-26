@@ -1,6 +1,6 @@
 import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Button, Dialog, Card } from "@material-tailwind/react";
+import { Typography, Button, Dialog, Card, Chip } from "@material-tailwind/react";
 import moment from "moment";
 import { useState, Fragment, useRef, useContext, useEffect } from "react";
 import { useNavigate, useParams, } from "react-router-dom";
@@ -68,11 +68,12 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
         <div className="mt-2">
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
         </div>
-        <div>
-          {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count).map((key) => (
-            <p key={key}>
-              {key}: {event.dietary_restrictions_count[key]}
-            </p>
+        <div className="flex space-x-1 flex-wrap">
+          {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
+          .filter((key) => key !== 'null').map((key) => (
+            <Chip color='red' key={key}
+              value={`${key}: ${event.dietary_restrictions_count[key]}`}
+            />
           ))}
         </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
