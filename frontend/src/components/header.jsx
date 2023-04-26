@@ -16,7 +16,7 @@ import {
 import { AuthContext } from '../context/authcontext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import UserAvatar from './avatar';
 import { useNavigate } from "react-router-dom";
 
@@ -82,9 +82,10 @@ export default function Header({setToken}) {
             <div className="flex">
               <button
                 type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
               >
-                <UserAvatar user={userData} className='w-6 h-6' />
+                    <UserAvatar user={userData} className='w-6 h-6' />
+                    <FontAwesomeIcon icon={faAngleDown}/>
               </button>
             </div>
             </MenuHandler>
