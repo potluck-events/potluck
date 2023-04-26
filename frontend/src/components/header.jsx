@@ -73,7 +73,7 @@ export default function Header({setToken}) {
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 flex">
               <img className="h-10 w-auto mr-1.5" src="/temp-img/champagne-glasses.png" alt="" />
-              <span className='mt-2 text-xl'>PotLuck</span>
+              <span className='mt-2 text-xl font-bold'>Bash</span>
             </Link>
           </div>
           {token &&
