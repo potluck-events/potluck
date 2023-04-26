@@ -20,7 +20,6 @@ export default function Profile() {
         'Authorization': token
         }
         }).then((response) => {
-        console.log(response.data);
         setUser(response.data)
         })
         .catch(error => {
@@ -53,7 +52,7 @@ export default function Profile() {
                 </Typography>
                 <EmailAddress user={user} />
             </div>
-            <div  className="py-2"v>
+            <div  className="py-2">
                 <Typography variant='paragraph' className="text-center" color="gray">
                     Dietary Restrictions: 
                 </Typography>
@@ -61,8 +60,8 @@ export default function Profile() {
                             <Link to={'/profile/edit'}><Typography variant='paragraph' className='text-center text-light-blue-800 italic'>Add Dietary Restrictions</Typography></Link>}
             </div>
                     
-            { user.location && <div>
-                <Typography variant='paragraph' className="text-center pt-6" color="gray">
+            { user.city && <div className="py-2">
+                <Typography variant='paragraph' className="text-center" color="gray">
                     Location: 
                 </Typography>
                 <UserLocation user={user} />

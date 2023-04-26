@@ -1,4 +1,4 @@
-import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Typography, Button, Dialog, Card, Chip } from "@material-tailwind/react";
 import moment from "moment";
@@ -10,7 +10,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-export default function EventHeader({ event, mapsURL, handleEditButton }) {
+export default function EventHeader({ event, mapsURL }) {
   const [showMore, setShowMore] = useState(false)
   const { pk } = useParams()
   const navigate = useNavigate()
@@ -43,7 +43,7 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
           <Typography variant="lead"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')}</Typography>
         </div>
         {event.user_is_host && 
-          <EditMenu handleEditButton={handleEditButton} handleDelete={handleDelete}/> }
+          <EditMenu pk={event.pk} handleDelete={handleDelete}/> }
       </div>
         <div className="border-b-2 pb-1">
           <div className="mb-1 text-m">
@@ -86,8 +86,9 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
 }
 
 
-function EditMenu({ handleEditButton, handleDelete }){
+function EditMenu({ pk, handleDelete }){
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const navigate = useNavigate()
 
   function handleDeleteConfirmation() {
     setIsConfirmDeleteOpen(true);
@@ -101,6 +102,14 @@ function EditMenu({ handleEditButton, handleDelete }){
     handleDelete();
     setIsConfirmDeleteOpen(false);
   };
+
+  function handleEditButton() {
+      navigate(`/events/${pk}/edit`)
+  }
+
+  function handleCopy() {
+      navigate(`/events/${pk}/copy`)
+  }
 
   
 
@@ -140,7 +149,22 @@ function EditMenu({ handleEditButton, handleDelete }){
                 </button>
               )}
             </Menu.Item>
-            </div>
+          </div>
+          <div className="px-1 py-1 ">
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={handleCopy}
+                  className={`${
+                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
+                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                >
+                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCopy} />
+                  Duplicate
+                </button>
+              )}
+            </Menu.Item>
+          </div>
           <div className="px-1 py-1">
             <Menu.Item>
               {({ active }) => (

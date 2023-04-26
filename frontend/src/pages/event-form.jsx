@@ -1,6 +1,6 @@
 import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
 import { useContext, useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {DatePicker} from '@mui/x-date-pickers/DatePicker'
@@ -25,7 +25,9 @@ export default function EventForm() {
   const [error, setError] = useState('')
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
+  const location = useLocation()
 
+  console.log(location);
   useEffect(() => {
     if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
@@ -54,8 +56,8 @@ export default function EventForm() {
     e.preventDefault()
 
     const options = {
-      method: pk ? "PATCH" : 'POST',
-      url: pk ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
+      method: location.pathname.includes("edit") ? "PATCH" : 'POST',
+      url: location.pathname.includes("edit") ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
