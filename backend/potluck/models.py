@@ -43,11 +43,12 @@ class Event(models.Model):
     zipcode = models.CharField(max_length=20, blank=True, null=True)
     date_scheduled = models.DateField()
     time_scheduled = models.TimeField()
+    end_time = models.TimeField(blank=True, null=True)
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
 
     class Meta:
-        ordering = ['-date_scheduled']
+        ordering = ['date_scheduled']
 
     def __str__(self):
         return f'{self.title} hosted by {self.host}'
