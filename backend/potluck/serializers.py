@@ -256,7 +256,7 @@ class UserItemSerializer(serializers.ModelSerializer):
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
-    event = EventSerializerShort()
+    event = EventSerializer()
     host = serializers.SerializerMethodField()
 
     def get_host(self, obj):
