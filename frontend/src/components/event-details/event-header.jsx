@@ -46,12 +46,16 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       <div className="flex">
         <div className="pb-2 flex-auto">
           <Typography variant="h4">{event.title}</Typography>
+        </div>
+        {event.user_is_host ? 
+          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} /> :
+          <a href={ calFile.url} download={ calFile.download} className='mb-2 hover:bg-blue-400 hover:text-white text-gray-900 group flex items-center rounded-md px-2 text-sm h-12'>
+                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
+                  Add to Calendar
+                </a> }
+      </div>
           <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
           {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>
-        </div>
-        {event.user_is_host && 
-          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile}/> }
-      </div>
         <div className="border-b-2 pb-1">
           <div className="mb-1 text-m">
             <div className="flex items-center justify-start rounded-full">
@@ -124,10 +128,10 @@ function EditMenu({ pk, handleDelete, calFile }){
     <div className="text-right">
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-400">
+        <Menu.Button className="inline-flex items-center w-full justify-center rounded-md px-2 py-1 text-sm text-white bg-blue-600 hover:bg-blue-400">
           Options
           <FontAwesomeIcon icon={faAngleDown}
-            className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
+            className="ml-2 -mr-1 h-4 w-4 text-violet-200 hover:text-violet-100"
             aria-hidden="true"
           />
         </Menu.Button>
