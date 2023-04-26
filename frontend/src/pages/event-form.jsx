@@ -57,7 +57,7 @@ export default function EventForm() {
 
     const options = {
       method: location.pathname.includes("edit") ? "PATCH" : 'POST',
-      url: location.pathname.includes("edit") ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
+      url: location.pathname.includes("edit") ? `https://potluck.herokuapp.com/events/${pk}` : 'https://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
