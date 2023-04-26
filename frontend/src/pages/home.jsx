@@ -15,8 +15,6 @@ import {
     MenuHandler,
     MenuList,
     Chip,
-    Card,
-    CardBody
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
