@@ -68,7 +68,7 @@ class Invitation(models.Model):
                 name='invitation_constraints'
             )
         ]
-        ordering = ['-event__date_scheduled']
+        ordering = ['event__date_scheduled']
 
     def __str__(self):
         return f"{self.guest}'s invitation to {self.event}"
