@@ -26,7 +26,7 @@ export default function EventForm() {
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
   const location = useLocation()
-
+  
   console.log(location);
   useEffect(() => {
     if (pk) {
