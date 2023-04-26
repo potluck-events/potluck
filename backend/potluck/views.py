@@ -167,11 +167,8 @@ class UserItems(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Item.objects.filter(
-            owner__id=user.id,
-            event__date_scheduled__gte=timezone.now().date()
-        )
-        return queryset
+        return Event.objects.filter(items__owner=user,
+                                    date_scheduled__gte=timezone.now().date()).distinct()
 
 
 class UserInvitations(generics.ListAPIView):

@@ -45,8 +45,8 @@ export default function RSVP({ event, response, orientation }) {
   if (event) return (
 
       <ToggleButtonGroup orientation={orientation} value={rsvp} exclusive size="small" color="primary" onChange={handleRSVP}>
-        <ToggleButton value="true"><FontAwesomeIcon icon ={faCheck} className="mr-1"/> Attending</ToggleButton>
-        <ToggleButton value="false"><FontAwesomeIcon icon ={faXmark} className="mr-1"/> Can't Go</ToggleButton>
+        <ToggleButton value="true"><FontAwesomeIcon icon ={faCheck} className={`mr-1 ${rsvp==="true" && " text-green-700"}`}/> Attending</ToggleButton>
+        <ToggleButton value="false"><FontAwesomeIcon icon ={faXmark} className={`mr-1 ${rsvp==="false" && " text-red-700"}`}/> Can't Go</ToggleButton>
       </ToggleButtonGroup>
     
   )
