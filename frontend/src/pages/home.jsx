@@ -105,12 +105,12 @@ export default function Home() {
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events' className='py-0'>
-                <div className=" flex items-center justify-between">
-                    <InvitationsButton className='' pending={ pending} />
-                    <div className="self-end">
+                <div className="relative flex items-center justify-center">
+                    <InvitationsButton pending={ pending} />
+                    <div className="absolute right-1 h-full flex items-center">
                         <Menu>
                             <MenuHandler>
-                                <FontAwesomeIcon icon={faFilter}/>
+                                <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
                             <MenuList className='flex flex-col'>
                                 <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
