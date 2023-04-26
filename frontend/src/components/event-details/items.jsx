@@ -1,13 +1,13 @@
 import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TabsBody, TabPanel, Typography } from "@material-tailwind/react";
+import { TabsBody, TabPanel, Typography, Button } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import "../../styles/eventdetails.css"
 import Checkbox from '@mui/material/Checkbox';
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import UserAvatar from "../avatar";
-
+import { Tooltip } from "@mui/material";
 
 export default function Items({ items, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   
@@ -101,9 +101,16 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
       </div>
       <div className="flex flex-col gap-3">
         {item.owner &&
-          <UserAvatar user={item.owner}>
-            {item.user_is_owner && <FontAwesomeIcon onClick={handleReleaseOwner} icon={faXmarkCircle} className="bg-white cursor-pointer rounded-full absolute -top-1 -right-1 h-4 w-4" />}
-          </UserAvatar>}
+          <>
+          <Tooltip title={item.owner.full_name} placement="left">
+              <button className=" cursor-default">
+                <UserAvatar user={item.owner}>
+                  {item.user_is_owner && <FontAwesomeIcon onClick={handleReleaseOwner} icon={faXmarkCircle} className="bg-white cursor-pointer rounded-full absolute -top-1 -right-1 h-4 w-4" />}
+                </UserAvatar>
+              </button>
+            </Tooltip>
+          </>
+}
         {((userIsHost || item.user_is_creator)&& expanded) &&
           <>
             <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
