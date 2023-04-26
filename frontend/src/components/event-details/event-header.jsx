@@ -59,26 +59,28 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
         <div className="mt-2">
           <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
         </div>
-        <div className="border-t-2 mt-1 pt-1 flex gap-x-1 flex-wrap justify-start">
-          {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
-          .filter((key) => key !== 'null').map((key) => (
-            <Chip color='blue' key={key} className="h-fit my-1"
-              value={`${key}`}
-            />
-          ))}
-        </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
           <div className="">
             <p className="font-bold">Attendees</p>
             <div className="flex justify-around gap-2">
-              <p>Going { event.rsvp_yes}</p>
-              <p>Can't go { event.rsvp_no}</p>
-              <p>TBD { event.rsvp_tbd}</p>
+              <p>Going: { event.rsvp_yes}</p>
+              <p>Can't go: { event.rsvp_no}</p>
+              <p>TBD: { event.rsvp_tbd}</p>
             </div>
           </div>  
-        
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
+        <div className="">
+            <p variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</p>
+            <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
+              {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
+              .filter((key) => key !== 'null').map((key) => (
+                <Chip color='blue' key={key} className="h-fit my-1"
+                  value={`${key}`}
+                />
+              ))}
+            </div>
+          </div>
       </div>
   )
 }
