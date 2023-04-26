@@ -14,11 +14,11 @@ export default function Items({ items, setEvent, setItemData, setItemModalOpen, 
   if (items.length) return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='true' >
-        <Typography variant="h4" >Host needs</Typography>
+        <Typography variant="h5" >Host needs</Typography>
         <div className="pl-0 divide-y">{items.filter((i) => !i.owner).map((item, index) => (
             <Item key={index} item={item} setEvent={setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />))}
         </div>
-        <Typography variant="h4" className="mt-3">Guests bringing</Typography>
+        <Typography variant="h5" className="mt-3">Guests bringing</Typography>
         <div className="pl-0 divide-y">{items.filter((i)=> i.owner).map((item, index) => (
           <Item key={index} item={item} setEvent={setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />))}
         </div>
