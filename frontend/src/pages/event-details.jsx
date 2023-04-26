@@ -67,7 +67,7 @@ export default function EventDetails() {
       <EventHeader event={event} mapsURL={mapsURL} handleEditButton={handleEditButton}/>
 
       {event.user_is_guest &&
-          <div className="mt-2 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <p className="font-bold">RSVP:</p>  <RSVP event={event} />
           </div>}
       

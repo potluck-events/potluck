@@ -1,8 +1,8 @@
 import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Button, Dialog, Card } from "@material-tailwind/react";
+import { Typography, Button, Dialog, Card, Chip } from "@material-tailwind/react";
 import moment from "moment";
-import { useState, Fragment, useRef, useContext } from "react";
+import { useState, Fragment, useRef, useContext, useEffect } from "react";
 import { useNavigate, useParams, } from "react-router-dom";
 import "../../styles/eventdetails.css"
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
@@ -10,15 +10,11 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-
-
-
 export default function EventHeader({ event, mapsURL, handleEditButton }) {
   const [showMore, setShowMore] = useState(false)
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
-
 
   function handleDelete(){
     const options = {
@@ -67,14 +63,24 @@ export default function EventHeader({ event, mapsURL, handleEditButton }) {
           <div className="">
             <p className="font-bold">Attendees</p>
             <div className="flex justify-around gap-2">
-              <p>Going { event.rsvp_yes}</p>
-              <p>Can't go { event.rsvp_no}</p>
-              <p>TBD { event.rsvp_tbd}</p>
+              <p>Going: { event.rsvp_yes}</p>
+              <p>Can't go: { event.rsvp_no}</p>
+              <p>TBD: { event.rsvp_tbd}</p>
             </div>
           </div>  
-        
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
+        <div className="">
+            <p variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</p>
+            <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
+              {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
+              .filter((key) => key !== 'null').map((key) => (
+                <Chip color='blue' key={key} className="h-fit my-1"
+                  value={`${key}`}
+                />
+              ))}
+            </div>
+          </div>
       </div>
   )
 }
