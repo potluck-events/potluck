@@ -78,7 +78,7 @@ function Invitations({ events }) {
             </Typography >
                 {moment(e.event.date_scheduled).format("M/D/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
             <div className="flex flex-row items-center">
-               <UserAvatar user={e.host} className=" "/><Typography className="ml-1"> Hosted by {e.host}</Typography> 
+               <UserAvatar user={e.event.host} className=" "/><Typography className="ml-1"> Hosted by {e.host}</Typography> 
             </div>
           </div>
           <div className=" self-center">

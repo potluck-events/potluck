@@ -7,7 +7,12 @@ import {
     TabPanel,
     Button,
     IconButton,
-    Typography
+    Typography,
+    Radio,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,8 +20,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
     const token = useContext(AuthContext)
@@ -24,6 +30,8 @@ export default function Home() {
     const [attendingEvents, setAttendingEvents] =useState()
     const [items, setItems] = useState()
     const [pending, setPending] = useState()
+    const [selected, setSelected] = useState('Future Events')
+
     useEffect(() => {
         axios.get('https://potluck.herokuapp.com/events/hosting', {
             headers: {
@@ -55,6 +63,7 @@ export default function Home() {
             'Authorization': token
             }
         }).then((response) => {
+            console.log(response.data);
             setItems(response.data)
         })
         .catch(error => {
@@ -75,6 +84,10 @@ export default function Home() {
         });
     }, [])
     
+    function handleRadio (event) {
+        setSelected(event.target.value);
+        }
+
     return (
     <>
     <Tabs className='mt-3 px-6' value="events" >
@@ -92,7 +105,20 @@ export default function Home() {
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events' className='py-0'>
-                <InvitationsButton className='' pending={ pending} />
+                <div className=" flex items-center justify-between">
+                    <InvitationsButton className='' pending={ pending} />
+                    <div className="self-end">
+                        <Menu>
+                            <MenuHandler>
+                                <FontAwesomeIcon icon={faFilter}/>
+                            </MenuHandler>
+                            <MenuList className='flex flex-col'>
+                                <Radio id="Future Events" name="type" label="Future Events" value="Future Events" onChange={handleRadio} checked={selected === 'Future Events'}/>
+                                <Radio id="Past Events" name="type" label="Past Events" value="Past Events" onChange={handleRadio} checked={selected === 'Past Events'}/>
+                            </MenuList>
+                        </Menu>
+                    </div>
+                </div>
                 <Typography variant="h2" className='py-2'>Hosting</Typography>
                 {hostingEvents && <Events events={hostingEvents} />}
                 <Typography variant="h2" className='py-2'>Attending</Typography>
@@ -120,6 +146,7 @@ function Events({ events }) {
 
     if (events.length > 0)
         return (
+            <>
             <div className="divide-y divide-black">
                 {events.map((event, index) => {
                     return (
@@ -137,7 +164,8 @@ function Events({ events }) {
                         </div> 
                     </div>)
                 })}
-            </div>)
+            </div>
+            </>)
     else
         return (
             <Typography variant='small' className='font-semibold'>No Events</Typography>
@@ -154,7 +182,7 @@ function Items({ items }) {
     if (items.length > 0)
         return (
             <div className="divide-y divide-black">
-                {items.map((item, index) => {
+                {false && items.map((item, index) => {
                     return (
                     <div className="" key={index}>
                         <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
