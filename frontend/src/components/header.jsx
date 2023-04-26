@@ -54,7 +54,6 @@ export default function Header({setToken}) {
       'Authorization': token
     }
     }).then((response) => {
-      console.log(response.data);
       setUserData(response.data)
     })
     .catch(error => {

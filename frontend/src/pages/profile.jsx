@@ -20,7 +20,6 @@ export default function Profile() {
         'Authorization': token
         }
         }).then((response) => {
-        console.log(response.data);
         setUser(response.data)
         })
         .catch(error => {
