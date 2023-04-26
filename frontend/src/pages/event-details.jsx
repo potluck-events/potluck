@@ -66,7 +66,10 @@ export default function EventDetails() {
     <div className="px-6">
       <EventHeader event={event} mapsURL={mapsURL} handleEditButton={handleEditButton}/>
 
-      {event.user_is_guest && <RSVP event={event} />}
+      {event.user_is_guest &&
+          <div className="mt-2 flex justify-between items-center">
+            <p className="font-bold">RSVP:</p>  <RSVP event={event} />
+          </div>}
       
       <EventBody event={event} setEvent={setEvent} setItemsTabOpen={setItemsTabOpen} itemsTabOpen={itemsTabOpen} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={event.user_is_host} />
       
