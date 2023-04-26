@@ -184,10 +184,19 @@ class UserInvitations(generics.ListAPIView):
         return queryset
 
 
-class CreateEvent(generics.CreateAPIView):
+class ListCreateEvent(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            Q(host__id=user.id) | Q(
+                invitations__guest__id=user.id, invitations__response=True),
+            date_scheduled__gte=timezone.now().date()
+        ).distinct()
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
