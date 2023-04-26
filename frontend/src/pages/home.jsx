@@ -10,6 +10,8 @@ import {
     Typography,
     Card,
     CardBody,
+    Card,
+    CardBody,
     Radio,
     Menu,
     MenuHandler,
@@ -22,7 +24,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus, faFilter, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
 import UserAvatar from "../components/avatar";
@@ -31,7 +33,7 @@ import RSVP from "../components/event-details/rsvp";
 export default function Home() {
     const token = useContext(AuthContext)
     const [events, setEvents] = useState()
-    const [items, setItems] = useState()
+    const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [selected, setSelected] = useState('Future Events')
 
