@@ -12,7 +12,7 @@ import {
     Menu,
     MenuHandler,
     MenuList,
-    MenuItem
+    Chip
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faFilter, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
 
@@ -157,8 +157,8 @@ function Events({ events }) {
                                 <h2 className="font-semibold">{event.title}</h2>
                                 <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                             </div>
-                                <div>
-                                    {event.user_is_host === true && 'Host'}
+                                <div className="absolute right-20">
+                                    {event.user_is_host === true && <Chip value='Host' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
                                 </div>
                             <div className="absolute right-0">
                                 <IconButton variant="text" className="mt-1 mr-1">
