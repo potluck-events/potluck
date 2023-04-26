@@ -7,7 +7,9 @@ import {
     TabPanel,
     Button,
     IconButton,
-    Typography
+    Typography,
+    Card,
+    CardBody
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,15 +17,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
+import UserAvatar from "../components/avatar";
+import RSVP from "../components/event-details/rsvp";
 
 export default function Home() {
     const token = useContext(AuthContext)
     const [hostingEvents, setHostingEvents] = useState()
     const [attendingEvents, setAttendingEvents] =useState()
-    const [items, setItems] = useState()
+    const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
 
     useEffect(() => {
@@ -58,7 +62,7 @@ export default function Home() {
             }
         }).then((response) => {
             console.log(response.data);
-            setItems(response.data)
+            setItemsEvents(response.data)
         })
         .catch(error => {
             console.error(error);
@@ -105,7 +109,7 @@ export default function Home() {
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='items'>
             <Typography variant="h2" className='py-2'>Shopping List</Typography>
-                {items &&  <Items items={items}/>}
+                {itemsEvents &&  <Items events={itemsEvents}/>}
             </TabPanel>
         </TabsBody>
     </Tabs>
@@ -148,37 +152,63 @@ function Events({ events }) {
 }
 
 
-function Items({ items }) {
-    const navigate = useNavigate()
+function Items({ events }) {
+  const navigate = useNavigate()
 
-    function onClickViewEvent(pk){
-        navigate(`/events/${pk}`)
-    }
-    if (items.length > 0)
-        return (
-            <div className="divide-y divide-black">
-                {false && items.map((item, index) => {
-                    return (
-                    <div className="" key={index}>
-                        <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
-                            <div className="columns-1 py-1" >
-                                <h2 className="font-semibold">{item.title}</h2>
-                                <p>{item.event.title}</p>
-                            </div>
-                            <div className="absolute right-0">
-                                <IconButton variant="text" className="mt-1 mr-1">
-                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6" />
-                                </IconButton>
-                            </div>
-                        </div> 
-                    </div>)
-                })}
+  function onClickViewEvent(pk){
+      navigate(`/events/${pk}`)
+  }
+  
+  if (events.length) return (events.map((e, index) => (
+    <div key={index} className="py-1 cursor-pointer">
+      <Card>
+        <CardBody className="flex relative">
+          <div onClick={() => onClickViewEvent(e.event.pk)} className="flex-grow">
+            <div className="flex items-center justify-between">
+                <div>
+                    <Typography className="font-semibold mb-1" variant="h5">
+                        {e.title}
+                    </Typography >
+                    {moment(e.date_scheduled).format("M/D/yyyy")}
+                </div>
+                <div className="self-end">
+                    <IconButton variant="text" className="mt-1 mr-1">
+                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                    </IconButton>
+                          </div>
             </div>
-        )
-    else 
-        return (
-            <Typography variant='small' className='font-semibold'>No Items</Typography>
-        )
+                <Typography className="font-semibold mb-1" variant="h6">
+                    I'm bringing:
+                </Typography >
+            <div>
+                <div className="pl-0 divide-y border rounded">
+                {e.items.map((item, index) => (
+                        <EventItem item={item} key={index} />
+                        ))}
+                </div>
+            </div>
+
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  )))
+
+  return (
+    <div className="flex h-20 items-center justify-center"><p className=" text-gray-500">No invitations</p></div>
+  )
+}
+
+function EventItem({ item }) {
+    return (
+    <div className="flex flex-auto flex-row items-center gap-3 py-1" >
+        <FontAwesomeIcon className="ml-1" icon={faSquareCheck}/>
+        <div>
+            <p className="font-semibold">{item.title}</p>
+            {item.description && <p className=" text-sm">{item.description}</p>}
+        </div>
+    </div>
+    )
 }
 
 
