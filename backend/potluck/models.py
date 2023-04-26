@@ -6,13 +6,14 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
     nickname = models.CharField(max_length=50, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='media', blank=True, null=True)
+    thumbnail = models.ImageField(
+        upload_to='thumbnails', blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
     dietary_restrictions = models.ManyToManyField(
-        to='DietaryRestriction', blank=True, null=True)
+        to='DietaryRestriction', blank=True, related_name="user")
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
@@ -67,6 +68,7 @@ class Invitation(models.Model):
                 name='invitation_constraints'
             )
         ]
+        ordering = ['-event__date_scheduled']
 
     def __str__(self):
         return f"{self.guest}'s invitation to {self.event}"

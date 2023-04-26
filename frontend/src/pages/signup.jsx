@@ -134,7 +134,7 @@ export default function SignUp({setToken}) {
               </div>
               <label htmlFor="raised-button-file">
                 <MButton variant="contained" component="span" className="">
-                  Upload
+                  {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
                 </MButton>
               </label> 
               <input
