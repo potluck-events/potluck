@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 export default function EditProfile(){
     const token = useContext(AuthContext)
+    const navigate = useNavigate()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [pfp, setPfp] = useState()
@@ -45,15 +46,11 @@ export default function EditProfile(){
     function handleCheckboxChange(e) {
         const name = e.target.value;
         const checked = e.target.checked;
-        console.log(allergies)
-        console.log(name);
         if (allergies.indexOf(name) >= 0) {
             setAllergies(allergies.filter(a => a !== name))
-            console.log("in");
         }
         else {
             setAllergies(allergies.concat(name))
-            console.log("not in");
         }}
 
     function handleUpdate(e) {
@@ -80,7 +77,7 @@ export default function EditProfile(){
         };
     
         axios.request(options).then(function (response) {
-            location.reload()
+            navigate("/profile")
         }).catch(function (error) {
             console.error(error);
         });
