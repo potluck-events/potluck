@@ -44,11 +44,12 @@ export default function UserInvitations() {
     <div className="text-center mb-3">
       <Typography variant='h2'>Invitations</Typography>
     </div>
-    <div className="divide-y">
-      <div className='py-4 mx-6'>
-        <Typography variant='h4' className="text-center">Pending Invitations</Typography>
-        < Invitations  events={events.filter((e) => e.response === null)}/>
-      </div>
+    <div className="divide-y-2">
+      {events.filter((e) => e.response === null).length !== 0 &&
+        <div className='py-4 mx-6'>
+          <Typography variant='h4' className="text-center">Pending Invitations</Typography>
+          < Invitations events={events.filter((e) => e.response === null)} />
+        </div>}
       <div className='py-4 mx-6'>
         < Invitations  events={events.filter((e) => e.response !== null)}/>
       </div>
@@ -67,25 +68,20 @@ function Invitations({ events }) {
   }
   
   if (events.length) return (events.map((e, index) => (
-    <div key={index} className="py-1 cursor-pointer" onClick={() => onClickViewEvent(e.event.pk)}>
+    <div key={index} className="py-1 cursor-pointer">
       <Card>
         <CardBody className="flex">
-          {/* <CardHeader floated={false} > */}
-          <div className="flex-grow">
-          <Typography className="font-semibold">
-            {e.event.title}
-          </Typography>
-              {moment(e.event.date_scheduled).format("M/D/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
-        {/* </CardHeader> */}
-          <div className="py-1">
-             <Typography>Hosted by {e.host}</Typography> 
+          <div onClick={() => onClickViewEvent(e.event.pk)} className="flex-grow">
+            <Typography className="font-semibold">
+              {e.event.title}
+            </Typography>
+                {moment(e.event.date_scheduled).format("M/D/yyyy")} at {moment(e.event.time_scheduled, "HH:mm:ss").format("hh:mm A")}
+            <div className="py-1">
+              <Typography>Hosted by {e.host}</Typography> 
+            </div>
           </div>
-          </div>
-          <div className=" self-center" onClick={() => onClickViewEvent(e.event.pk)}>
+          <div className=" self-center">
             <RSVP event={e.event} orientation={"vertical"} response={e.response === null ? "null" : e.response.toString()}/>
-            {/* <IconButton variant="text" className="mt-5 mr-2">
-              <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-            </IconButton> */}
           </div>
         </CardBody>
       </Card>

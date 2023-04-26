@@ -16,6 +16,7 @@ export default function RSVP({ event, response, orientation }) {
   const token = useContext(AuthContext)
 
   const handleRSVP = (e, newRsvp) => {
+    e.preventDefault()
     if (newRsvp !== null) {
       setRsvp(newRsvp)
     } else {
