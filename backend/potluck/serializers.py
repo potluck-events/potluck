@@ -238,21 +238,41 @@ class EventSerializerShort(serializers.ModelSerializer):
         )
 
 
-class UserItemSerializer(serializers.ModelSerializer):
-    event = EventSerializerShort(read_only=True, )
-
+class ItemSerializerShort(serializers.ModelSerializer):
     class Meta:
         model = Item
+        fields = ['title', 'description', 'owner']
+
+
+class UserItemSerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
         fields = (
             'pk',
             'title',
             'description',
-            'event',
-            'created_by',
-            'owner',
+            'host',
+            'items',
         )
 
-        read_only_fields = ('created_by',)
+        read_only_fields = ()
+
+    def get_items_for_user(self, items, user):
+        return [item for item in items if item.owner == user]
+
+    def get_items(self, instance):
+        request = self.context.get('request')
+        user = request.user
+        items = instance.items.filter(owner=user)
+        serializer = ItemSerializerShort(items, many=True)
+        return serializer.data
+
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['items'] = self.get_items(instance)
+    #     return rep
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
