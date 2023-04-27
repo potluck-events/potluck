@@ -225,23 +225,27 @@ function Items({ events }) {
 
 function EventItem({ item }) {
     const token = useContext(AuthContext)
+    const [isAcquired, setIsAcquired] = useState(item.is_acquired)
     console.log(item)
 
     function handleChecked(){
-        axios.patch(`https://potluck.herokuapp.com/items/${item.pk}`, {
+        const options = {
+            method: 'PATCH',
+            url: `https://potluck.herokuapp.com/items/${item.pk}`,
             headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token
-                    },
-                    data: {is_acquired: !item.is_acquired}
-        })
+                'Content-Type': 'application/json',
+                Authorization: token
+            },
+            data: {is_acquired: !isAcquired}
+            };
+        axios.request(options).then(setIsAcquired(!isAcquired))
     }
 
     return (
     <div className="flex flex-auto flex-row items-center gap-3" >
         <div>
         <Typography className='flex justify-start items-center'>
-            <Checkbox checked={item.is_acquired} onChange={handleChecked} value={item.title} id="ripple-on" />
+            <Checkbox checked={isAcquired} onChange={handleChecked} value={item.title} id="ripple-on" />
                 {item.title}
         </Typography>
         </div>
