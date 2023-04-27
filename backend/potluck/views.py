@@ -321,3 +321,27 @@ class UserNotifications(generics.ListAPIView):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
         return queryset
+
+
+@receiver(post_save, sender=Invitation)
+def create_invitation_notification(sender, instance, **kwargs):
+    if kwargs.get('created', False):
+        recipient = instance.guest
+        header = f'New Invitation!'
+        message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message)
+
+
+@receiver(post_save, sender=Invitation)
+def create_rsvp_notification(sender, instance, **kwargs):
+    if not kwargs.get('created', False):
+        if instance.response is not None:
+            recipient = instance.event.host
+            header = f'New RSVP!'
+            if instance.response == True:
+                message = f'{instance.guest} has accepted your invitation to {instance.event.title}!'
+            else:
+                message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
+            Notification.objects.create(
+                recipient=recipient, header=header, message=message)
