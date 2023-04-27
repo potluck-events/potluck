@@ -89,13 +89,10 @@ export default function EventDetails() {
         })
       })
       
-      const url = URL.createObjectURL(file).replace("https","webcal").replace("http","webcal");
+      const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
       setCalFile({url: url, download: filename})
- 
-      
-      // URL.revokeObjectURL(url);
     }
   }
 
