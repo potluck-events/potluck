@@ -47,7 +47,7 @@ export default function EventForm() {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
-      setEndTime(moment(`${response.data?.end_time}`))
+      setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
       setVenmoHandle(response.data.tip_jar)
 
       if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
