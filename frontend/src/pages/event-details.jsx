@@ -143,10 +143,10 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
     { event.tip_jar &&
-    <div className="fixed left-5 bottom-5 z-30 border-2 border-green-600 rounded-full p-2">
+    <div className="fixed left-5 bottom-5 z-50 border-2 border-green-700 rounded-full p-2 bg-green-100">
       <Tooltip content="Leave a tip for the host?" placement='right' className="ml-2 bg-light-blue-600">
         <button className="">
-          <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"><FontAwesomeIcon size='2xl' style={{color: "#26c51b"}}icon={faMoneyBill} /></a>
+          <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"><FontAwesomeIcon size='2xl' style={{color: "#3b9145"}}icon={faMoneyBill} /></a>
         </button>
       </Tooltip>
     </div>
