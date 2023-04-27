@@ -10,7 +10,7 @@ function close () {
     setInviteModalOpen(false)
   }
 
-export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
+export default function InvitationModal({ inviteModalOpen, setInviteModalOpen }) {
     const { pk } = useParams()
     const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
