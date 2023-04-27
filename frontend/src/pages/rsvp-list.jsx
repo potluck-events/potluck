@@ -1,12 +1,13 @@
-import { Typography, Button } from "@material-tailwind/react";
+import { Typography, Button, Chip } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faLink, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faLink, faShare, faShareFromSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import InvitationModal from "../components/event-details/invitation-modal";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import UserAvatar from "../components/avatar";
+import { Dialog, Transition } from "@headlessui/react";
 
 
 export default function RSVPList() {
@@ -61,6 +62,7 @@ export default function RSVPList() {
       <EventTitle title={event.title} />
       <Invitations invitees={invitations.length} />
       <InvitationModal setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
+      <LinkModal event={event} setLinkModalOpen={setLinkModalOpen} linkModalOpen={linkModalOpen} />
       {event.user_is_host && <InviteButton setInviteModalOpen={setInviteModalOpen} setLinkModalOpen={setLinkModalOpen} />}
       <Responses event={event} header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
       <Responses event={event} header={"TBD"} invitations={invitations.filter((i) => i.response === null)} />
@@ -94,7 +96,7 @@ function InviteButton({setInviteModalOpen, setLinkModalOpen}){
   return (
     <div className='mx-4 my-4 flex gap-2'>
       <Button onClick={() => setInviteModalOpen(true)} fullWidth>Invite Guests</Button>
-      <Button onClick={() => setLinkModalOpen(true)} className="basis-1/4" variant="outlined"><FontAwesomeIcon icon={faLink} /> Link</Button>
+      <Button onClick={() => setLinkModalOpen(true)} className="basis-1/3 p-0" variant="outlined"><FontAwesomeIcon icon={faLink} /> Link</Button>
 
     </div>
   )
@@ -119,8 +121,57 @@ function Responses({ header, invitations, event }) {
   )
 }
 
-function LinkModal(linkModalOpen, setLinkModalOpen) {
-  
-  return null
+function LinkModal({event, linkModalOpen, setLinkModalOpen}) {
+  function handleShare() {
+    
+  }
+
+  return (<>
+        <Transition appear show={linkModalOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-20" onClose={ setLinkModalOpen}>
+            <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+            >
+                <Dialog.Panel className="w-full max-w-md transform flex-wrap overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                >
+                    <Typography variant="h4" className='text-center'>Invitation Link</Typography>
+                </Dialog.Title>
+                <div className="flex items-center justify-center rounded my-3 bg-gray-200 hover:bg-gray-300 h-20">
+                  <p className="text-gray-700">{`bash-events.netlify.app/${event.invite_code}`}</p>  
+                </div>
+
+                  <div className=''>
+                    <Button onClick={handleShare} className=" w-full" ><FontAwesomeIcon icon={faShareFromSquare} /> Share Invite</Button>
+                  </div>
+                </Dialog.Panel>
+            </Transition.Child>
+            </div>
+        </div>
+        </Dialog>
+    </Transition>
+    </>)
 }
 
