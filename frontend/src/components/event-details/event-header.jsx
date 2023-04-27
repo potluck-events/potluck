@@ -10,7 +10,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-export default function EventHeader({ event, mapsURL }) {
+export default function EventHeader({ event, mapsURL, calFile }) {
   const [showMore, setShowMore] = useState(false)
   const { pk } = useParams()
   const navigate = useNavigate()
@@ -40,12 +40,16 @@ export default function EventHeader({ event, mapsURL }) {
       <div className="flex">
         <div className="pb-2 flex-auto">
           <Typography variant="h4">{event.title}</Typography>
+        </div>
+        {event.user_is_host ? 
+          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} /> :
+          <a href={ calFile.url} download={ calFile.download} className='mb-2 hover:bg-blue-400 hover:text-white text-gray-900 group flex items-center rounded-md px-2 text-sm h-12'>
+                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
+                  Add to Calendar
+                </a> }
+        </div>
           <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
           {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>
-        </div>
-        {event.user_is_host && 
-          <EditMenu pk={event.pk} handleDelete={handleDelete}/> }
-      </div>
         <div className="border-b-2 pb-1">
           <div className="mb-1 text-m">
             <div className="flex items-center justify-start rounded-full">
@@ -87,7 +91,7 @@ export default function EventHeader({ event, mapsURL }) {
 }
 
 
-function EditMenu({ pk, handleDelete }){
+function EditMenu({ pk, handleDelete,  calFile  }){
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -136,6 +140,22 @@ function EditMenu({ pk, handleDelete }){
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="px-1 py-1 ">
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href={ calFile.url}
+                  download={ calFile.download}
+                  className={`${
+                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
+                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                >
+                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
+                  Add to Calendar
+                </a>
+              )}
+            </Menu.Item>
+          </div>
           <div className="px-1 py-1 ">
             <Menu.Item>
               {({ active }) => (
