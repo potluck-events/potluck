@@ -95,7 +95,6 @@ class Item(models.Model):
     dietary_restrictions = models.ManyToManyField(
         to='DietaryRestriction', blank=True, related_name='item')
     time_created = models.DateTimeField(auto_now_add=True)
-    time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-time_created']
