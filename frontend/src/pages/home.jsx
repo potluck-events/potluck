@@ -150,7 +150,7 @@ function Events({ events }) {
                                     <div className="py-1 justify-between flex items-center" >
                                         <h2 className="font-semibold">{event.title}</h2>
                                             {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faHouseChimney} className=" h-4 w-4 p-0.5"/>}/>}
-                                  </div>
+                                    </div>
                                     <div className="flex flex-row items-center justify-between">
                                     <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                                         <IconButton variant="text" className="mt-1 mr-1">
@@ -179,10 +179,10 @@ function Items({ events }) {
   }
   
   if (events.length) return (events.map((e, index) => (
-    <div key={index} className="py-1 cursor-pointer">
-      <Card className="">
+<div key={index} className="py-1 cursor-pointer">
+    <Card className="">
         <CardBody className="flex relative">
-          <div onClick={() => onClickViewEvent(e.pk)} className="flex-grow">
+        <div onClick={() => onClickViewEvent(e.pk)} className="flex-grow">
             <div className="flex items-center justify-between">
                 <div>
                     <Typography className="font-semibold mb-1" variant="h5">
@@ -194,7 +194,7 @@ function Items({ events }) {
                     <IconButton variant="text" className="mt-1 mr-1">
                         <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
                     </IconButton>
-                          </div>
+                        </div>
             </div>
                 <Typography className="font-semibold mb-1" variant="h6">
                     I'm bringing:
@@ -207,15 +207,15 @@ function Items({ events }) {
                 </div>
             </div>
 
-          </div>
+        </div>
         </CardBody>
-      </Card>
+    </Card>
     </div>
-  )))
+)))
 
-  return (
+    return (
     <div className="flex h-20 items-center justify-center"><p className=" text-gray-500">No invitations</p></div>
-  )
+    )
 }
 
 function EventItem({ item }) {
