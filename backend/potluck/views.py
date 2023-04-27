@@ -12,13 +12,13 @@ from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
 
 # MODELS IMPORTS
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
                           UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer)
+                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -31,6 +31,9 @@ import requests
 from .email import send
 import json
 from django.db.models import Q
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CustomRegisterView(RegisterView):
@@ -308,3 +311,13 @@ class GetUserInfo(generics.ListAPIView):
 class ListDietaryRestrictions(generics.ListAPIView):
     serializer_class = DietaryRestrictionSerializer
     queryset = DietaryRestriction.objects.all()
+
+
+class UserNotifications(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.filter(recipient=user)
+        return queryset
