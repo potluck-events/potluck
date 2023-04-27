@@ -248,6 +248,7 @@ class ItemSerializerShort(serializers.ModelSerializer):
         model = Item
         fields = (
             'title',
+            'pk',
             'description',
             'owner',
             'is_acquired',
