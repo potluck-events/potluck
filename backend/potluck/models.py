@@ -46,6 +46,7 @@ class Event(models.Model):
     end_time = models.TimeField(blank=True, null=True)
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
+    tip_jar = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         ordering = ['date_scheduled']
