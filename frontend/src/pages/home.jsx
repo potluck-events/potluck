@@ -87,6 +87,9 @@ export default function Home() {
         
     return (
     <>
+    {/* <div className="flex justify-center py-1">
+        <img src="temp-img/logo2.png" alt="" />
+    </div> */}
     <Tabs className='mt-3 px-6' value="events" >
         <TabsHeader>
             <Tab value='events'>
