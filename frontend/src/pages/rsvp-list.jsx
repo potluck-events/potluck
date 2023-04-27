@@ -8,6 +8,7 @@ import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import UserAvatar from "../components/avatar";
 import { Dialog, Transition } from "@headlessui/react";
+import { Alert, Collapse, IconButton, Tooltip } from "@mui/material";
 
 
 export default function RSVPList() {
@@ -121,10 +122,30 @@ function Responses({ header, invitations, event }) {
   )
 }
 
-function LinkModal({event, linkModalOpen, setLinkModalOpen}) {
+function LinkModal({ event, linkModalOpen, setLinkModalOpen }) {
+  const inviteLink = `bash-events.netlify.app/invite-code/${event.invite_code}`
+  const [showCopy, setShowCopy] = useState(false)
   function handleShare() {
-    
+    if (navigator.share) {
+      navigator.share({
+        title: 'WebShare API Demo',
+        url: `bash-events.netlify.app/invite-code/${event.invite_code}`
+      })
+    } else {
+      console.log("nope");
+    }
   }
+
+  function handleCopy() {
+    setShowCopy(true)
+    navigator.clipboard.writeText(inviteLink)
+    setTimeout(() => {
+      console.log("hit");
+      setShowCopy(false)
+    }, 2000);
+  }
+
+
 
   return (<>
         <Transition appear show={linkModalOpen} as={Fragment}>
@@ -154,18 +175,24 @@ function LinkModal({event, linkModalOpen, setLinkModalOpen}) {
             >
                 <Dialog.Panel className="w-full max-w-md transform flex-wrap overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                     <Dialog.Title
-                    as="h3"
+                    as="div"
                     className="text-lg font-medium leading-6 text-gray-900"
                 >
                     <Typography variant="h4" className='text-center'>Invitation Link</Typography>
+                    <Typography variant="paragraph" className='text-center'>Send this link to your guests to allow them to RSVP themselves - click the link to copy to the clipboard</Typography>
                 </Dialog.Title>
-                <div className="flex items-center justify-center rounded my-3 bg-gray-200 hover:bg-gray-300 h-20">
-                  <p className="text-gray-700">{`bash-events.netlify.app/${event.invite_code}`}</p>  
-                </div>
-
-                  <div className=''>
-                    <Button onClick={handleShare} className=" w-full" ><FontAwesomeIcon icon={faShareFromSquare} /> Share Invite</Button>
+                <Collapse in={showCopy}>
+                  <Alert>
+                    Copied to Clipboard!
+                  </Alert>
+                </Collapse>
+                  <div className="flex items-center justify-center rounded my-3 bg-gray-200 hover:bg-gray-300 h-20" onClick={handleCopy}>
+                    <p className="text-gray-700 text-center">{inviteLink}</p>  
                   </div>
+                
+
+                {navigator.share && <Button onClick={handleShare} className=" w-full" ><FontAwesomeIcon icon={faShareFromSquare} /> Share Invite</Button>}
+                  
                 </Dialog.Panel>
             </Transition.Child>
             </div>
