@@ -123,7 +123,7 @@ export default function EventForm() {
             </div>
               <Switch id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
               {isOn === true &&
-            <div className=''>
+            <div className='flex'>
               <Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
             </div>}
             <div>
