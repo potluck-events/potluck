@@ -245,7 +245,12 @@ class EventSerializerShort(serializers.ModelSerializer):
 class ItemSerializerShort(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['title', 'description', 'owner']
+        fields = (
+            'title',
+            'description',
+            'owner',
+            'is_acquired',
+        )
 
 
 class UserItemSerializer(serializers.ModelSerializer):
