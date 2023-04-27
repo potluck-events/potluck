@@ -17,7 +17,7 @@ import {
     Chip,
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
@@ -27,6 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
 import UserAvatar from "../components/avatar";
 import RSVP from "../components/event-details/rsvp";
+import Checkbox from '@mui/material/Checkbox';
 
 export default function Home() {
     const token = useContext(AuthContext)
@@ -34,6 +35,8 @@ export default function Home() {
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [isFilterFuture, setIsFilterFuture] = useState(true)
+    const [shoppingList, setShoppingList] = useState(false)
+
 
     useEffect(() => {
         axios.get(`https://potluck.herokuapp.com/events${isFilterFuture ? "" :"/history"}`, {
@@ -56,6 +59,7 @@ export default function Home() {
             'Authorization': token
             }
         }).then((response) => {
+            console.log(response.data)
             setItemsEvents(response.data)
         })
         .catch(error => {
@@ -174,33 +178,29 @@ function Events({ events }) {
 function Items({ events }) {
   const navigate = useNavigate()
 
-  function onClickViewEvent(pk){
-      navigate(`/events/${pk}`)
-  }
-  
-  if (events.length) return (events.map((e, index) => (
-<div key={index} className="py-1 cursor-pointer">
+    function onClickViewEvent(pk){
+        navigate(`/events/${pk}`)
+    }
+
+    if (events.length) return (events.map((e, index) => (
+<div key={index} className="py-1">
     <Card className="">
         <CardBody className="flex relative">
-        <div onClick={() => onClickViewEvent(e.pk)} className="flex-grow">
+        <div className="flex-grow">
             <div className="flex items-center justify-between">
                 <div>
-                    <Typography className="font-semibold mb-1" variant="h5">
+                    <Typography className="font-semibold" variant="h5">
                         {e.title}
                     </Typography >
-                    {moment(e.date_scheduled).format("M/D/yyyy")}
                 </div>
                 <div className="self-end">
-                    <IconButton variant="text" className="mt-1 mr-1">
-                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                    <IconButton variant="text" className=" mr-1">
+                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer" onClick={() => onClickViewEvent(e.pk)}/>
                     </IconButton>
                         </div>
             </div>
-                <Typography className="font-semibold mb-1" variant="h6">
-                    I'm bringing:
-                </Typography >
             <div>
-                <div className="pl-0 divide-y border rounded">
+                <div className="pl-0">
                 {e.items.map((item, index) => (
                         <EventItem item={item} key={index} />
                         ))}
@@ -218,13 +218,35 @@ function Items({ events }) {
     )
 }
 
+// function handleCheckChange(){
+//     setShoppingList()
+// }
+
 function EventItem({ item }) {
+    const token = useContext(AuthContext)
+    const [isAcquired, setIsAcquired] = useState(item.is_acquired)
+    console.log(item)
+
+    function handleChecked(){
+        const options = {
+            method: 'PATCH',
+            url: `https://potluck.herokuapp.com/items/${item.pk}`,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+            },
+            data: {is_acquired: !isAcquired}
+            };
+        axios.request(options).then(setIsAcquired(!isAcquired))
+    }
+
     return (
-    <div className="flex flex-auto flex-row items-center gap-3 py-1" >
-        <FontAwesomeIcon className="ml-1" icon={faSquareCheck}/>
+    <div className="flex flex-auto flex-row items-center gap-3" >
         <div>
-            <p className="font-semibold">{item.title}</p>
-            {item.description && <p className=" text-sm">{item.description}</p>}
+        <Typography className='flex justify-start items-center'>
+            <Checkbox checked={isAcquired} onChange={handleChecked} value={item.title} id="ripple-on" />
+                {item.title}
+        </Typography>
         </div>
     </div>
     )
