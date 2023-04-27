@@ -1,4 +1,4 @@
-import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
+import { Input, Typography, Button, Textarea, Select, Option, Switch} from "@material-tailwind/react"
 import { useContext, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
@@ -28,6 +28,7 @@ export default function EventForm() {
   const location = useLocation()
   const [endTime, setEndTime] = useState(moment().add(7, 'd'))
   const [venmoHandle, setVenmoHandle] = useState('')
+  const [isOn, setIsOn] = useState(false)
   
   console.log(location);
   useEffect(() => {
@@ -92,6 +93,10 @@ export default function EventForm() {
     navigate(-1)
   }
 
+  function switchToggle() {
+    setIsOn(!isOn)
+  }
+
   return (<>
       <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
@@ -116,9 +121,11 @@ export default function EventForm() {
             <div>
               <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
+              <Switch id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
+              {isOn === true &&
             <div className=''>
               <Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
-            </div>
+            </div>}
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
               {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="small" >Add address</Typography>}
