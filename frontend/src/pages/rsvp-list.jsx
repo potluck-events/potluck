@@ -1,9 +1,9 @@
 import { Typography, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faLink, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import Invitation from "../components/event-details/event-invitation";
+import InvitationModal from "../components/event-details/invitation-modal";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import UserAvatar from "../components/avatar";
@@ -11,6 +11,7 @@ import UserAvatar from "../components/avatar";
 
 export default function RSVPList() {
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [linkModalOpen, setLinkModalOpen] = useState(false)
   const { pk } = useParams()
   const token = useContext(AuthContext)
   const [invitations, setInvitation] = useState()
@@ -59,8 +60,8 @@ export default function RSVPList() {
       </div>
       <EventTitle title={event.title} />
       <Invitations invitees={invitations.length} />
-      <Invitation setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
-      {event.user_is_host && <InviteButton setInviteModalOpen={setInviteModalOpen} />}
+      <InvitationModal setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
+      {event.user_is_host && <InviteButton setInviteModalOpen={setInviteModalOpen} setLinkModalOpen={setLinkModalOpen} />}
       <Responses event={event} header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
       <Responses event={event} header={"TBD"} invitations={invitations.filter((i) => i.response === null)} />
       <Responses event={event} header={"Declined"} invitations={invitations.filter((i) => i.response === false)} />
@@ -89,10 +90,12 @@ function Invitations({invitees}){
   )
 }
 
-function InviteButton({setInviteModalOpen}){
+function InviteButton({setInviteModalOpen, setLinkModalOpen}){
   return (
-    <div className='mx-4 my-4'>
+    <div className='mx-4 my-4 flex gap-2'>
       <Button onClick={() => setInviteModalOpen(true)} fullWidth>Invite Guests</Button>
+      <Button onClick={() => setLinkModalOpen(true)} className="basis-1/4" variant="outlined"><FontAwesomeIcon icon={faLink} /> Link</Button>
+
     </div>
   )
 }
@@ -114,5 +117,10 @@ function Responses({ header, invitations, event }) {
         }
     </div>
   )
+}
+
+function LinkModal(linkModalOpen, setLinkModalOpen) {
+  
+  return null
 }
 
