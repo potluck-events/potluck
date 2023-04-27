@@ -27,6 +27,7 @@ export default function EventForm() {
   const { pk } = useParams()
   const location = useLocation()
   const [endTime, setEndTime] = useState(moment().add(7, 'd'))
+  const [venmoHandle, setVenmoHandle] = useState('')
   
   console.log(location);
   useEffect(() => {
@@ -74,7 +75,8 @@ export default function EventForm() {
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
         time_scheduled: dateTime.format("HH:MM"),
-        end_time: endTime.format("HH:MM")
+        end_time: endTime.format("HH:MM"),
+        tip_jar: venmoHandle,
       }
     };
 
@@ -113,6 +115,9 @@ export default function EventForm() {
             </div>
             <div>
               <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
+            </div>
+            <div className=''>
+              <Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
             </div>
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
