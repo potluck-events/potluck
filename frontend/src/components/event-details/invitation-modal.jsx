@@ -6,10 +6,6 @@ import { AuthContext } from "../../context/authcontext"
 import axios from 'axios'
 import React from "react";
 
-function close () {
-    setInviteModalOpen(false)
-  }
-
 export default function InvitationModal({ inviteModalOpen, setInviteModalOpen }) {
     const { pk } = useParams()
     const token = useContext(AuthContext)
