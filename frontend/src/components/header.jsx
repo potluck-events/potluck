@@ -45,6 +45,7 @@ export default function Header({setToken}) {
     }).catch((error) => {
       console.error(error);
     }); 
+    setToken(null)
   }
 
   useEffect(() => {
