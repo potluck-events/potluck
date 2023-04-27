@@ -52,4 +52,5 @@ urlpatterns = [
 
     path('posts/<int:pk>', views.DeletePost.as_view()),
     path('dietary-restrictions', views.ListDietaryRestrictions.as_view()),
+    path('notifications', views.UserNotifications.as_view()),
 ]
