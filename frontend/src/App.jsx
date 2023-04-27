@@ -15,6 +15,7 @@ import useLocalStorageState from 'use-local-storage-state'
 import { Error404, Error403 } from './pages/error-pages'
 import Profile from './pages/profile';
 import EditProfile from './pages/edit-profile';
+import InviteCodeRedirect from './pages/invite-code';
 
 
 function App() {
