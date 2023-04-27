@@ -26,7 +26,7 @@ export default function EventForm() {
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
   const location = useLocation()
-  const [endTime, setEndTime] = useState(moment().add(7, 'd'))
+  const [endTime, setEndTime] = useState(null)
   const [venmoHandle, setVenmoHandle] = useState('')
   const [isOn, setIsOn] = useState(false)
   
@@ -47,6 +47,8 @@ export default function EventForm() {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
+      setEndTime(moment(`${response.data?.end_time}`))
+      setVenmoHandle(response.data.tip_jar)
 
       if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
         setShowAddress(true)
@@ -119,7 +121,7 @@ export default function EventForm() {
               <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Start Time" size="lg" />
             </div>
             <div>
-              <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
+              <TimePicker className="w-full" value={endTime ?? null} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
