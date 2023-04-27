@@ -98,6 +98,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         <Items items={event.items} setEvent={setEvent} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={userIsHost} />
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
+    { event.tip_jar &&
     <div className="fixed left-5 bottom-5 z-30 border-2 border-green-600 rounded-full p-2">
       <Tooltip content="Leave a tip for the host?" placement='right'>
         <button className="">
@@ -105,6 +106,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         </button>
       </Tooltip>
     </div>
+    }
     </>
   )
 }
