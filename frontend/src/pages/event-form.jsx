@@ -104,7 +104,7 @@ export default function EventForm() {
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("create") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
