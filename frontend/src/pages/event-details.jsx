@@ -1,6 +1,6 @@
-import { faComment, faList, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faList, faSpinner, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tabs, TabsHeader, Tab, Button } from "@material-tailwind/react";
+import { Tabs, TabsHeader, Tab, Button, Tooltip } from "@material-tailwind/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -142,8 +142,15 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         <Items items={event.items} setEvent={setEvent} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={userIsHost} />
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
-    <div>
+    { event.tip_jar &&
+    <div className="fixed left-5 bottom-5 z-30 border-2 border-green-600 rounded-full p-2">
+      <Tooltip content="Leave a tip for the host?" placement='right'>
+        <button className="">
+          <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"><FontAwesomeIcon size='2xl' style={{color: "#26c51b"}}icon={faMoneyBill} /></a>
+        </button>
+      </Tooltip>
     </div>
+    }
     </>
   )
 }
