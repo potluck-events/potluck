@@ -90,7 +90,7 @@ class EventItemSerializer(serializers.ModelSerializer):
             'owner',
             'user_is_creator',
             'user_is_owner',
-            'is_aquired',
+            'is_acquired',
         )
 
         read_only_fields = (
