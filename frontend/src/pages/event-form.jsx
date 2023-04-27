@@ -121,11 +121,6 @@ export default function EventForm() {
             <div>
               <TimePicker className="w-full" value={endTime} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
-              <Switch id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
-              {isOn === true &&
-            <div className='flex'>
-              <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
-            </div>}
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
               {!showAddress && <Typography className="text-right font-bold text-blue-800 hover:text-blue-500 cursor-pointer" onClick={(e) => setShowAddress(true)} variant="small" >Add address</Typography>}
@@ -144,6 +139,13 @@ export default function EventForm() {
               <Input value={zip} onChange={(e) => setZip(e.target.value)} label="Zip" size="lg" />
             </div>
             </>}
+            <div className="">
+              <Switch className="" id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
+              {isOn === true &&
+            <div className='flex'>
+              <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
+            </div>}
+            </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>
         </div>
