@@ -115,21 +115,23 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
           </button>
         </Tooltip>:
         <Checkbox className={item.owner && "invisible"} disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />}
-      <div className="flex flex-auto flex-col pr-2 self-start " onClick={() => setExpanded(!expanded)}>
-        <Typography variant="h6" >{item.title}</Typography>
-        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
-      </div>
-      <div className="flex flex-col gap-3">
-        {((userIsHost || item.user_is_creator)&& expanded) &&
-          <>
-          <Tooltip title="Edit item" placement="left">
-            <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
-          </Tooltip>
-          <Tooltip title="Delete item" placement="left">
-            <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem} />
-          </Tooltip>
-          </>}
-        <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+        <div className="flex-grow">
+          <div className="flex flex-auto justify-between flex-row pr-2 self-start " onClick={() => setExpanded(!expanded)}>
+          <Typography variant="h6" >{item.title}</Typography>
+          <div className="flex flex-row gap-3 self-start pt-1">
+            {((userIsHost || item.user_is_creator)&& expanded) &&
+              <>
+              <Tooltip title="Edit item" placement="left">
+                <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
+              </Tooltip>
+              <Tooltip title="Delete item" placement="left">
+                <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem} />
+              </Tooltip>
+              </>}
+            <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+          </div>
+        </div>
+        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description}</p>
       </div>
 
     </div>
