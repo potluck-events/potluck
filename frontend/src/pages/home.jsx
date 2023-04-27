@@ -183,19 +183,18 @@ function Items({ events }) {
     }
 
     if (events.length) return (events.map((e, index) => (
-<div key={index} className="py-1 ">
+<div key={index} className="py-1">
     <Card className="">
         <CardBody className="flex relative">
         <div className="flex-grow">
             <div className="flex items-center justify-between">
                 <div>
-                    <Typography className="font-semibold mb-1" variant="h5">
+                    <Typography className="font-semibold" variant="h5">
                         {e.title}
                     </Typography >
-                    {moment(e.date_scheduled).format("M/D/yyyy")}
                 </div>
                 <div className="self-end">
-                    <IconButton variant="text" className="mt-1 mr-1">
+                    <IconButton variant="text" className=" mr-1">
                         <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer" onClick={() => onClickViewEvent(e.pk)}/>
                     </IconButton>
                         </div>
