@@ -251,6 +251,19 @@ class ListCreateInvitations(generics.ListCreateAPIView):
             return [ItemPostInvitationGuest() | ItemPostInvitationHost()]
 
 
+class CreateInvitationFromCode(generics.CreateAPIView):
+    serializer_class = InvitationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        event_code = self.kwargs['code']
+        event = get_object_or_404(Event, invite_code=event_code)
+        guest = self.request.user
+        email = guest.email
+
+        serializer.save(event=event, guest=guest, email=email, response=None)
+
+
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Invitation.objects.all()
     serializer_class = UserInvitationSerializer
