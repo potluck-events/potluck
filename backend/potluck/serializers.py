@@ -339,6 +339,7 @@ class InvitationSerializer(serializers.ModelSerializer):
         model = Invitation
         fields = ('guest',
                   'email',
-                  'response',)
+                  'response',
+                  'event')
 
         read_only_fields = ('event',)
