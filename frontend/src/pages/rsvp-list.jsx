@@ -1,7 +1,7 @@
 import { Typography, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import Invitation from "../components/event-details/event-invitation";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function RSVPList() {
   const token = useContext(AuthContext)
   const [invitations, setInvitation] = useState()
   const [event, setEvent] = useState()
-
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -54,7 +54,9 @@ export default function RSVPList() {
   }, [])
 
   if (invitations && event) return (
-    <>
+    <><div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={() => navigate(-1)}>
+        <FontAwesomeIcon className="" icon={faArrowLeft} /> Back
+      </div>
       <EventTitle title={event.title} />
       <Invitations invitees={invitations.length} />
       <Invitation setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
@@ -71,7 +73,7 @@ export default function RSVPList() {
 
 function EventTitle({title}){
   if (title) return (
-    <div className="text-center my-2" color="black">
+    <div className="text-center my-2 mx-6" color="black">
     <Typography variant='h3'>{title}</Typography>
     </div>
   )
@@ -79,7 +81,7 @@ function EventTitle({title}){
 
 function Invitations({invitees}){
   return (
-    <div className='flex justify-between mx-5'>
+    <div className='flex justify-between mx-5 py-2 border-b-2'>
 
       <Typography variant='h4'>Invitations</Typography>
       <Typography variant='h4'>{invitees} Invite{invitees !=1 && "s"}</Typography>
@@ -98,7 +100,7 @@ function InviteButton({setInviteModalOpen}){
 function Responses({ header, invitations, event }) {
 
   return (
-    <div className='mx-5 my-5'>
+    <div className='mx-5 my-4'>
       <Typography variant='h4'>{header}</Typography>
       {invitations.length !== 0 ? invitations.map((invitation, idx) => (
         <div key={ idx} className="flex items-start">

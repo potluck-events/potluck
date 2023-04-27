@@ -10,16 +10,11 @@ import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 
-export default function EventHeader({ event, mapsURL, calFile }) {
+export default function EventHeader({ event, mapsURL }) {
   const [showMore, setShowMore] = useState(false)
-
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
-
-  useEffect(() => {
-    
-  },[event])
 
   function handleDelete(){
     const options = {
@@ -40,22 +35,17 @@ export default function EventHeader({ event, mapsURL, calFile }) {
     navigate(`/events/${pk}/invitations`)
   }
 
-
   return (
     <div className="">
       <div className="flex">
         <div className="pb-2 flex-auto">
           <Typography variant="h4">{event.title}</Typography>
-        </div>
-        {event.user_is_host ? 
-          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} /> :
-          <a href={ calFile.url} download={ calFile.download} className='mb-2 hover:bg-blue-400 hover:text-white text-gray-900 group flex items-center rounded-md px-2 text-sm h-12'>
-                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
-                  Add to Calendar
-                </a> }
-      </div>
           <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
           {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>
+        </div>
+        {event.user_is_host && 
+          <EditMenu pk={event.pk} handleDelete={handleDelete}/> }
+      </div>
         <div className="border-b-2 pb-1">
           <div className="mb-1 text-m">
             <div className="flex items-center justify-start rounded-full">
@@ -82,22 +72,22 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
         <div className="">
-            <p variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</p>
-            <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
-              {event.dietary_restrictions_count && Object.keys(event.dietary_restrictions_count)
-              .filter((key) => key !== 'null').map((key) => (
-                <Chip color='blue' key={key} className="h-fit my-1"
-                  value={`${key}`}
-                />
-              ))}
-            </div>
-          </div>
+        {event.dietary_restrictions_count && <><p variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</p>
+          <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
+            {Object.keys(event.dietary_restrictions_count)
+            .filter((key) => key !== 'null').map((key) => (
+              <Chip color='blue' key={key} className="h-fit my-1"
+                value={`${key}`}
+              />
+            ))}
+          </div></>}
+        </div>
       </div>
   )
 }
 
 
-function EditMenu({ pk, handleDelete, calFile }){
+function EditMenu({ pk, handleDelete }){
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -128,10 +118,10 @@ function EditMenu({ pk, handleDelete, calFile }){
     <div className="text-right">
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex items-center w-full justify-center rounded-md px-2 py-1 text-sm text-white bg-blue-600 hover:bg-blue-400">
+        <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-400">
           Options
           <FontAwesomeIcon icon={faAngleDown}
-            className="ml-2 -mr-1 h-4 w-4 text-violet-200 hover:text-violet-100"
+            className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
             aria-hidden="true"
           />
         </Menu.Button>
@@ -146,22 +136,6 @@ function EditMenu({ pk, handleDelete, calFile }){
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="px-1 py-1 ">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href={ calFile.url}
-                  download={ calFile.download}
-                  className={`${
-                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
-                  Add to Calendar
-                </a>
-              )}
-            </Menu.Item>
-          </div>
           <div className="px-1 py-1 ">
             <Menu.Item>
               {({ active }) => (

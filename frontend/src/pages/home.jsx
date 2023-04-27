@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faHouse, faHouseChimney, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorageState from "use-local-storage-state";
 import UserAvatar from "../components/avatar";
@@ -143,21 +143,19 @@ function Events({ events }) {
             <div className="">
                 {events.map((event, index) => {
                     return (
-                    <Card className="my-3" key={index}>
-                        <CardBody className="">
+                    <Card className="my-3 " key={index}>
+                        <CardBody className="p-4">
                             <div className="" >
-                                <div onClick={() => onClickViewEvent(event.pk)} className="flex justify-between py-1 cursor-pointer">
-                                    <div className="py-1 flex-grow" >
+                                <div onClick={() => onClickViewEvent(event.pk)} className="flex flex-col justify-between py-1 cursor-pointer">
+                                    <div className="py-1 justify-between flex items-center" >
                                         <h2 className="font-semibold">{event.title}</h2>
-                                        <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faHouseChimney} className=" h-4 w-4 p-0.5"/>}/>}
                                   </div>
-                                    <div className="flex flex-col items-end justify-center">
+                                    <div className="flex flex-row items-center justify-between">
+                                    <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
                                         <IconButton variant="text" className="mt-1 mr-1">
                                             <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
                                         </IconButton>
-                                        <div className="">
-                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faCircleExclamation} className=" h-5 w-5 m-auto"/>}/>}
-                                        </div>
                                     </div>
                                 </div> 
                             </div>
@@ -182,7 +180,7 @@ function Items({ events }) {
   
   if (events.length) return (events.map((e, index) => (
     <div key={index} className="py-1 cursor-pointer">
-      <Card>
+      <Card className="">
         <CardBody className="flex relative">
           <div onClick={() => onClickViewEvent(e.event.pk)} className="flex-grow">
             <div className="flex items-center justify-between">
@@ -241,8 +239,8 @@ function NewEventButton() {
     }
 
     return (
-        <div className="fixed bottom-5 right-5 z-50">
-            <Button onClick={onClickNewEvent} className="w-20 rounded-full">
+        <div className="  fixed bottom-5 right-5 z-50">
+            <Button onClick={onClickNewEvent} className="w-16 h-16 rounded-full p-0">
                 <div className="flex justify-center">
                 <FontAwesomeIcon icon={faCalendarPlus} className="w-10 h-14"/>
                 </div> 
