@@ -182,7 +182,7 @@ function Items({ events }) {
     <div key={index} className="py-1 cursor-pointer">
       <Card className="">
         <CardBody className="flex relative">
-          <div onClick={() => onClickViewEvent(e.event.pk)} className="flex-grow">
+          <div onClick={() => onClickViewEvent(e.pk)} className="flex-grow">
             <div className="flex items-center justify-between">
                 <div>
                     <Typography className="font-semibold mb-1" variant="h5">
