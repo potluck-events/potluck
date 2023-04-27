@@ -47,6 +47,9 @@ urlpatterns = [
     path('invitations', views.UserInvitations.as_view()),
     path('invitations/<int:pk>', views.InvitationDetails.as_view()),
 
+    path('invite-code/<str:code>',
+         views.CreateInvitationFromCode.as_view()),
+
     path('posts/<int:pk>', views.DeletePost.as_view()),
     path('dietary-restrictions', views.ListDietaryRestrictions.as_view()),
 ]

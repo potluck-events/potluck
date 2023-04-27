@@ -197,6 +197,7 @@ class EventSerializer(serializers.ModelSerializer):
             'posts',
             'invitation_pk',
             'dietary_restrictions_count',
+            'invite_code',
         )
 
         read_only_fields = ('host',)

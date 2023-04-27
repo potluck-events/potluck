@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.constraints import UniqueConstraint
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
 
 
 class User(AbstractUser):
@@ -47,6 +48,11 @@ class Event(models.Model):
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
     tip_jar = models.CharField(max_length=100, blank=True, null=True)
+    invite_code = models.UUIDField(
+        primary_key=False,
+        unique=True,
+        default=uuid.uuid4,
+        editable=False)
 
     class Meta:
         ordering = ['date_scheduled']
@@ -60,7 +66,7 @@ class Invitation(models.Model):
         to='Event', on_delete=models.CASCADE, related_name='invitations')
     guest = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='invited_to', blank=True, null=True)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=100, blank=True)
     response = models.BooleanField(null=True, default=None)
 
     class Meta:
