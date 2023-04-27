@@ -259,6 +259,7 @@ class UserItemSerializer(serializers.ModelSerializer):
             'description',
             'host',
             'items',
+            'is_acquired',
         )
 
         read_only_fields = ()
