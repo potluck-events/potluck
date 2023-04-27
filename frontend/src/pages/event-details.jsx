@@ -89,8 +89,7 @@ export default function EventDetails() {
         })
       })
       
-      const url = URL.createObjectURL(file).replace("http","webcal");
-      console.log(url);
+      const url = URL.createObjectURL(file).replace("https","webcal").replace("http","webcal");
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
       setCalFile({url: url, download: filename})

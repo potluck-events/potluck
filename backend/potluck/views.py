@@ -176,11 +176,36 @@ class ListCreateItem(generics.ListCreateAPIView):
         else:
             serializer.save(event=event, created_by=created_by)
 
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
+
 
 class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     permission_classes = [ItemDetailPermission]
+
+    def perform_update(self, serializer):
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
 
 
 class ReserveItem(generics.UpdateAPIView):
