@@ -73,6 +73,11 @@ class EventItemSerializer(serializers.ModelSerializer):
     user_is_creator = serializers.SerializerMethodField()
     user_is_owner = serializers.SerializerMethodField()
     owner = UserSerializerShort(read_only=True, many=False)
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     def get_user_is_creator(self, obj):
         return obj.created_by == self.context['request'].user
@@ -88,6 +93,8 @@ class EventItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
             'owner',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
             'user_is_creator',
             'user_is_owner',
             'is_acquired',
@@ -244,6 +251,12 @@ class EventSerializerShort(serializers.ModelSerializer):
 
 
 class ItemSerializerShort(serializers.ModelSerializer):
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
+
     class Meta:
         model = Item
         fields = (
@@ -251,6 +264,8 @@ class ItemSerializerShort(serializers.ModelSerializer):
             'pk',
             'description',
             'owner',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
             'is_acquired',
         )
 
