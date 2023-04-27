@@ -185,6 +185,7 @@ class EventSerializer(serializers.ModelSerializer):
             'time_scheduled',
             'end_time',
             'host',
+            'tip_jar',
             'count_invited',
             'rsvp_yes',
             'rsvp_no',
@@ -270,11 +271,6 @@ class UserItemSerializer(serializers.ModelSerializer):
         items = instance.items.filter(owner=user)
         serializer = ItemSerializerShort(items, many=True)
         return serializer.data
-
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     rep['items'] = self.get_items(instance)
-    #     return rep
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
