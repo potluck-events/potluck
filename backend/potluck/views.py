@@ -12,13 +12,13 @@ from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
 
 # MODELS IMPORTS
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
                           UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer)
+                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -31,6 +31,9 @@ import requests
 from .email import send
 import json
 from django.db.models import Q
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CustomRegisterView(RegisterView):
@@ -308,3 +311,37 @@ class GetUserInfo(generics.ListAPIView):
 class ListDietaryRestrictions(generics.ListAPIView):
     serializer_class = DietaryRestrictionSerializer
     queryset = DietaryRestriction.objects.all()
+
+
+class UserNotifications(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.filter(recipient=user)
+        return queryset
+
+
+@receiver(post_save, sender=Invitation)
+def create_invitation_notification(sender, instance, **kwargs):
+    if kwargs.get('created', False):
+        recipient = instance.guest
+        header = f'New Invitation!'
+        message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message)
+
+
+@receiver(post_save, sender=Invitation)
+def create_rsvp_notification(sender, instance, **kwargs):
+    if not kwargs.get('created', False):
+        if instance.response is not None:
+            recipient = instance.event.host
+            header = f'New RSVP!'
+            if instance.response == True:
+                message = f'{instance.guest} has accepted your invitation to {instance.event.title}!'
+            else:
+                message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
+            Notification.objects.create(
+                recipient=recipient, header=header, message=message)

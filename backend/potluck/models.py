@@ -116,3 +116,18 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Post for {self.event} by {self.author}'
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        to='User', on_delete=models.CASCADE, related_name='notifications')
+    header = models.CharField(max_length=50)
+    message = models.TextField(max_length=500)
+    is_read = models.BooleanField(default=False)
+    time_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-time_created']
+
+    def __str__(self):
+        return f'Notification for {self.recipient}'

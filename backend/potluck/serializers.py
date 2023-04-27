@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 from itertools import chain
 
 
@@ -297,7 +297,7 @@ class UserItemSerializer(serializers.ModelSerializer):
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
-    event = EventSerializer()
+    event = EventSerializer(read_only=True)
     host = serializers.SerializerMethodField()
 
     def get_host(self, obj):
@@ -343,3 +343,12 @@ class InvitationSerializer(serializers.ModelSerializer):
                   'event')
 
         read_only_fields = ('event',)
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
+        read_only_fields = '__all__'
