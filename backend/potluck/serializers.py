@@ -325,3 +325,20 @@ class InvitationSerializer(serializers.ModelSerializer):
                   'response',)
 
         read_only_fields = ('event',)
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+    guest = UserSerializerShort(many=False, read_only=True)
+    event = serializers.SlugRelatedField(
+        many=False,
+        slug_field='pk',
+        read_only=True
+    )
+
+    class Meta:
+        model = Invitation
+        fields = ('guest',
+                  'email',
+                  'response',)
+
+        read_only_fields = ('event',)

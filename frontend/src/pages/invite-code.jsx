@@ -5,10 +5,10 @@ import { AuthContext } from "../context/authcontext";
 
 
 export default function InviteCodeRedirect() {
-  const code = useParams()
+  const {code} = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
-
+console.log(code);
 
   const options = {
     method: 'POST',
@@ -18,10 +18,9 @@ export default function InviteCodeRedirect() {
       Authorization: token,
     },
   }
-  
+
   axios.request(options).then((response) => {
-    console.log(response);
-      //navigate(`/events/${response.data}`)
+      navigate(`/events/${response.data.event}`)
     }
   )
 }
