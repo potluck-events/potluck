@@ -8,7 +8,7 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker'
 import moment from "moment"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faBackwardStep, faX, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faBackwardStep, faX, faXmark, faAt } from "@fortawesome/free-solid-svg-icons"
 
 export default function EventForm() {
   const token = useContext(AuthContext)
@@ -124,7 +124,7 @@ export default function EventForm() {
               <Switch id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
               {isOn === true &&
             <div className='flex'>
-              <Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
+              <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
             </div>}
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
