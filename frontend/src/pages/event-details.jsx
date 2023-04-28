@@ -122,7 +122,7 @@ export default function EventDetails() {
 function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData , setItemModalOpen, userIsHost}) {
   return (
     <>
-    <Tabs className='mt-3' value={itemsTabOpen.toString()} >
+    <Tabs className='mt-3 mb-16' value={itemsTabOpen.toString()} >
         <TabsHeader>
             <Tab value='true' onClick={() => setItemsTabOpen(true)}>
                 <div className="flex items-center gap-2">
