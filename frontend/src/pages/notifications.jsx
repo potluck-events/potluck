@@ -81,10 +81,10 @@ export default function Notifications(){
                             <div className="flex flex-col justify-between py-1 columns-1" >
                                 <div className="flex">
                                     <div className="py-1 justify-between flex items-center mr-2" >
-                                        <Typography variant='h5' >{not.header}</Typography>
-                                    </div>
-                                    <div className=" self-center">
+                                    <div className="absolute left-2 self-center">
                                         {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}}  className=""/>}
+                                    </div>
+                                        <Typography variant='h5' >{not.header}</Typography>
                                     </div>
                                     <div className="self-end" onClick={() => handleNotifcationClick(not.pk)}>
                                         <IconButton variant="text" className=" mr-1">
