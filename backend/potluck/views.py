@@ -32,7 +32,7 @@ from .email import send
 import json
 from django.db.models import Q
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 
@@ -395,3 +395,28 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
             message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
             Notification.objects.create(
                 recipient=host, header=header, message=message)
+
+
+# notify guests when an item is deleted
+@receiver(post_delete, sender=Item)
+def delete_item_notification_for_guests(sender, instance, **kwargs):
+    event = instance.event
+    guests = event.invitations.filter(
+        response=True).values_list('guest', flat=True)
+    for guest_id in guests:
+        recipient = User.objects.get(id=guest_id)
+        header = 'Item deleted from event'
+        message = f'{instance.title} has been deleted for {event.title}.'
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message)
+
+
+# notify host when an item is deleted
+@receiver(post_delete, sender=Item)
+def delete_item_notification_for_host(sender, instance, **kwargs):
+    event = instance.event
+    host = event.host
+    header = 'Item deleted from event'
+    message = f'{instance.title} has been deleted for {event.title}.'
+    Notification.objects.create(
+        recipient=host, header=header, message=message)
