@@ -75,6 +75,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           </div>  
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
+        <div className=" border-b-2 mt-2 mb-2"></div>
         <div className="">
         {event.dietary_restrictions_count && <><Typography variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</Typography>
           <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
