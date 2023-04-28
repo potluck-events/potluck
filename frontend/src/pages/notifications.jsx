@@ -55,6 +55,11 @@ export default function Notifications(){
         if (notifications)
     return (
         <>
+        <div>
+            <Typography variant='h3' className=' w-screen text-center border-b-2 border-black'>
+                Notifications
+            </Typography>
+        </div>
         <div className="">
             {notifications.map((not, index) => {
                 return (
