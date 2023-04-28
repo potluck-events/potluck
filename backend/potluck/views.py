@@ -320,9 +320,14 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
-        queryset.update()
         # queryset.update(is_read=True)
         return queryset
+
+
+class ViewDeleteNotification(generics.RetrieveDestroyAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [IsRecipient]
 
 
 # notification to guest when they receive an invitation
