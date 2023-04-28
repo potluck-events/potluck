@@ -13,14 +13,12 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /users/info/:email/ --> | GET |
 -- shows user info whose email is in the url
 
-/events/ --> | POST |
+/events/ --> | GET | POST |
+-- shows a list of all upcoming events that the user is hosting or attending
 -- user can create a new event. user is automatically set to be the host, and cannot create an event with a date_scheduled < today
 
-/events/hosting/ --> | GET |
--- lists all events hosted by current user with a date_scheduled >= today
-
-/events/attending/ --> | GET |
--- lists all events attended by current user with a date_scheduled >= today
+/events/history/ --> | GET |
+-- list all past events that the user has attended OR hosted
 
 /events/pk/ --> | GET | PUT | PATCH | DELETE |
 -- shows event details. any user can make a GET request. only host can make PUT, PATCH, DELETE request.
@@ -50,7 +48,7 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /invitations/ --> | GET |
 -- lists all invitations received by current user with a date_scheduled >= today
 
-/invitations/ --> | GET | PUT | PATCH | DELETE |
+/invitations/pk --> | GET | PUT | PATCH | DELETE |
 -- host or guest can see invitation (get)
 -- host can delete invitation
 -- guest can accept/unaccept invitation
@@ -58,3 +56,6 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /posts/pk/ --> | DELETE |
 -- user can delete post if user is author
 -- host can delete any post related to event they are host of
+
+/dietary-restrictions/ --> | GET |
+-- lists all DietaryRestriction objects

@@ -6,11 +6,7 @@ import { AuthContext } from "../../context/authcontext"
 import axios from 'axios'
 import React from "react";
 
-function close () {
-    setInviteModalOpen(false)
-  }
-
-export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
+export default function InvitationModal({ inviteModalOpen, setInviteModalOpen }) {
     const { pk } = useParams()
     const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
@@ -32,7 +28,9 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
                 }
             };
                 
-            const r = await axios.request(options)
+            const r = await axios.request(options).catch((r) => {
+                console.log(r);
+            })
         }
         location.reload()
     }
@@ -45,7 +43,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
             Authorization: token
         }
         }).then((request) => {
-            username = request.data[0].full_name;
+            username = request.data[0]?.full_name;
         
             let invite = {
                 email: email,
@@ -57,7 +55,7 @@ export default function Invitation({ inviteModalOpen, setInviteModalOpen }) {
             setInvites([...invites, invite]);
             setEmail("");
             setShow(true)
-        });
+        }).catch();
     }
 
     return (

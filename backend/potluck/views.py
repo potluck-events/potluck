@@ -12,13 +12,13 @@ from django.core.exceptions import PermissionDenied
 from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
 
 # MODELS IMPORTS
-from .models import User, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 
 # SERIALIZERS IMPORTS
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
                           UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer)
+                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -29,6 +29,11 @@ from django.utils import timezone
 import urllib.parse
 import requests
 from .email import send
+import json
+from django.db.models import Q
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from rest_framework.response import Response
 
 
@@ -87,31 +92,31 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return self.request.user
 
+    def perform_update(self, serializer):
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
 
-class EventsHosting(generics.ListAPIView):
+
+class EventHistory(generics.ListAPIView):
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         queryset = Event.objects.filter(
-            host__id=user.id,
-            date_scheduled__gte=timezone.now().date()
-        )
-        return queryset
-
-
-class EventsAttending(generics.ListAPIView):
-    serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = Event.objects.filter(
-            invitations__guest__id=user.id,
-            invitations__response=True,
-            date_scheduled__gte=timezone.now().date()
-        )
+            Q(host__id=user.id) | Q(
+                invitations__guest__id=user.id, invitations__response=True),
+            date_scheduled__lt=timezone.now().date()
+        ).distinct().order_by('-date_scheduled')
         return queryset
 
 
@@ -121,11 +126,8 @@ class UserItems(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Item.objects.filter(
-            owner__id=user.id,
-            event__date_scheduled__gte=timezone.now().date()
-        )
-        return queryset
+        return Event.objects.filter(items__owner=user,
+                                    date_scheduled__gte=timezone.now().date()).distinct()
 
 
 class UserInvitations(generics.ListAPIView):
@@ -141,10 +143,19 @@ class UserInvitations(generics.ListAPIView):
         return queryset
 
 
-class CreateEvent(generics.CreateAPIView):
+class ListCreateEvent(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Event.objects.filter(
+            Q(host__id=user.id) | Q(
+                invitations__guest__id=user.id, invitations__response=True),
+            date_scheduled__gte=timezone.now().date()
+        ).distinct()
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
@@ -178,11 +189,36 @@ class ListCreateItem(generics.ListCreateAPIView):
         else:
             serializer.save(event=event, created_by=created_by)
 
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
+
 
 class ItemDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = EventItemSerializer
     permission_classes = [ItemDetailPermission]
+
+    def perform_update(self, serializer):
+        dietary_restrictions = []
+        dietary_restrictions_names_json = self.request.data.get(
+            'dietary_restrictions_names')
+        if dietary_restrictions_names_json is not None:
+            dietary_restrictions_names = json.loads(
+                dietary_restrictions_names_json)
+            for dr in dietary_restrictions_names:
+                dietary_restrictions.append(get_object_or_404(
+                    DietaryRestriction, name=dr))
+            serializer.instance.dietary_restrictions.set(dietary_restrictions)
+        serializer.save()
 
 
 class ReserveItem(generics.UpdateAPIView):
@@ -253,6 +289,19 @@ class ListCreateInvitations(generics.ListCreateAPIView):
             return [ItemPostInvitationGuest() | ItemPostInvitationHost()]
 
 
+class CreateInvitationFromCode(generics.CreateAPIView):
+    serializer_class = InvitationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        event_code = self.kwargs['code']
+        event = get_object_or_404(Event, invite_code=event_code)
+        guest = self.request.user
+        email = guest.email
+
+        serializer.save(event=event, guest=guest, email=email, response=None)
+
+
 class InvitationDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Invitation.objects.all()
     serializer_class = UserInvitationSerializer
@@ -267,3 +316,42 @@ class GetUserInfo(generics.ListAPIView):
         queryset = User.objects.filter(email=self.kwargs["email"])
 
         return queryset
+
+
+class ListDietaryRestrictions(generics.ListAPIView):
+    serializer_class = DietaryRestrictionSerializer
+    queryset = DietaryRestriction.objects.all()
+
+
+class UserNotifications(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.filter(recipient=user)
+        return queryset
+
+
+@receiver(post_save, sender=Invitation)
+def create_invitation_notification(sender, instance, **kwargs):
+    if kwargs.get('created', False):
+        recipient = instance.guest
+        header = f'New Invitation!'
+        message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message)
+
+
+@receiver(post_save, sender=Invitation)
+def create_rsvp_notification(sender, instance, **kwargs):
+    if not kwargs.get('created', False):
+        if instance.response is not None:
+            recipient = instance.event.host
+            header = f'New RSVP!'
+            if instance.response == True:
+                message = f'{instance.guest} has accepted your invitation to {instance.event.title}!'
+            else:
+                message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
+            Notification.objects.create(
+                recipient=recipient, header=header, message=message)

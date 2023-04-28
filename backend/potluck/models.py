@@ -2,15 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.constraints import UniqueConstraint
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
 
 
 class User(AbstractUser):
     nickname = models.CharField(max_length=50, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='media', blank=True, null=True)
+    thumbnail = models.ImageField(
+        upload_to='thumbnails', blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     initials = models.CharField(max_length=3, blank=True)
     full_name = models.CharField(max_length=61, blank=True)
+    dietary_restrictions = models.ManyToManyField(
+        to='DietaryRestriction', blank=True, related_name="user")
 
     def save(self, *args, **kwargs):
         self.initials = "".join(
@@ -20,6 +24,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class DietaryRestriction(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Event(models.Model):
@@ -33,11 +44,19 @@ class Event(models.Model):
     zipcode = models.CharField(max_length=20, blank=True, null=True)
     date_scheduled = models.DateField()
     time_scheduled = models.TimeField()
+    end_time = models.TimeField(blank=True, null=True)
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
+    tip_jar = models.CharField(max_length=100, blank=True, null=True)
+    playlist_link = models.CharField(max_length=100, blank=True, null=True)
+    invite_code = models.UUIDField(
+        primary_key=False,
+        unique=True,
+        default=uuid.uuid4,
+        editable=False)
 
     class Meta:
-        ordering = ['-date_scheduled']
+        ordering = ['date_scheduled']
 
     def __str__(self):
         return f'{self.title} hosted by {self.host}'
@@ -48,16 +67,17 @@ class Invitation(models.Model):
         to='Event', on_delete=models.CASCADE, related_name='invitations')
     guest = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='invited_to', blank=True, null=True)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=100, blank=True)
     response = models.BooleanField(null=True, default=None)
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['event', 'guest'],
+                fields=['event', 'email'],
                 name='invitation_constraints'
             )
         ]
+        ordering = ['event__date_scheduled']
 
     def __str__(self):
         return f"{self.guest}'s invitation to {self.event}"
@@ -72,6 +92,13 @@ class Item(models.Model):
         to='User', on_delete=models.CASCADE, related_name='creator')
     owner = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='items', blank=True, null=True)
+    is_acquired = models.BooleanField(default=False)
+    dietary_restrictions = models.ManyToManyField(
+        to='DietaryRestriction', blank=True, related_name='item')
+    time_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-time_created']
 
     def __str__(self):
         return f'{self.title} for {self.event}'
@@ -90,3 +117,18 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Post for {self.event} by {self.author}'
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        to='User', on_delete=models.CASCADE, related_name='notifications')
+    header = models.CharField(max_length=50)
+    message = models.TextField(max_length=500)
+    is_read = models.BooleanField(default=False)
+    time_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-time_created']
+
+    def __str__(self):
+        return f'Notification for {self.recipient}'

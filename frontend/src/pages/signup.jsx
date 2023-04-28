@@ -88,7 +88,7 @@ export default function SignUp({setToken}) {
       method: 'PATCH',
       url: 'https://potluck.herokuapp.com/users/me',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+        'Content-Type': 'multipart/form-data',
         Authorization: token
       },
       data: form
@@ -134,7 +134,7 @@ export default function SignUp({setToken}) {
               </div>
               <label htmlFor="raised-button-file">
                 <MButton variant="contained" component="span" className="">
-                  Upload
+                  {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
                 </MButton>
               </label> 
               <input

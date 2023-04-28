@@ -22,7 +22,7 @@ class ItemDetailPermission(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
         if request.method != 'GET':
-            return request.user == obj.created_by or request.user == obj.event.host
+            return request.user == obj.created_by or request.user == obj.event.host or request.user == obj.event.owner
         return True
 
 

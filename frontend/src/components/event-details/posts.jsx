@@ -15,7 +15,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
 import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faX, faXmark } from "@fortawesome/free-solid-svg-icons";
+import UserAvatar from "../avatar";
 
 
 
@@ -24,6 +25,7 @@ export default function Posts({posts, userIsHost}) {
   const { pk } = useParams()
   const token = useContext(AuthContext)
   const navigate = useNavigate()
+  
   
   function handleUserPost(userPost) {
     console.log(`user post: ${userPost}`)
@@ -85,7 +87,7 @@ function CreatePostForm({ handleUserPost }) {
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
       <Textarea value={userPost} onChange={(p) => setUserPost(p.target.value)} label="New post" size="lg" />
-      <Button type="submit" className="w-20 self-end">Post!</Button>
+      <Button disabled={!userPost} type="submit" className="w-full mb-3 self-end">Post!</Button>
     </form>
   )
 }
@@ -93,15 +95,15 @@ function CreatePostForm({ handleUserPost }) {
 function Post({post, handleDelete, userIsHost}) {
   return (
     <>
-    <Card color="light-blue" variant="gradient" className="my-1 px-2"
+    <Card  variant="gradient" className="my-1 px-2"
     animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <div className='my-2'>
-        <div>
+        <div className="flex items-center gap-1 mb-1"><UserAvatar user={post.author} />
           <Typography variant='h6'>{post.author.full_name}</Typography>
         </div>
         <Typography variant='small'>{post.text}</Typography>
       </div>
-        { (post.user_is_author || userIsHost) && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3 cursor-pointer" icon={faX} />}
+        { (post.user_is_author || userIsHost) && <FontAwesomeIcon onClick={() => handleDelete(post)} className="w-fit absolute right-3 my-3 cursor-pointer" icon={faXmark} />}
     </Card>
     </>
   )

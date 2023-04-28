@@ -7,47 +7,51 @@ import {
     TabPanel,
     Button,
     IconButton,
-    Typography
+    Typography,
+    Card,
+    CardBody,
+    Radio,
+    Menu,
+    MenuHandler,
+    MenuList,
+    Chip,
     } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon,} from "@heroicons/react/24/solid";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faHouse, faHouseChimney, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useLocalStorageState from "use-local-storage-state";
+import UserAvatar from "../components/avatar";
+import RSVP from "../components/event-details/rsvp";
+import Checkbox from '@mui/material/Checkbox';
 
-export default function Home() {
+export default function Home(itemsTabOpen) {
     const token = useContext(AuthContext)
-    const [hostingEvents, setHostingEvents] = useState()
-    const [attendingEvents, setAttendingEvents] =useState()
-    const [items, setItems] = useState()
+    const [events, setEvents] = useState()
+    const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
+    const [isFilterFuture, setIsFilterFuture] = useState(true)
+    const [shoppingList, setShoppingList] = useState(false)
+
+
     useEffect(() => {
-        axios.get('https://potluck.herokuapp.com/events/hosting', {
+        axios.get(`https://potluck.herokuapp.com/events${isFilterFuture ? "" :"/history"}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
             }
         }).then((response) => {
-            setHostingEvents(response.data)
+            setEvents(response.data)
         })
         .catch(error => {
             console.error(error);
         });
         
-        axios.get('https://potluck.herokuapp.com/events/attending', {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-            }
-        }).then((response) => {
-            setAttendingEvents(response.data)
-        })
-        .catch(error => {
-            console.error(error);
-        });
+
         
         axios.get('https://potluck.herokuapp.com/items', {
         headers: {
@@ -55,7 +59,8 @@ export default function Home() {
             'Authorization': token
             }
         }).then((response) => {
-            setItems(response.data)
+            console.log(response.data)
+            setItemsEvents(response.data)
         })
         .catch(error => {
             console.error(error);
@@ -73,11 +78,21 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
-    }, [])
+
+        itemsTabOpen(true)
+    }, [isFilterFuture])
     
+    function handleRadio (state) {
+        setIsFilterFuture(state);
+        }
+
+        
     return (
     <>
-    <Tabs className='mt-3 px-6' value="events" >
+    {/* <div className="flex justify-center py-1">
+        <img src="temp-img/logo2.png" alt="" />
+    </div> */}
+    <Tabs className='mt-3 px-6 mb-20' value="events" >
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">
@@ -86,23 +101,36 @@ export default function Home() {
             </Tab>
             <Tab value='items'>
                 <div className="flex items-center gap-2">
-                <ListBulletIcon className = "w-5 h-5" /> Items
+                <ListBulletIcon className = "w-5 h-5" /> Shopping List
                 </div>
             </Tab>
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='events' className='py-0'>
-                <InvitationsButton className='' pending={ pending} />
-                <Typography variant="h2" className='py-2'>Hosting</Typography>
-                {hostingEvents && <Events events={hostingEvents} />}
-                <Typography variant="h2" className='py-2'>Attending</Typography>
-                {attendingEvents && <Events events={attendingEvents} />}
+                <div className="relative flex items-center justify-center">
+                    <InvitationsButton pending={ pending} />
+                    <div className="absolute right-1 h-full flex items-center">
+                        <Menu placement="bottom-end">
+                            <MenuHandler>
+                                <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
+                            </MenuHandler>
+                            <MenuList className='flex flex-col'>
+                                <Radio id="Future Events" name="type" label="Future Events" value="1" onChange={() => handleRadio(true)} checked={isFilterFuture}/>
+                                <Radio id="Past Events" name="type" label="Past Events" value="0" onChange={() => handleRadio(false)} checked={!isFilterFuture}/>
+                            </MenuList>
+                        </Menu>
+                    </div>
+                </div>
+                <div>
+                    <Typography variant="h3" className='pt-4 -mb-4 text-center'>{isFilterFuture ? "My Events" : "Past Events"}</Typography>
+                    {events && <Events events={events} />}
+                </div>
             </TabPanel>
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='items'>
-            <Typography variant="h2" className='py-2'>Items</Typography>
-                {items &&  <Items items={items}/>}
+            <Typography variant="h2" className='py-2'>Shopping List</Typography>
+                {itemsEvents &&  <Items events={itemsEvents}/>}
             </TabPanel>
         </TabsBody>
     </Tabs>
@@ -120,24 +148,31 @@ function Events({ events }) {
 
     if (events.length > 0)
         return (
-            <div className="divide-y divide-black">
+            <>
+            <div className="">
                 {events.map((event, index) => {
                     return (
-                    <div className="" key={index}>
-                        <div onClick={() => onClickViewEvent(event.pk)} className="flex py-1 cursor-pointer">
-                            <div className="columns-1 py-1" >
-                                <h2 className="font-semibold">{event.title}</h2>
-                                <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                    <Card className="my-3 " key={index}>
+                        <CardBody className="p-4">
+                            <div className="" >
+                                <div onClick={() => onClickViewEvent(event.pk)} className="flex flex-col justify-between py-1 cursor-pointer">
+                                    <div className="py-1 justify-between flex items-center" >
+                                        <h2 className="font-semibold">{event.title}</h2>
+                                            {event.user_is_host === true && <Chip value='Hosting' className="mt-2" icon={<FontAwesomeIcon icon={faHouseChimney} className=" h-4 w-4 p-0.5"/>}/>}
+                                    </div>
+                                    <div className="flex flex-row items-center justify-between">
+                                    <p>{moment(event.date_scheduled).format('MMMM Do, YYYY')} - {event.location_name}</p>
+                                        <IconButton variant="text" className="mt-1 mr-1">
+                                            <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
+                                        </IconButton>
+                                    </div>
+                                </div> 
                             </div>
-                            <div className="absolute right-0">
-                                <IconButton variant="text" className="mt-1 mr-1">
-                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6"/>
-                                </IconButton>
-                            </div>
-                        </div> 
-                    </div>)
+                        </CardBody>
+                    </Card>)
                 })}
-            </div>)
+            </div>
+            </>)
     else
         return (
             <Typography variant='small' className='font-semibold'>No Events</Typography>
@@ -145,37 +180,81 @@ function Events({ events }) {
 }
 
 
-function Items({ items }) {
-    const navigate = useNavigate()
+function Items({ events }) {
+  const navigate = useNavigate()
 
     function onClickViewEvent(pk){
         navigate(`/events/${pk}`)
     }
-    if (items.length > 0)
-        return (
-            <div className="divide-y divide-black">
-                {items.map((item, index) => {
-                    return (
-                    <div className="" key={index}>
-                        <div onClick={() => onClickViewEvent(item.event.pk)} className="flex py-1">
-                            <div className="columns-1 py-1" >
-                                <h2 className="font-semibold">{item.title}</h2>
-                                <p>{item.event.title}</p>
-                            </div>
-                            <div className="absolute right-0">
-                                <IconButton variant="text" className="mt-1 mr-1">
-                                    <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6" />
-                                </IconButton>
-                            </div>
-                        </div> 
-                    </div>)
-                })}
+
+    if (events.length) return (events.map((e, index) => (
+<div key={index} className="py-1">
+    <Card className="">
+        <CardBody className="flex relative">
+        <div className="flex-grow">
+            <div className="flex items-center justify-between">
+                <div>
+                    <Typography className="font-semibold" variant="h5">
+                        {e.title}
+                    </Typography >
+                </div>
+                <div className="self-end">
+                    <IconButton variant="text" className=" mr-1">
+                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer" onClick={() => onClickViewEvent(e.pk)}/>
+                    </IconButton>
+                        </div>
             </div>
-        )
-    else 
-        return (
-            <Typography variant='small' className='font-semibold'>No Items</Typography>
-        )
+            <div>
+                <div className="pl-0">
+                {e.items.map((item, index) => (
+                        <EventItem item={item} key={index} />
+                        ))}
+                </div>
+            </div>
+
+        </div>
+        </CardBody>
+    </Card>
+    </div>
+)))
+
+    return (
+    <div className="flex h-20 items-center justify-center"><p className=" text-gray-500">No invitations</p></div>
+    )
+}
+
+// function handleCheckChange(){
+//     setShoppingList()
+// }
+
+function EventItem({ item }) {
+    const token = useContext(AuthContext)
+    const [isAcquired, setIsAcquired] = useState(item.is_acquired)
+    console.log(item)
+
+    function handleChecked(){
+        const options = {
+            method: 'PATCH',
+            url: `https://potluck.herokuapp.com/items/${item.pk}`,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+            },
+            data: {is_acquired: !isAcquired}
+            };
+        axios.request(options).then(setIsAcquired(!isAcquired))
+    }
+
+    return (
+    <div className="flex flex-auto flex-row items-center gap-3" >
+        <div>
+        <Typography className='flex justify-start items-center'>
+            <Checkbox checked={isAcquired} onChange={handleChecked} value={item.title} id="ripple-on" />
+                {item.title}
+        </Typography>
+        </div>
+    </div>
+    )
 }
 
 
@@ -187,8 +266,8 @@ function NewEventButton() {
     }
 
     return (
-        <div className="fixed bottom-5 right-5 z-50">
-            <Button onClick={onClickNewEvent} className="w-20 rounded-full">
+        <div className="  fixed bottom-5 right-5 z-50">
+            <Button onClick={onClickNewEvent} className="w-16 h-16 rounded-full p-0">
                 <div className="flex justify-center">
                 <FontAwesomeIcon icon={faCalendarPlus} className="w-10 h-14"/>
                 </div> 
@@ -209,7 +288,7 @@ function InvitationsButton({pending}) {
         <div className="text-center">
             <Button onClick={onClickHandleInvitations} variant='outlined' className="flex m-auto pb-7 h-2 mt-3">
                 Invitations ({pending} pending)
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 pb-2">
+                <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 pb-2">
                     <path fillRule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clipRule="evenodd" />
                 </svg>
             </Button>

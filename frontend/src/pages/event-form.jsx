@@ -1,6 +1,6 @@
 import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
 import { useContext, useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {DatePicker} from '@mui/x-date-pickers/DatePicker'
@@ -8,8 +8,10 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker'
 import moment from "moment"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faBackwardStep, faX, faXmark } from "@fortawesome/free-solid-svg-icons"
-
+import { faArrowLeft, faBackwardStep, faX, faXmark, faAt, faMusic } from "@fortawesome/free-solid-svg-icons"
+import { faSpotify } from "@fortawesome/free-brands-svg-icons"
+import spotify from "../components/event-details/spotify"
+import { Switch } from "@headlessui/react"
 export default function EventForm() {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
@@ -21,11 +23,18 @@ export default function EventForm() {
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [zip, setZip] = useState('')
-  const [dateTime, setDateTime] = useState(moment().add(7, 'd'))
+  const [dateTime, setDateTime] = useState(moment().add(7, 'd').startOf('hour'))
   const [error, setError] = useState('')
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
-
+  const location = useLocation()
+  const [endTime, setEndTime] = useState(null)
+  const [isTipOn, setIsTipOn] = useState(false)
+  const [venmoHandle, setVenmoHandle] = useState('')
+  const [isPlaylistOn, setIsPlaylistOn] = useState(false)
+  const [spotifyPlaylist, setSpotifyPlaylist] = useState('')
+  
+  console.log(location);
   useEffect(() => {
     if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
@@ -42,6 +51,8 @@ export default function EventForm() {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
+      setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
+      setVenmoHandle(response.data.tip_jar)
 
       if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
         setShowAddress(true)
@@ -54,8 +65,8 @@ export default function EventForm() {
     e.preventDefault()
 
     const options = {
-      method: pk ? "PATCH" : 'POST',
-      url: pk ? `http://potluck.herokuapp.com/events/${pk}` : 'http://potluck.herokuapp.com/events',
+      method: location.pathname.includes("edit") ? "PATCH" : 'POST',
+      url: location.pathname.includes("edit") ? `https://potluck.herokuapp.com/events/${pk}` : 'https://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -70,13 +81,20 @@ export default function EventForm() {
         state: state,
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
-        time_scheduled: dateTime.format("HH:MM")
+        time_scheduled: dateTime.format("HH:MM"),
+        end_time: endTime.format("HH:MM"),
+        tip_jar: venmoHandle,
       }
     };
 
     axios.request(options).then(function (response) {
       console.log(response.data);
-      navigate(`/events/${response.data.pk}`)
+      if (spotifyPlaylist) {
+        navigate('/spotify')
+      }
+      else {
+        navigate(`/events/${response.data.pk}`)
+      }
     }).catch(function (error) {
       console.error(error);
     });
@@ -86,12 +104,22 @@ export default function EventForm() {
     navigate(-1)
   }
 
+  function switchToggle() {
+    setIsTipOn(!isTipOn)
+  }
+
+  function handleCreatePlaylist() {
+    console.log("hi");
+    const link = spotify()
+    setSpotifyPlaylist()
+  }
+
   return (<>
       <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{!pk ? "Create a new event" : "Edit event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("new") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -105,7 +133,10 @@ export default function EventForm() {
               <DatePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Date/Time" size="lg" />
             </div>
             <div>
-              <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Date/Time" size="lg" />
+              <TimePicker className="w-full" required value={dateTime} onChange={(e) => setDateTime(e)} label="Start Time" size="lg" />
+            </div>
+            <div>
+              <TimePicker className="w-full" value={endTime ?? null} onChange={(e) => setEndTime(e)} label="End Time" size="lg" />
             </div>
             <div>
               <Input required value={locationName} onChange={(e) => setLocationName(e.target.value)} label="Location" size="lg" />
@@ -125,6 +156,32 @@ export default function EventForm() {
               <Input value={zip} onChange={(e) => setZip(e.target.value)} label="Zip" size="lg" />
             </div>
             </>}
+            <div className="">
+              <div className="flex flex-row mb-1">
+              <Switch className={`${isTipOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} checked={isTipOn} onChange={setIsTipOn}>
+                <span aria-hidden="true" className={`${isTipOn ? 'translate-x-7' : 'translate-x-0'}
+                    pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
+              </Switch>
+                <Typography variant="h6" className="ml-1" >Tip Jar?</Typography>
+              </div>
+              {isTipOn &&
+              <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
+              </div>}
+            </div>
+            <div className="">
+              <div className="flex flex-row mb-1">
+              <Switch className={`${isPlaylistOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} label="Spotify Playlist?" checked={isPlaylistOn} onChange={setIsPlaylistOn}>
+                <span aria-hidden="true" className={`${isPlaylistOn ? 'translate-x-7' : 'translate-x-0'}
+                    pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
+              </Switch>
+              <Typography variant="h6" className="ml-1" >Spotify Playlist?</Typography>
+              </div>
+              {isPlaylistOn &&
+              <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify} size="xl" /> </span><Input value={spotifyPlaylist} onChange={setSpotifyPlaylist} onClick={handleCreatePlaylist} label="Playlist Link" size="lg" />
+              </div>}
+            </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>
         </div>

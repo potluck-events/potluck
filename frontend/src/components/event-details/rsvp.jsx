@@ -8,12 +8,15 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios"
 
-export default function RSVP({ event }) {
-  const response = event.user_response === null ? "null" : event.user_response.toString()
+export default function RSVP({ event, response, orientation }) {
+  if (!response) {
+    response = event.user_response === null ? "null" : event.user_response.toString()
+  }
   const [rsvp, setRsvp] = useState(response)
   const token = useContext(AuthContext)
 
   const handleRSVP = (e, newRsvp) => {
+    e.preventDefault()
     if (newRsvp !== null) {
       setRsvp(newRsvp)
     } else {
@@ -40,12 +43,11 @@ export default function RSVP({ event }) {
   }
 
   if (event) return (
-    <div className="mt-2 flex justify-between items-center">
-      <p className="font-bold">RSVP:</p>
-      <ToggleButtonGroup value={rsvp} exclusive size="small" color="primary" onChange={handleRSVP}>
-        <ToggleButton value="true"><FontAwesomeIcon icon ={faCheck} className="mr-1"/> Attending</ToggleButton>
-        <ToggleButton value="false"><FontAwesomeIcon icon ={faXmark} className="mr-1"/> Can't Go</ToggleButton>
+
+      <ToggleButtonGroup orientation={orientation} value={rsvp} exclusive size="small" color="primary" onChange={handleRSVP}>
+        <ToggleButton value="true"><FontAwesomeIcon icon ={faCheck} className={`mr-1 ${rsvp==="true" && " text-green-700"}`}/> Attending</ToggleButton>
+        <ToggleButton value="false"><FontAwesomeIcon icon ={faXmark} className={`mr-1 ${rsvp==="false" && " text-red-700"}`}/> Can't Go</ToggleButton>
       </ToggleButtonGroup>
-    </div>
+    
   )
 }

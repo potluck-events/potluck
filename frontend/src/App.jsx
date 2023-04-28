@@ -14,26 +14,35 @@ import Home from './pages/home'
 import useLocalStorageState from 'use-local-storage-state'
 import { Error404, Error403 } from './pages/error-pages'
 import Profile from './pages/profile';
+import EditProfile from './pages/edit-profile';
+import InviteCodeRedirect from './pages/invite-code';
+import Spotify from './components/event-details/spotify';
 
 
 function App() {
   const [token, setToken] = useLocalStorageState('token', { defaultValue: null })
+  const [itemsTabOpen, setItemsTabOpen] = useLocalStorageState('itemsTabOpen', { defaultValue: true }) //Is the "tab" on items?
+  const [spotifyEventPk, setSpotifyEventPk] = useLocalStorageState('spotifyEventPk', { defaultValue: null })
   
 
   return (
     <AuthContext.Provider value={token}>
       <Routes>
         <Route element={<Header setToken={setToken} />}>
-          <Route path='/' element={token ? <Home /> : <Landing/>} />
+          <Route path='/' element={token ? <Home setItemsTabOpen={setItemsTabOpen} /> : <Landing/>} />
           <Route path='/login' element={!token ? <Login setToken={setToken}/> : <Home />} />
           <Route path='/sign-up' element={!token ? <SignUp setToken={setToken} /> : <Home />} />
           <Route element={<ProtectedRoute/>}>
             <Route path='/invitations' element={<UserInvitations />} />
-            <Route path='/events/new' element={<EventForm />} />
-            <Route path='/events/:pk' element={<EventDetails />} />
+            <Route path='/invite-code/:code' element={<InviteCodeRedirect />} />
+            <Route path='/events/new' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
+            <Route path='/events/:pk' element={<EventDetails itemsTabOpen={itemsTabOpen} setItemsTabOpen={setItemsTabOpen} />} />
             <Route path='/events/:pk/edit' element={<EventForm />} />
+            <Route path='/events/:pk/copy' element={<EventForm />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/profile/edit' element={<EditProfile />} />
+            <Route path='/spotify' element={<Spotify spotifyEventPk={spotifyEventPk} />} />
           </Route>
           <Route path='/page404' element={<Error404 />}/>
           <Route path='/page403' element={<Error403 />}/>

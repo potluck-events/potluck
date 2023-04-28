@@ -1,8 +1,10 @@
+from collections import Counter
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from .models import User, Event, Invitation, Item, Post
+from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
+from itertools import chain
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -17,7 +19,20 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save(update_fields=['first_name', 'last_name'])
 
 
+class DietaryRestrictionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DietaryRestriction
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
+
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     class Meta:
         model = User
@@ -29,10 +44,12 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'city',
-            'thumbnail',
             'date_joined',
             'full_name',
             'initials',
+            'thumbnail',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
         )
 
         read_only_fields = ('date_joined',)
@@ -56,6 +73,11 @@ class EventItemSerializer(serializers.ModelSerializer):
     user_is_creator = serializers.SerializerMethodField()
     user_is_owner = serializers.SerializerMethodField()
     owner = UserSerializerShort(read_only=True, many=False)
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     def get_user_is_creator(self, obj):
         return obj.created_by == self.context['request'].user
@@ -71,8 +93,11 @@ class EventItemSerializer(serializers.ModelSerializer):
             'description',
             'created_by',
             'owner',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
             'user_is_creator',
             'user_is_owner',
+            'is_acquired',
         )
 
         read_only_fields = (
@@ -112,6 +137,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_response = serializers.SerializerMethodField()
 
     invitation_pk = serializers.SerializerMethodField()
+    dietary_restrictions_count = serializers.SerializerMethodField()
 
     def get_count_invited(self, obj):
         return obj.invitations.count()
@@ -141,6 +167,16 @@ class EventSerializer(serializers.ModelSerializer):
             return obj.invitations.get(guest=self.context['request'].user).pk
         return None
 
+    def get_dietary_restrictions_count(self, obj):
+        guests = obj.invitations.filter(response=True).values_list(
+            'guest__dietary_restrictions__name', flat=True)
+        host = User.objects.filter(pk=obj.host.pk).values_list(
+            'dietary_restrictions__name', flat=True)
+        users = chain(host, guests)
+        counter = Counter(users)
+
+        return dict(counter)
+
     class Meta:
         model = Event
         fields = (
@@ -155,7 +191,9 @@ class EventSerializer(serializers.ModelSerializer):
             'zipcode',
             'date_scheduled',
             'time_scheduled',
+            'end_time',
             'host',
+            'tip_jar',
             'count_invited',
             'rsvp_yes',
             'rsvp_no',
@@ -166,6 +204,9 @@ class EventSerializer(serializers.ModelSerializer):
             'items',
             'posts',
             'invitation_pk',
+            'dietary_restrictions_count',
+            'invite_code',
+            'playlist_link',
         )
 
         read_only_fields = ('host',)
@@ -180,6 +221,18 @@ class EventSerializer(serializers.ModelSerializer):
 class EventSerializerShort(serializers.ModelSerializer):
     host = serializers.SlugRelatedField(
         read_only=True, slug_field='username')
+    user_response = serializers.SerializerMethodField()
+    invitation_pk = serializers.SerializerMethodField()
+
+    def get_user_response(self, obj):
+        if obj.invitations.filter(guest=self.context['request'].user).exists():
+            return obj.invitations.get(guest=self.context['request'].user).response
+        return None
+
+    def get_invitation_pk(self, obj):
+        if obj.invitations.filter(guest=self.context['request'].user).exists():
+            return obj.invitations.get(guest=self.context['request'].user).pk
+        return None
 
     class Meta:
         model = Event
@@ -191,29 +244,61 @@ class EventSerializerShort(serializers.ModelSerializer):
             'location_name',
             'date_scheduled',
             'time_scheduled',
+            'end_time',
             'host',
+            'user_response',
+            'invitation_pk',
         )
 
 
-class UserItemSerializer(serializers.ModelSerializer):
-    event = EventSerializerShort(read_only=True, )
+class ItemSerializerShort(serializers.ModelSerializer):
+    dietary_restrictions_names = serializers.StringRelatedField(
+        many=True,
+        source='dietary_restrictions',
+        read_only=True
+    )
 
     class Meta:
         model = Item
         fields = (
+            'title',
+            'pk',
+            'description',
+            'owner',
+            'dietary_restrictions',
+            'dietary_restrictions_names',
+            'is_acquired',
+        )
+
+
+class UserItemSerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = (
             'pk',
             'title',
             'description',
-            'event',
-            'created_by',
-            'owner',
+            'host',
+            'items',
         )
 
-        read_only_fields = ('created_by',)
+        read_only_fields = ()
+
+    def get_items_for_user(self, items, user):
+        return [item for item in items if item.owner == user]
+
+    def get_items(self, instance):
+        request = self.context.get('request')
+        user = request.user
+        items = instance.items.filter(owner=user)
+        serializer = ItemSerializerShort(items, many=True)
+        return serializer.data
 
 
 class UserInvitationSerializer(serializers.ModelSerializer):
-    event = EventSerializerShort()
+    event = EventSerializer(read_only=True)
     host = serializers.SerializerMethodField()
 
     def get_host(self, obj):
@@ -233,11 +318,32 @@ class UserInvitationSerializer(serializers.ModelSerializer):
 
 class InvitationSerializer(serializers.ModelSerializer):
     guest = UserSerializerShort(many=False, read_only=True)
+    event = serializers.SlugRelatedField(
+        many=False,
+        slug_field='pk',
+        read_only=True
+    )
 
     class Meta:
         model = Invitation
         fields = ('guest',
                   'email',
-                  'response',)
+                  'response',
+                  'event')
 
         read_only_fields = ('event',)
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
+        read_only_fields = (
+            'recipient',
+            'header',
+            'message',
+            'is_read',
+            'time_created',
+        )

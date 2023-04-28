@@ -1,25 +1,37 @@
-import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faSquareCheck, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TabsBody, TabPanel, Typography } from "@material-tailwind/react";
+import { TabsBody, TabPanel, Typography, Button } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import "../../styles/eventdetails.css"
 import Checkbox from '@mui/material/Checkbox';
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import UserAvatar from "../avatar";
-
+import { Tooltip } from "@mui/material";
 
 export default function Items({ items, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   
+  if (items.length) return (
+    <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
+      <TabPanel value='true' >
+        {items.filter((i) => !i.owner).length !== 0 &&<> <Typography variant="h5" >Host needs</Typography>
+        <div className="pl-0 divide-y">{items.filter((i) => !i.owner).map((item, index) => (
+            <Item key={index} item={item} setEvent={setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />))}
+        </div></>}
+        {items.filter((i) => i.owner).length !== 0 && <> <Typography variant="h5" className="mt-3">Guests bringing</Typography>
+          <div className="pl-0 divide-y">{items.filter((i) => i.owner).map((item, index) => (
+            <Item key={index} item={item} setEvent={setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />))}
+          </div></>}
+      </TabPanel>
+    </TabsBody>
+  )
+
   return (
     <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
       <TabPanel value='true' className="pl-0 divide-y">
-        {items.length ? items.map((item, index) => (
-          <Item key = {index} item={item} setEvent = {setEvent} setItemModalOpen={setItemModalOpen} setItemData={setItemData} userIsHost={userIsHost} />
-        )) :
           <div className="flex items-center justify-center h-52">
             <Typography className="text-gray-500" variant="h3">No Items</Typography>
-          </div>}
+          </div>
       </TabPanel>
     </TabsBody>
   )
@@ -94,22 +106,32 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
 
   return (
     <div className="flex items-center py-1">
-      <Checkbox className={item.owner && "invisible" } disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />
-      <div className="flex flex-auto flex-col pr-2 self-start " onClick={() => setExpanded(!expanded)}>
-        <Typography variant="h6" >{item.title}</Typography>
-        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description || "Description"}</p>
-      </div>
-      <div className="flex flex-col gap-3">
-        {item.owner &&
-          <UserAvatar user={item.owner}>
-            {item.user_is_owner && <FontAwesomeIcon onClick={handleReleaseOwner} icon={faXmarkCircle} className="bg-white cursor-pointer rounded-full absolute -top-1 -right-1 h-4 w-4" />}
-          </UserAvatar>}
-        {((userIsHost || item.user_is_creator)&& expanded) &&
-          <>
-            <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
-            <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem}/>
-          </>}
-        <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+      {item.owner ?
+        <Tooltip title={item.owner.full_name} placement="top">
+          <button className=" cursor-default mx-1.5">
+            <UserAvatar user={item.owner}>
+              {item.user_is_owner && <FontAwesomeIcon onClick={handleReleaseOwner} icon={faXmarkCircle} className="bg-white cursor-pointer rounded-full absolute -top-1 -left-1 h-4 w-4" />}
+            </UserAvatar>
+          </button>
+        </Tooltip>:
+        <Checkbox className={item.owner && "invisible"} disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />}
+        <div className="flex-grow">
+          <div className="flex flex-auto justify-between flex-row pr-2 self-start " onClick={() => setExpanded(!expanded)}>
+          <Typography variant="h6" >{item.title}</Typography>
+          <div className="flex flex-row gap-3 self-start pt-1">
+            {((userIsHost || item.user_is_creator)&& expanded) &&
+              <>
+              <Tooltip title="Edit item" placement="left">
+                <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
+              </Tooltip>
+              <Tooltip title="Delete item" placement="left">
+                <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem} />
+              </Tooltip>
+              </>}
+            <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+          </div>
+        </div>
+        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description}</p>
       </div>
 
     </div>
