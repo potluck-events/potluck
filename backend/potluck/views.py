@@ -338,7 +338,7 @@ def create_invitation_notification(sender, instance, **kwargs):
         header = f'New Invitation!'
         message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
         Notification.objects.create(
-            recipient=recipient, header=header, message=message)
+            recipient=recipient, header=header, message=message, event=instance.event)
 
 
 # notification to host when guest responds to an invitation
@@ -353,7 +353,7 @@ def create_rsvp_notification(sender, instance, **kwargs):
             else:
                 message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
             Notification.objects.create(
-                recipient=recipient, header=header, message=message)
+                recipient=recipient, header=header, message=message, event=instance.event)
 
 
 # notify guests when host creates a new item
@@ -367,7 +367,7 @@ def create_host_item_notification(sender, instance, created, **kwargs):
                 header = 'Up for Grabs!'
                 message = f'{instance.event.host} needs someone to bring {instance.title} for {event.title}.'
                 Notification.objects.create(
-                    recipient=guest, header=header, message=message)
+                    recipient=guest, header=header, message=message, event=event)
 
 
 # notify guests when a guest creates a new item
@@ -381,7 +381,7 @@ def create_item_notification_for_guest(sender, instance, created, **kwargs):
                 header = 'An event just got even better!'
                 message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
                 Notification.objects.create(
-                    recipient=guest, header=header, message=message)
+                    recipient=guest, header=header, message=message, event=event)
 
 
 # notify host when a guest creates a new item
@@ -394,7 +394,7 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
             header = 'An event just got even better!'
             message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
             Notification.objects.create(
-                recipient=host, header=header, message=message)
+                recipient=host, header=header, message=message, event=event)
 
 
 # maybe change so that only notifies item owner?
@@ -409,7 +409,7 @@ def delete_item_notification_for_guests(sender, instance, **kwargs):
         header = 'Item deleted from event'
         message = f'{instance.title} has been deleted for {event.title}.'
         Notification.objects.create(
-            recipient=recipient, header=header, message=message)
+            recipient=recipient, header=header, message=message, event=event)
 
 
 # notify host when an item is deleted
@@ -420,4 +420,4 @@ def delete_item_notification_for_host(sender, instance, **kwargs):
     header = 'Item deleted from event'
     message = f'{instance.title} has been deleted for {event.title}.'
     Notification.objects.create(
-        recipient=host, header=header, message=message)
+        recipient=host, header=header, message=message, event=event)
