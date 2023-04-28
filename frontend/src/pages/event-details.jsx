@@ -100,7 +100,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
       <EventHeader event={event} mapsURL={mapsURL} calFile={calFile} />
 
       {event.user_is_guest &&
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mt-1">
             <p className="font-bold">RSVP:</p>  <RSVP event={event} />
           </div>}
       
