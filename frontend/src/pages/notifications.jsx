@@ -16,7 +16,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 export default function Notifications(){
     const token = useContext(AuthContext)
     const [notifications, setNotifications] = useState()
-    const [read, setRead] = useState(false)
+    const [event, setEvent] = useState()
     const { pk } = useParams()
     const navigate = useNavigate()
 
@@ -34,10 +34,10 @@ export default function Notifications(){
         })
     }, [])
         
-        function handleNotifcationClick(pk){
+        function handleNotifcationClick(not){
             const options = {
                 method: 'PATCH',
-                url: `https://potluck.herokuapp.com/notifications/${pk}`,
+                url: `https://potluck.herokuapp.com/notifications/${not.pk}`,
                 headers: {
                 'Content-Type': 'application/json',
                 Authorization: token
@@ -46,11 +46,12 @@ export default function Notifications(){
             };
             axios.request(options).then(function (response) {
                 console.log(response.data);
-                location.reload()
+                
             }).catch(function (error) {
                 console.error(error);
             })
-            navigate(`/events/${pk}`);}
+            console.log(not)
+            navigate(`/events/${not.event}`);}
 
             function handleDelete(pk){
                 const options = {
@@ -86,7 +87,7 @@ export default function Notifications(){
                                     </div>
                                         <Typography variant='h5' >{not.header}</Typography>
                                     </div>
-                                    <div className="self-end" onClick={() => handleNotifcationClick(not.pk)}>
+                                    <div className="self-end" onClick={() => handleNotifcationClick(not)}>
                                         <IconButton variant="text" className=" mr-1">
                                             <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer"/>
                                         </IconButton>
