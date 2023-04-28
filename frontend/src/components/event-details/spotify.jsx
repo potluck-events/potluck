@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authcontext";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Spotify({ spotifyEventPk }) {
@@ -11,6 +12,7 @@ export default function Spotify({ spotifyEventPk }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const userToken = useContext(AuthContext)
+  const navigate = useNavigate()
 
   
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Spotify({ spotifyEventPk }) {
         setUserInfo(profile);
         const playlist = await createPlaylist(accessToken, profile, title, description)
 
-        setPlaylist(playlist, spotifyEventPk, userToken)
+        setPlaylist(playlist, spotifyEventPk, userToken, navigate)
       }
     }
 
@@ -132,8 +134,7 @@ async function createPlaylist(token, profile, title, description) {
   return await result.data
 }
 
-function setPlaylist(playlist, pk, token) {
-
+function setPlaylist(playlist, pk, token, navigate) {
   const options = {
     method: "PATCH",
     url: `https://potluck.herokuapp.com/events/${pk}`,
