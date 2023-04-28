@@ -1,7 +1,8 @@
 import { 
         Card,
         CardBody,
-        IconButton 
+        IconButton, 
+        Typography
         } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -34,14 +35,15 @@ export default function Notifications(){
             {notifications.map((not, index) => {
                 return (
                 <Card className="my-3 " key={index}>
-                    <CardBody className="p-4">
-                        <div className="" >
+                    <CardBody className="p-2">
                             <div className="flex flex-col justify-between py-1 cursor-pointer">
                                 <div className="py-1 justify-between flex items-center" >
-                                    <h2 className="font-semibold">{not.header}</h2>
+                                    <Typography variant='h5' >{not.header}</Typography>
+                                </div>
+                                <div>
+                                    <Typography variant='paragraph'>{not.message}</Typography>
                                 </div>
                             </div> 
-                        </div>
                     </CardBody>
                 </Card>)
             })}
