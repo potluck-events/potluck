@@ -345,6 +345,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             'message',
             'is_read',
             'time_created',
+            'event',
         )
 
         read_only_fields = (
