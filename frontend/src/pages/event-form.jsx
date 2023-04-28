@@ -14,7 +14,7 @@ import spotify from "../components/event-details/spotify"
 import { Switch } from "@headlessui/react"
 
 
-export default function EventForm(setSpotifyEventPk) {
+export default function EventForm({setSpotifyEventPk}) {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
@@ -52,7 +52,7 @@ export default function EventForm(setSpotifyEventPk) {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
-      setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
+      if(response.data?.end_time) setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
       setIsTipOn(Boolean(response.data.tip_jar))
       setVenmoHandle(response.data.tip_jar)
       setIsPlaylistOn(Boolean(response.data.playlist_link))
@@ -86,13 +86,13 @@ export default function EventForm(setSpotifyEventPk) {
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
         time_scheduled: dateTime.format("HH:MM"),
-        end_time: endTime.format("HH:MM"),
         tip_jar: isTipOn? venmoHandle : "",
         playlist_link: isPlaylistOn ? playlistLink : "",
 
       }
     };
-
+    if(endTime) options.data.end_time = endTime.format("HH:MM")
+      
     axios.request(options).then(function (response) {
       console.log(response.data);
       //If spotify playlist is checked and there hasn't been a previous playlist set, create one
