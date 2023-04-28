@@ -58,7 +58,7 @@ async function redirectToAuthCodeFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", "http://localhost:5173/spotify");
+  params.append("redirect_uri", "https://bash-events.netlify.app/spotify");
   params.append("scope", "user-read-private user-read-email playlist-modify-private playlist-modify-public");
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
