@@ -25,6 +25,8 @@ export default function Header({setToken}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userData, setUserData] = useState()
   const navigate = useNavigate()
+  const [notifications, setNotifications] = useState()
+
 
     
   function handleLogout() {
@@ -60,6 +62,17 @@ export default function Header({setToken}) {
     .catch(error => {
       console.error(error);
     });
+
+    axios.get(`https://potluck.herokuapp.com/notifications`, {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+      }
+  }).then((response) => {
+      console.log(response.data)
+      setNotifications(response.data)
+  })
+
   }, [token])
   
   function handleProfile() {
@@ -87,6 +100,7 @@ export default function Header({setToken}) {
                 type="button"
                 className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
               >
+                {notifications.map((n) => n.is_read)}
                     <UserAvatar user={userData} className='w-6 h-6' />
                     <FontAwesomeIcon icon={faAngleDown}/>
               </button>
