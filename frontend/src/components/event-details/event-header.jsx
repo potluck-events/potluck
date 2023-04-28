@@ -1,12 +1,11 @@
-import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown, faCopy, faMoneyBill, faDollar, faDollarSign, faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown, faCopy, faMoneyBill, faDollar, faDollarSign, faCommentsDollar, faEllipsis, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Button, Dialog, Card, Chip } from "@material-tailwind/react";
+import { Typography, Button, Dialog, Card, Chip, Menu, MenuHandler, MenuList, MenuItem } from "@material-tailwind/react";
 import moment from "moment";
 import { useState, Fragment, useRef, useContext, useEffect } from "react";
 import { useNavigate, useParams, } from "react-router-dom";
 import "../../styles/eventdetails.css"
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { Menu, Transition } from '@headlessui/react'
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
@@ -61,11 +60,11 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           </div> 
           <Typography className="mb-1 mr-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> {event.location_name}</Typography>
           {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
+          {event.playlist_link && <a href={event.playlist_link} target="_blank"> <Chip className="my-1 cursor-pointer" color="green" value="Event Playlist" icon={<FontAwesomeIcon icon={faSpotify}  className=" mr-1" size="xl" />} /></a>}
+          { event.tip_jar && <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"> <Chip className="my-1 cursor-pointer z-0" color="teal" value="Tip the Host?" icon={<FontAwesomeIcon icon={faCommentsDollar} className=" mr-1" size="xl" />} /></a>}
         </div>
         <div className="mt-2">
           <Typography><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</Typography>
-        {event.playlist_link && <a href={event.playlist_link} target="_blank"> <Chip className="my-1 cursor-pointer" color="green" value="Event Playlist" icon={<FontAwesomeIcon icon={faSpotify}  className=" mr-1" size="xl" />} /></a>}
-        { event.tip_jar && <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"> <Chip className="my-1 cursor-pointer" color="teal" value="Tip the Host?" icon={<FontAwesomeIcon icon={faCommentsDollar} className=" mr-1" size="xl" />} /></a>}
     
       </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
@@ -85,7 +84,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
             {Object.keys(event.dietary_restrictions_count)
             .filter((key) => key !== 'null').map((key) => (
-              <Chip color='blue' key={key} className="h-fit my-1"
+              <Chip color='amber' key={key} className="h-fit my-1 rounded-full"
                 value={`${key}`}
               />
             ))}
@@ -124,91 +123,46 @@ function EditMenu({ pk, handleDelete,  calFile  }){
   
 
   return (
-    <div className="text-right">
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-400">
-          Options
-          <FontAwesomeIcon icon={faAngleDown}
-            className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
-            aria-hidden="true"
-          />
-        </Menu.Button>
-      </div>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+    <div className="m-auto">
+    <Menu placement="bottom-end" >
+      <MenuHandler>
+        <FontAwesomeIcon icon={faEllipsis} className="text-2xl"/>
+      </MenuHandler>
+      <MenuList>
           <div className="px-1 py-1 ">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href={ calFile.url}
-                  download={ calFile.download}
-                  className={`${
-                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
+            <MenuItem>
+                <a href={ calFile.url} download={ calFile.download} >
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
                   Add to Calendar
                 </a>
-              )}
-            </Menu.Item>
+            </MenuItem>
           </div>
           <div className="px-1 py-1 ">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={handleEditButton}
-                  className={`${
-                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
+            <MenuItem>
+                <button onClick={handleEditButton}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faPenToSquare} />
                   Edit
                 </button>
-              )}
-            </Menu.Item>
+            </MenuItem>
           </div>
           <div className="px-1 py-1 ">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={handleCopy}
-                  className={`${
-                    active ? ' bg-blue-400 text-white' : 'text-gray-900'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
+            <MenuItem>
+                <button onClick={handleCopy}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCopy} />
                   Duplicate
                 </button>
-              )}
-            </Menu.Item>
+            </MenuItem>
           </div>
           <div className="px-1 py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={handleDeleteConfirmation}
-                  className={`${
-                    active ? 'bg-blue-400 text-white' : 'text-gray-900'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
+            <MenuItem>
+                <button onClick={handleDeleteConfirmation}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faTrash} />
                   Delete
                 </button>
-              )}
-            </Menu.Item>
+            </MenuItem>
           </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
+        </MenuList>
+      </Menu>
       {isConfirmDeleteOpen && (
         <div className="w-fit">
           <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="fixed px-2 min-w-fit w-fit">
