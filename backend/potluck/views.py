@@ -360,8 +360,8 @@ def create_rsvp_notification(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Item)
-def send_notification_to_guests(sender, instance, created, **kwargs):
-    if created:
+def create_item_notification(sender, instance, created, **kwargs):
+    if created and instance.owner is None:
         event = instance.event
         for invitation in event.invitations.all():
             guest = invitation.guest
