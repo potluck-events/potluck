@@ -90,7 +90,7 @@ export default function Home() {
     {/* <div className="flex justify-center py-1">
         <img src="temp-img/logo2.png" alt="" />
     </div> */}
-    <Tabs className='mt-3 px-6' value="events" >
+    <Tabs className='mt-3 px-6 mb-20' value="events" >
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">

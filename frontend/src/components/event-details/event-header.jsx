@@ -62,21 +62,21 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
         </div>
         <div className="mt-2">
-          <p><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</p>
+          <Typography><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</Typography>
         </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
           <div className="">
-            <p className="font-bold">Attendees</p>
+            <Typography variant='h6' className='text-left mt-1 font-bold'>Attendees</Typography>
             <div className="flex justify-around gap-2">
-              <p>Going: { event.rsvp_yes}</p>
-              <p>Can't go: { event.rsvp_no}</p>
-              <p>TBD: { event.rsvp_tbd}</p>
+              <Typography>Going: { event.rsvp_yes}</Typography>
+              <Typography>Can't go: { event.rsvp_no}</Typography>
+              <Typography>TBD: { event.rsvp_tbd}</Typography>
             </div>
           </div>  
           <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight}/>
         </div>
         <div className="">
-        {event.dietary_restrictions_count && <><p variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</p>
+        {event.dietary_restrictions_count && <><Typography variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</Typography>
           <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
             {Object.keys(event.dietary_restrictions_count)
             .filter((key) => key !== 'null').map((key) => (
