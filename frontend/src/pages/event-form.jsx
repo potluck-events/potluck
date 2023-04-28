@@ -12,7 +12,9 @@ import { faArrowLeft, faBackwardStep, faX, faXmark, faAt, faMusic } from "@forta
 import { faSpotify } from "@fortawesome/free-brands-svg-icons"
 import spotify from "../components/event-details/spotify"
 import { Switch } from "@headlessui/react"
-export default function EventForm() {
+
+
+export default function EventForm({setSpotifyEventPk}) {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
@@ -32,9 +34,8 @@ export default function EventForm() {
   const [isTipOn, setIsTipOn] = useState(false)
   const [venmoHandle, setVenmoHandle] = useState('')
   const [isPlaylistOn, setIsPlaylistOn] = useState(false)
-  const [spotifyPlaylist, setSpotifyPlaylist] = useState('')
+  const [playlistLink, setPlaylistLink] = useState("")
   
-  console.log(location);
   useEffect(() => {
     if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
@@ -51,8 +52,11 @@ export default function EventForm() {
       setState(response.data?.state)
       setZip(response.data?.zipcode)
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
-      setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
-      setVenmoHandle(response.data.tip_jar)
+      if(response.data?.end_time) setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
+      setIsTipOn(Boolean(response.data.tip_jar))
+      if (response.data.tip_jar) setVenmoHandle(response.data.tip_jar)
+      setIsPlaylistOn(Boolean(response.data.playlist_link))
+      if (response.data.playlist_link) setPlaylistLink(response.data.playlist_link)
 
       if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
         setShowAddress(true)
@@ -82,14 +86,18 @@ export default function EventForm() {
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
         time_scheduled: dateTime.format("HH:MM"),
-        end_time: endTime.format("HH:MM"),
-        tip_jar: venmoHandle,
+        tip_jar: isTipOn? venmoHandle : "",
+        playlist_link: isPlaylistOn ? playlistLink : "",
+
       }
     };
-
+    if(endTime) options.data.end_time = endTime.format("HH:MM")
+      
     axios.request(options).then(function (response) {
       console.log(response.data);
-      if (spotifyPlaylist) {
+      //If spotify playlist is checked and there hasn't been a previous playlist set, create one
+      if (isPlaylistOn && ! response.data.playlist_link) {
+        setSpotifyEventPk(response.data.pk)
         navigate('/spotify')
       }
       else {
@@ -102,16 +110,6 @@ export default function EventForm() {
 
   function goBack() {
     navigate(-1)
-  }
-
-  function switchToggle() {
-    setIsTipOn(!isTipOn)
-  }
-
-  function handleCreatePlaylist() {
-    console.log("hi");
-    const link = spotify()
-    setSpotifyPlaylist()
   }
 
   return (<>
@@ -158,7 +156,7 @@ export default function EventForm() {
             </>}
             <div className="">
               <div className="flex flex-row mb-1">
-              <Switch className={`${isTipOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} checked={isTipOn} onChange={setIsTipOn}>
+              <Switch className={`${isTipOn ? 'bg-blue-500' : 'bg-gray-300'} mb-2 relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} checked={isTipOn} onChange={setIsTipOn}>
                 <span aria-hidden="true" className={`${isTipOn ? 'translate-x-7' : 'translate-x-0'}
                     pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
               </Switch>
@@ -171,16 +169,19 @@ export default function EventForm() {
             </div>
             <div className="">
               <div className="flex flex-row mb-1">
-              <Switch className={`${isPlaylistOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} label="Spotify Playlist?" checked={isPlaylistOn} onChange={setIsPlaylistOn}>
+              <Switch className={`${isPlaylistOn ? 'bg-blue-500' : 'bg-gray-300'} mb-2 relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} label="Spotify Playlist?" checked={isPlaylistOn} onChange={setIsPlaylistOn}>
                 <span aria-hidden="true" className={`${isPlaylistOn ? 'translate-x-7' : 'translate-x-0'}
                     pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
               </Switch>
-              <Typography variant="h6" className="ml-1" >Spotify Playlist?</Typography>
+              <Typography variant="h6" className="ml-1" > Shared Spotify Playlist?</Typography>
               </div>
-              {isPlaylistOn &&
-              <div className='flex'>
-                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify} size="xl" /> </span><Input value={spotifyPlaylist} onChange={setSpotifyPlaylist} onClick={handleCreatePlaylist} label="Playlist Link" size="lg" />
+              {isPlaylistOn && <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify}  className="text-green-500" size="xl" /> </span><Input value={playlistLink} onChange={(e) => setPlaylistLink(e.target.value)} label="Playlist Link" size="lg" />
               </div>}
+              {(isPlaylistOn && !playlistLink)&&
+              <div className='flex border-l-2 pl-4 mt-2'>
+                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account </p>
+                </div>}
             </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>

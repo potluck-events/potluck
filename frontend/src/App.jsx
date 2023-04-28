@@ -38,8 +38,8 @@ function App() {
             <Route path='/invite-code/:code' element={<InviteCodeRedirect />} />
             <Route path='/events/new' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
             <Route path='/events/:pk' element={<EventDetails itemsTabOpen={itemsTabOpen} setItemsTabOpen={setItemsTabOpen} />} />
-            <Route path='/events/:pk/edit' element={<EventForm />} />
-            <Route path='/events/:pk/copy' element={<EventForm />} />
+            <Route path='/events/:pk/edit' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
+            <Route path='/events/:pk/copy' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/edit' element={<EditProfile />} />

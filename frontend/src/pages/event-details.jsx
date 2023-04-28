@@ -26,7 +26,6 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   const [itemData, setItemData] = useState()
   const token = useContext(AuthContext)
   const navigate = useNavigate()
-  console.log(location);
   useEffect(() => {
   
     const options = {
@@ -87,7 +86,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
           resolve(new File([value], filename, { type: 'plain/text' }))
         })
       })
-      
+      //FIX THIS: Not opening on mobile
       const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
@@ -101,7 +100,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
       <EventHeader event={event} mapsURL={mapsURL} calFile={calFile} />
 
       {event.user_is_guest &&
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mt-1">
             <p className="font-bold">RSVP:</p>  <RSVP event={event} />
           </div>}
       
@@ -137,15 +136,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
         <Items items={event.items} setEvent={setEvent} setItemData={setItemData} setItemModalOpen={setItemModalOpen} userIsHost={userIsHost} />
         <Posts posts={event.posts} userIsHost={event.user_is_host} />
     </Tabs>
-    { event.tip_jar &&
-    <div className="fixed left-5 bottom-5 z-50 border-2 border-green-700 rounded-full p-2 bg-green-100">
-      <Tooltip content="Leave a tip for the host?" placement='right' className="ml-2 bg-light-blue-600">
-        <button className="">
-          <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"><FontAwesomeIcon size='2xl' style={{color: "#3b9145"}}icon={faMoneyBill} /></a>
-        </button>
-      </Tooltip>
-    </div>
-    }
+    
     </>
   )
 }

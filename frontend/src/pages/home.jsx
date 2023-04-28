@@ -22,11 +22,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
-import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faHouse, faHouseChimney, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faHouse, faHouseChimney, faSpinner, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useLocalStorageState from "use-local-storage-state";
-import UserAvatar from "../components/avatar";
-import RSVP from "../components/event-details/rsvp";
 import Checkbox from '@mui/material/Checkbox';
 
 export default function Home({setItemsTabOpen}) {
@@ -35,7 +32,6 @@ export default function Home({setItemsTabOpen}) {
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [isFilterFuture, setIsFilterFuture] = useState(true)
-    const [shoppingLisaaat, setShoppingList] = useState(false)
 
 
     useEffect(() => {
@@ -79,15 +75,15 @@ export default function Home({setItemsTabOpen}) {
             console.error(error);
         });
 
-        setItemsTabOpen(true)
     }, [isFilterFuture])
+    setItemsTabOpen(true)
     
     function handleRadio (state) {
         setIsFilterFuture(state);
         }
 
         
-    return (
+    if(events) return (
     <>
     {/* <div className="flex justify-center py-1">
         <img src="temp-img/logo2.png" alt="" />
@@ -137,6 +133,9 @@ export default function Home({setItemsTabOpen}) {
     <NewEventButton />
 </>
     );
+
+  return (<div className="h-52 flex items-center justify-center"><FontAwesomeIcon icon={faSpinner} spin/></div>)
+
 }
 
 function Events({ events }) {
@@ -267,9 +266,9 @@ function NewEventButton() {
 
     return (
         <div className="  fixed bottom-5 right-5 z-50">
-            <Button onClick={onClickNewEvent} className="w-16 h-16 rounded-full p-0">
+            <Button onClick={onClickNewEvent} className="w-16 h-16 rounded-full p-0 shadow-lg shadow-gray-600/50">
                 <div className="flex justify-center">
-                <FontAwesomeIcon icon={faCalendarPlus} className="w-10 h-14"/>
+                <FontAwesomeIcon icon={faCalendarPlus} className="w-8 h-12"/>
                 </div> 
             </Button>
         </div>

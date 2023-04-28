@@ -1,31 +1,46 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authcontext";
+import { useNavigate } from "react-router-dom";
 
 
-export default function Spotify({spotifyEventPk}) {
+export default function Spotify({ spotifyEventPk }) {
   const [userInfo, setUserInfo] = useState();
   const clientId = "fb2988ad523142b1a493ee09f914a44a"; // Replace with your client ID
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const userToken = useContext(AuthContext)
+  const navigate = useNavigate()
+
   
   useEffect(() => {
-    async function getSpotify() {
+    axios.get(`https://potluck.herokuapp.com/events/${spotifyEventPk}`, {
+      headers: {
+        'Content-Type': 'applications/json',
+        Authorization: userToken
+      }
+    }).then((response) => {
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      getSpotify(response.data.title, response.data.description)
+    })
+
+    async function getSpotify(title, description) {
       if (!code) {
         redirectToAuthCodeFlow(clientId);
       } else {
         const accessToken = await getAccessToken(clientId, code);
         const profile = await fetchProfile(accessToken);
-        console.log(profile);
         setUserInfo(profile);
-        const playlist = await createPlaylist(accessToken, profile)
-        console.log(playlist);
+        const playlist = await createPlaylist(accessToken, profile, title, description)
 
-        setPlaylist(playlist, spotifyEventPk)
+        setPlaylist(playlist, spotifyEventPk, userToken, navigate)
       }
     }
 
-    getSpotify()
+    
 
   }, [])
 
@@ -44,7 +59,7 @@ async function redirectToAuthCodeFlow(clientId) {
   params.append("client_id", clientId);
   params.append("response_type", "code");
   params.append("redirect_uri", "http://localhost:5173/spotify");
-  params.append("scope", "user-read-private user-read-email playlist-modify-private");
+  params.append("scope", "user-read-private user-read-email playlist-modify-private playlist-modify-public");
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
 
@@ -99,8 +114,7 @@ async function fetchProfile(token) {
   return await result.json();
 }
 
-async function createPlaylist(token, profile) {
-  console.log(profile.id);
+async function createPlaylist(token, profile, title, description) {
   const options = {
     method: 'POST',
     url: `https://api.spotify.com/v1/users/${profile.id}/playlists`,
@@ -109,9 +123,10 @@ async function createPlaylist(token, profile) {
        Authorization: `Bearer ${token}`
     },
     data: {
-      name: "My new playlist",
-      public: false,
-      collaborative: true
+      name: title,
+      description: description,
+      public: true,
+      collaborative: false
     }
   }
   const result = await axios.request(options)
@@ -119,9 +134,7 @@ async function createPlaylist(token, profile) {
   return await result.data
 }
 
-function setPlaylist(playlist, pk) {
-  const token = useContext(AuthContext)
-
+function setPlaylist(playlist, pk, token, navigate) {
   const options = {
     method: "PATCH",
     url: `https://potluck.herokuapp.com/events/${pk}`,
@@ -130,13 +143,12 @@ function setPlaylist(playlist, pk) {
       Authorization: token,
     },
     data: {
-      playlist_link: playlist,
+      playlist_link: playlist.external_urls.spotify,
     }
   };
 
   axios.request(options).then(function (response) {
-    console.log(response.data);
-    //navigate(`/events/${response.data.pk}`)
+    navigate(`/events/${response.data.pk}`)
   }).catch(function (error) {
     console.error(error);
   });
