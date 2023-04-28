@@ -59,3 +59,9 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 
 /dietary-restrictions/ --> | GET |
 -- lists all DietaryRestriction objects
+
+/notifications/ --> | GET |
+-- lists all notifications for the logged in user
+
+/notifications/pk --> | GET | PUT | PATCH | DELETE |
+-- user can delete notification or mark 'is_read' if they are the recipient

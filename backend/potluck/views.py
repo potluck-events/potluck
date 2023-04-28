@@ -9,7 +9,7 @@ from dj_rest_auth.registration.views import RegisterView
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission
+from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission, IsRecipient
 
 # MODELS IMPORTS
 from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
@@ -32,7 +32,7 @@ from .email import send
 import json
 from django.db.models import Q
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 
@@ -320,9 +320,17 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
+        # queryset.update(is_read=True)
         return queryset
 
 
+class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [IsRecipient]
+
+
+# notification to guest when they receive an invitation
 @receiver(post_save, sender=Invitation)
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
@@ -330,9 +338,10 @@ def create_invitation_notification(sender, instance, **kwargs):
         header = f'New Invitation!'
         message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
         Notification.objects.create(
-            recipient=recipient, header=header, message=message)
+            recipient=recipient, header=header, message=message, event=instance.event)
 
 
+# notification to host when guest responds to an invitation
 @receiver(post_save, sender=Invitation)
 def create_rsvp_notification(sender, instance, **kwargs):
     if not kwargs.get('created', False):
@@ -344,4 +353,71 @@ def create_rsvp_notification(sender, instance, **kwargs):
             else:
                 message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
             Notification.objects.create(
-                recipient=recipient, header=header, message=message)
+                recipient=recipient, header=header, message=message, event=instance.event)
+
+
+# notify guests when host creates a new item
+@receiver(post_save, sender=Item)
+def create_host_item_notification(sender, instance, created, **kwargs):
+    if created and instance.owner is None:
+        event = instance.event
+        for invitation in event.invitations.all():
+            guest = invitation.guest
+            if guest:
+                header = 'Up for Grabs!'
+                message = f'{instance.event.host} needs someone to bring {instance.title} for {event.title}.'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message, event=event)
+
+
+# notify guests when a guest creates a new item
+@receiver(post_save, sender=Item)
+def create_item_notification_for_guest(sender, instance, created, **kwargs):
+    if created and instance.owner is not None:
+        event = instance.event
+        for invitation in event.invitations.all():
+            guest = invitation.guest
+            if guest:
+                header = 'An event just got even better!'
+                message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message, event=event)
+
+
+# notify host when a guest creates a new item
+@receiver(post_save, sender=Item)
+def create_item_notification_for_host(sender, instance, created, **kwargs):
+    if created and instance.owner is not None:
+        event = instance.event
+        host = instance.event.host
+        if host:
+            header = 'An event just got even better!'
+            message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
+            Notification.objects.create(
+                recipient=host, header=header, message=message, event=event)
+
+
+# maybe change so that only notifies item owner?
+# notify guests when an item is deleted
+@receiver(post_delete, sender=Item)
+def delete_item_notification_for_guests(sender, instance, **kwargs):
+    event = instance.event
+    guests = event.invitations.filter(
+        response=True).values_list('guest', flat=True)
+    for guest_id in guests:
+        recipient = User.objects.get(id=guest_id)
+        header = 'Item deleted from event'
+        message = f'{instance.title} has been deleted for {event.title}.'
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message, event=event)
+
+
+# notify host when an item is deleted
+@receiver(post_delete, sender=Item)
+def delete_item_notification_for_host(sender, instance, **kwargs):
+    event = instance.event
+    host = event.host
+    header = 'Item deleted from event'
+    message = f'{instance.title} has been deleted for {event.title}.'
+    Notification.objects.create(
+        recipient=host, header=header, message=message, event=event)
