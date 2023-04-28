@@ -29,7 +29,7 @@ import UserAvatar from "../components/avatar";
 import RSVP from "../components/event-details/rsvp";
 import Checkbox from '@mui/material/Checkbox';
 
-export default function Home() {
+export default function Home(itemsTabOpen) {
     const token = useContext(AuthContext)
     const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
@@ -78,6 +78,8 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
+
+        itemsTabOpen(true)
     }, [isFilterFuture])
     
     function handleRadio (state) {
