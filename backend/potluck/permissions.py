@@ -70,6 +70,14 @@ class IsPostAuthorOrHost(permissions.IsAuthenticated):
         return False
 
 
+class IsRecipient(permissions.IsAuthenticated):
+
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.recipient:
+            return True
+        return False
+
+
 class OrPermission(permissions.BasePermission):
     def __init__(self, *permissions):
         self.permissions = permissions
