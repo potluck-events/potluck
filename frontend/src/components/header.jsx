@@ -16,7 +16,7 @@ import {
 import { AuthContext } from '../context/authcontext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faRightFromBracket, faUser, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faRightFromBracket, faUser, faBell, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import UserAvatar from './avatar';
 import { useNavigate } from "react-router-dom";
 
@@ -100,7 +100,16 @@ export default function Header({setToken}) {
                 type="button"
                 className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
               >
-                {notifications.map((n) => n.is_read)}
+                {notifications && notifications.map((n) => {
+                  if (n.is_read === false) { 
+                  return (
+                  <FontAwesomeIcon 
+                  icon={faCircleExclamation} style={{color: "#ff0a0a",}}/> 
+                  );
+                } else {
+                  return null;
+                }
+              }).find((n) => n)}
                     <UserAvatar user={userData} className='w-6 h-6' />
                     <FontAwesomeIcon icon={faAngleDown}/>
               </button>
