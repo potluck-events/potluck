@@ -79,7 +79,7 @@ export default function Header({setToken}) {
             </Link>
           </div>
           {token &&
-          <Menu className=''>
+          <Menu placement='bottom-end'>
             <MenuHandler>
             <div className="flex">
               <button
@@ -91,7 +91,7 @@ export default function Header({setToken}) {
               </button>
             </div>
             </MenuHandler>
-            <MenuList>
+            <MenuList className=''>
               <MenuItem onClick={handleProfile}><FontAwesomeIcon icon={faUser} className='mr-1' /> Profile</MenuItem>
               <MenuItem onClick={handleLogout}><FontAwesomeIcon icon={faRightFromBracket} className='mr-1' />Logout</MenuItem>
             </MenuList>
