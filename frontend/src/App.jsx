@@ -17,6 +17,7 @@ import Profile from './pages/profile';
 import EditProfile from './pages/edit-profile';
 import InviteCodeRedirect from './pages/invite-code';
 import Spotify from './components/event-details/spotify';
+import Notifications from './pages/notifications';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/edit' element={<EditProfile />} />
             <Route path='/spotify' element={<Spotify spotifyEventPk={spotifyEventPk} />} />
+            <Route path='/notifications' element={<Notifications />} />
           </Route>
           <Route path='/page404' element={<Error404 />}/>
           <Route path='/page403' element={<Error403 />}/>
