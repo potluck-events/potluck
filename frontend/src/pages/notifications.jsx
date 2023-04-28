@@ -83,6 +83,9 @@ export default function Notifications(){
                                     <div className="py-1 justify-between flex items-center mr-2" >
                                         <Typography variant='h5' >{not.header}</Typography>
                                     </div>
+                                    <div className=" self-center">
+                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}}  className=""/>}
+                                    </div>
                                     <div className="self-end" onClick={() => handleNotifcationClick(not.pk)}>
                                         <IconButton variant="text" className=" mr-1">
                                             <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer"/>
@@ -90,9 +93,6 @@ export default function Notifications(){
                                     </div>
                                     <div className="text-end self-center ml-auto cursor-pointer ">
                                         <FontAwesomeIcon onClick={() => handleDelete(not.pk)} icon={faX} />
-                                    </div>
-                                    <div className=" self-center">
-                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}}  className=""/>}
                                     </div>
                                 </div>
                                 <div>
