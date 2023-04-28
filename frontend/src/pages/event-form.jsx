@@ -34,7 +34,7 @@ export default function EventForm({setSpotifyEventPk}) {
   const [isTipOn, setIsTipOn] = useState(false)
   const [venmoHandle, setVenmoHandle] = useState('')
   const [isPlaylistOn, setIsPlaylistOn] = useState(false)
-  const [playlistLink, setPlaylistLink] = useState()
+  const [playlistLink, setPlaylistLink] = useState("")
   
   useEffect(() => {
     if (pk) {
@@ -54,9 +54,9 @@ export default function EventForm({setSpotifyEventPk}) {
       setDateTime(moment(`${response.data.date_scheduled} ${response.data.time_scheduled}`))
       if(response.data?.end_time) setEndTime(moment(`${response.data.date_scheduled} ${response.data?.end_time}`))
       setIsTipOn(Boolean(response.data.tip_jar))
-      setVenmoHandle(response.data.tip_jar)
+      if (response.data.tip_jar) setVenmoHandle(response.data.tip_jar)
       setIsPlaylistOn(Boolean(response.data.playlist_link))
-      setPlaylistLink(response.data.playlist_link)
+      if (response.data.playlist_link) setPlaylistLink(response.data.playlist_link)
 
       if (response.data?.street_address || response.data?.city || response.data?.city || response.data?.state) {
         setShowAddress(true)
