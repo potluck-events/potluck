@@ -117,7 +117,16 @@ export default function Header({setToken}) {
             </MenuHandler>
             <MenuList>
               <MenuItem onClick={handleProfile}><FontAwesomeIcon icon={faUser} className='mr-1' /> Profile</MenuItem>
-              <MenuItem onClick={handleNotifications}><FontAwesomeIcon icon={faBell} className='mr-1' /> Notifications</MenuItem>
+              <MenuItem onClick={handleNotifications}><FontAwesomeIcon icon={faBell} className='mr-1' /> Notifications {notifications && notifications.map((n) => {
+                  if (n.is_read === false) { 
+                  return (
+                  <FontAwesomeIcon 
+                  icon={faCircleExclamation} style={{color: "#ff0a0a",}}/> 
+                  );
+                } else {
+                  return null;
+                }
+              }).find((n) => n)}</MenuItem>
               <MenuItem onClick={handleLogout}><FontAwesomeIcon icon={faRightFromBracket} className='mr-1' />Logout</MenuItem>
             </MenuList>
           </Menu>
