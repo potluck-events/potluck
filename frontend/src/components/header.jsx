@@ -41,7 +41,7 @@ export default function Header({setToken}) {
     axios.request(options).then((response) => {
       setToken(null)
       setMobileMenuOpen(false)
-      navigate('/login')
+      navigate('/')
     }).catch((error) => {
       console.error(error);
     }); 
@@ -49,17 +49,19 @@ export default function Header({setToken}) {
   }
 
   useEffect(() => {
-    axios.get('https://potluck.herokuapp.com/users/me', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
+    if (token) {
+      axios.get('https://potluck.herokuapp.com/users/me', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }).then((response) => {
+        setUserData(response.data)
+      })
+        .catch(error => {
+          console.error(error);
+        });
     }
-    }).then((response) => {
-      setUserData(response.data)
-    })
-    .catch(error => {
-      console.error(error);
-    });
   }, [token])
   
   function handleProfile() {
