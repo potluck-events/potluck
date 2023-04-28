@@ -108,7 +108,7 @@ export default function Home() {
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
-                        <Menu>
+                        <Menu placement="bottom-end">
                             <MenuHandler>
                                 <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
