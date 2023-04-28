@@ -1,21 +1,37 @@
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/authcontext";
 
-export default async function spotify() {
+
+export default function Spotify({spotifyEventPk}) {
+  const [userInfo, setUserInfo] = useState();
   const clientId = "fb2988ad523142b1a493ee09f914a44a"; // Replace with your client ID
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
+  
+  useEffect(() => {
+    async function getSpotify() {
+      if (!code) {
+        redirectToAuthCodeFlow(clientId);
+      } else {
+        const accessToken = await getAccessToken(clientId, code);
+        const profile = await fetchProfile(accessToken);
+        console.log(profile);
+        setUserInfo(profile);
+        const playlist = await createPlaylist(accessToken, profile)
+        console.log(playlist);
 
-  if (!code) {
-    redirectToAuthCodeFlow(clientId);
-  } else {
-    const accessToken = await getAccessToken(clientId, code);
-    const profile = await fetchProfile(accessToken);
-    console.log(profile);
-    setUserInfo(profile);
-    const playlist = await createPlaylist(accessToken, profile)
-    console.log(playlist);
-    return playlist
-  }
+        setPlaylist(playlist, spotifyEventPk)
+      }
+    }
+
+    getSpotify()
+
+  }, [])
+
+
+  return null
+
 }
 
 async function redirectToAuthCodeFlow(clientId) {
@@ -101,4 +117,32 @@ async function createPlaylist(token, profile) {
   const result = await axios.request(options)
 
   return await result.data
+}
+
+function setPlaylist(playlist, pk) {
+  const token = useContext(AuthContext)
+
+  const options = {
+    method: "PATCH",
+    url: `https://potluck.herokuapp.com/events/${pk}`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    data: {
+      playlist_link: playlist,
+    }
+  };
+
+  axios.request(options).then(function (response) {
+    console.log(response.data);
+    if (spotifyPlaylist) {
+      navigate('/spotify')
+    }
+    else {
+      navigate(`/events/${response.data.pk}`)
+    }
+  }).catch(function (error) {
+    console.error(error);
+  });
 }
