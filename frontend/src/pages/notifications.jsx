@@ -2,14 +2,14 @@ import {
         Card,
         CardBody,
         IconButton, 
-        Typography
+        Typography,
         } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import React, { useContext } from "react";
-import { faCircleExclamation, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCircleExclamation, faX, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from 'react-router-dom'
 
 
@@ -52,6 +52,19 @@ export default function Notifications(){
             })
             navigate(`/events/${pk}`);}
 
+            function handleDelete(pk){
+                const options = {
+                    method: 'DELETE',
+                    url: `https://potluck.herokuapp.com/notifications/${pk}`,
+                    headers: { 
+                    'Authorization': token
+                    }
+                };
+                axios.request(options).then(function (response) {
+                    location.reload()
+                })
+            }
+
         if (notifications)
     return (
         <>
@@ -65,13 +78,18 @@ export default function Notifications(){
                 return (
                 <Card className="my-3 mt-3 mx-6 px-6" key={index}>
                     <CardBody className="p-2">
-                            <div className="flex flex-col justify-between py-1 cursor-pointer columns-1" onClick={() => handleNotifcationClick(not.pk)}>
+                            <div className="flex flex-col justify-between py-1 columns-1" >
                                 <div className="flex">
                                     <div className="py-1 justify-between flex items-center mr-2" >
                                         <Typography variant='h5' >{not.header}</Typography>
                                     </div>
-                                    <div className="text-end self-center ml-auto">
-                                        <FontAwesomeIcon icon={faX} />
+                                    <div className="self-end" onClick={() => handleNotifcationClick(not.pk)}>
+                                        <IconButton variant="text" className=" mr-1">
+                                            <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer"/>
+                                        </IconButton>
+                                    </div>
+                                    <div className="text-end self-center ml-auto cursor-pointer ">
+                                        <FontAwesomeIcon onClick={() => handleDelete(not.pk)} icon={faX} />
                                     </div>
                                     <div className=" self-center">
                                         {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}}  className=""/>}
