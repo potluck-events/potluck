@@ -26,7 +26,6 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   const [itemData, setItemData] = useState()
   const token = useContext(AuthContext)
   const navigate = useNavigate()
-  console.log(location);
   useEffect(() => {
   
     const options = {
@@ -87,7 +86,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
           resolve(new File([value], filename, { type: 'plain/text' }))
         })
       })
-      
+      //FIX THIS: Not opening on mobile
       const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
