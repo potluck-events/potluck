@@ -63,5 +63,5 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 /notifications/ --> | GET |
 -- lists all notifications for the logged in user
 
-/notifications/pk --> | GET | DELETE |
--- user can delete notification if they are the recipient
+/notifications/pk --> | GET | PUT | PATCH | DELETE |
+-- user can delete notification or mark 'is_read' if they are the recipient
