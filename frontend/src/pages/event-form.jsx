@@ -34,7 +34,6 @@ export default function EventForm() {
   const [isPlaylistOn, setIsPlaylistOn] = useState(false)
   const [spotifyPlaylist, setSpotifyPlaylist] = useState('')
   
-  console.log(location);
   useEffect(() => {
     if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
