@@ -108,11 +108,11 @@ export default function EditProfile(){
                 </div>
                     <div className=" border-light-blue-700 border-2 p-4 mb-6">
                         <Fragment>
-                            <Typography variant='h5' className=' text-center'>Allergies</Typography>
-                            <div className=" columns-2">
+                            <Typography variant='h5' className='text-center'>Allergies</Typography>
+                            <div className=" columns-2  justify-center">
                                 {allergy.map((a, index) => (
-                                    <Typography key={index} className='flex justify-start items-center'>
-                                        <Checkbox checked={allergies.indexOf(a.name) > -1} onChange={handleCheckboxChange} value={a.name} id="ripple-on" />
+                                    <Typography key={index} className='flex  items-center '>
+                                        <Checkbox className='' checked={allergies.indexOf(a.name) > -1} onChange={handleCheckboxChange} value={a.name} id="ripple-on" />
                                         {a.name}
                                     </Typography>
                                 ))
@@ -121,7 +121,7 @@ export default function EditProfile(){
                         </Fragment>
                     </div>
                 <label htmlFor="raised-button-file" className=" text-center">
-                    <MButton variant="contained" component="span" className="">
+                    <MButton variant="contained" component="span" >
                     {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
                     </MButton>
                 <input

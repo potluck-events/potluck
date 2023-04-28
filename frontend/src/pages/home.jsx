@@ -90,7 +90,7 @@ export default function Home() {
     {/* <div className="flex justify-center py-1">
         <img src="temp-img/logo2.png" alt="" />
     </div> */}
-    <Tabs className='mt-3 px-6' value="events" >
+    <Tabs className='mt-3 px-6 mb-20' value="events" >
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export default function Home() {
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
-                        <Menu>
+                        <Menu placement="bottom-end">
                             <MenuHandler>
                                 <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
