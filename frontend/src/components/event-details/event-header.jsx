@@ -38,8 +38,8 @@ export default function EventHeader({ event, mapsURL, calFile }) {
   return (
     <div className="">
       <div className="flex">
-        <div className="pb-2 flex-auto">
-          <Typography variant="h4">{event.title}</Typography>
+        <div className="pb-2 flex-auto self-center">
+          <Typography variant="h4" className=''>{event.title}</Typography>
         </div>
         {event.user_is_host ? 
           <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} /> :
@@ -55,10 +55,10 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             <div className="flex items-center justify-start rounded-full">
             {event.host.thumbnail ?
               <img src={event.host.thumbnail} alt="user thumbnail" className="rounded-full h-5 w-5 object-cover -ml-1 mr-1" /> :
-              <FontAwesomeIcon className="mr-1" icon={faUser} />} Hosted by {event.host.full_name}
+              <FontAwesomeIcon className="mr-1" icon={faUser} />} <Typography>Hosted by {event.host.full_name} </Typography>
             </div>
           </div> 
-          <p className="mb-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> {event.location_name}</p>
+          <Typography className="mb-1 mr-1 text-m"><FontAwesomeIcon icon={ faLocationDot }/> {event.location_name}</Typography>
           {event.street_address && <p className="ab-1 text-m"><FontAwesomeIcon icon={faLocation} /> <a href={mapsURL} target="_blank" className="font-bold text-blue-800 hover:text-blue-500">{event.street_address} {event.city} {event.state}, {event.zipcode} </a></p>}
         </div>
         <div className="mt-2">
