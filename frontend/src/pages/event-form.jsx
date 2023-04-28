@@ -180,7 +180,7 @@ export default function EventForm({setSpotifyEventPk}) {
               </div>}
               {(isPlaylistOn && !playlistLink)&&
               <div className='flex border-l-2 pl-4 mt-2'>
-                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account </p>
+                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account. or, insert a custom playlist link above. </p>
                 </div>}
             </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
