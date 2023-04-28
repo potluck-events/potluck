@@ -365,7 +365,7 @@ def create_host_item_notification(sender, instance, created, **kwargs):
             guest = invitation.guest
             if guest:
                 header = 'Up for Grabs!'
-                message = f'Something new is up for grabs for {event.title}'
+                message = f'{instance.event.host} needs someone to bring {instance.title} for {event.title}.'
                 Notification.objects.create(
                     recipient=guest, header=header, message=message)
 
@@ -397,6 +397,7 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
                 recipient=host, header=header, message=message)
 
 
+# maybe change so that only notifies item owner?
 # notify guests when an item is deleted
 @receiver(post_delete, sender=Item)
 def delete_item_notification_for_guests(sender, instance, **kwargs):
