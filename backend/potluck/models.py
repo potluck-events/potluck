@@ -48,6 +48,7 @@ class Event(models.Model):
     host = models.ForeignKey(
         to='User', on_delete=models.CASCADE, related_name='host_of')
     tip_jar = models.CharField(max_length=100, blank=True, null=True)
+    playlist_link = models.CharField(max_length=100, blank=True, null=True)
     invite_code = models.UUIDField(
         primary_key=False,
         unique=True,

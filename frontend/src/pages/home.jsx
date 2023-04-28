@@ -29,13 +29,13 @@ import UserAvatar from "../components/avatar";
 import RSVP from "../components/event-details/rsvp";
 import Checkbox from '@mui/material/Checkbox';
 
-export default function Home() {
+export default function Home({setItemsTabOpen}) {
     const token = useContext(AuthContext)
     const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [isFilterFuture, setIsFilterFuture] = useState(true)
-    const [shoppingList, setShoppingList] = useState(false)
+    const [shoppingLisaaat, setShoppingList] = useState(false)
 
 
     useEffect(() => {
@@ -78,6 +78,8 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
+
+        setItemsTabOpen(true)
     }, [isFilterFuture])
     
     function handleRadio (state) {
@@ -90,7 +92,7 @@ export default function Home() {
     {/* <div className="flex justify-center py-1">
         <img src="temp-img/logo2.png" alt="" />
     </div> */}
-    <Tabs className='mt-3 px-6' value="events" >
+    <Tabs className='mt-3 px-6 mb-20' value="events" >
         <TabsHeader>
             <Tab value='events'>
                 <div className="flex items-center gap-2">
@@ -108,7 +110,7 @@ export default function Home() {
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
-                        <Menu>
+                        <Menu placement="bottom-end">
                             <MenuHandler>
                                 <FontAwesomeIcon className='mt-3 cursor-pointer' icon={faFilter}/>
                             </MenuHandler>
