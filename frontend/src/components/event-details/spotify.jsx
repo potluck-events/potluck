@@ -136,12 +136,7 @@ function setPlaylist(playlist, pk) {
 
   axios.request(options).then(function (response) {
     console.log(response.data);
-    if (spotifyPlaylist) {
-      navigate('/spotify')
-    }
-    else {
-      navigate(`/events/${response.data.pk}`)
-    }
+    //navigate(`/events/${response.data.pk}`)
   }).catch(function (error) {
     console.error(error);
   });
