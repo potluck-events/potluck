@@ -329,8 +329,9 @@ class ViewDeleteNotification(generics.RetrieveDestroyAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsRecipient]
 
-
 # notification to guest when they receive an invitation
+
+
 @receiver(post_save, sender=Invitation)
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
@@ -358,7 +359,7 @@ def create_rsvp_notification(sender, instance, **kwargs):
 
 # notify guests when host creates a new item
 @receiver(post_save, sender=Item)
-def create_item_notification(sender, instance, created, **kwargs):
+def create_host_item_notification(sender, instance, created, **kwargs):
     if created and instance.owner is None:
         event = instance.event
         for invitation in event.invitations.all():
@@ -368,3 +369,30 @@ def create_item_notification(sender, instance, created, **kwargs):
                 message = f'Something new is up for grabs for {event.title}'
                 Notification.objects.create(
                     recipient=guest, header=header, message=message)
+
+
+# notify guests when a guest creates a new item
+@receiver(post_save, sender=Item)
+def create_item_notification_for_guest(sender, instance, created, **kwargs):
+    if created and instance.owner is not None:
+        event = instance.event
+        for invitation in event.invitations.all():
+            guest = invitation.guest
+            if guest:
+                header = 'An event just got even better!'
+                message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message)
+
+
+# notify host when a guest creates a new item
+@receiver(post_save, sender=Item)
+def create_item_notification_for_host(sender, instance, created, **kwargs):
+    if created and instance.owner is not None:
+        event = instance.event
+        host = instance.event.host
+        if host:
+            header = 'An event just got even better!'
+            message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
+            Notification.objects.create(
+                recipient=host, header=header, message=message)
