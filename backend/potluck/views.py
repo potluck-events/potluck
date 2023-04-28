@@ -324,7 +324,7 @@ class UserNotifications(generics.ListAPIView):
         return queryset
 
 
-class ViewDeleteNotification(generics.RetrieveDestroyAPIView):
+class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [IsRecipient]
