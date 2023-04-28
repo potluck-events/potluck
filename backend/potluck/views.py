@@ -329,9 +329,8 @@ class ViewDeleteNotification(generics.RetrieveDestroyAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsRecipient]
 
+
 # notification to guest when they receive an invitation
-
-
 @receiver(post_save, sender=Invitation)
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
