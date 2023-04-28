@@ -3,13 +3,28 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authcontext";
 
 
-export default function Spotify({spotifyEventPk}) {
+export default function Spotify({ spotifyEventPk }) {
   const [userInfo, setUserInfo] = useState();
   const clientId = "fb2988ad523142b1a493ee09f914a44a"; // Replace with your client ID
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const userToken = useContext(AuthContext)
+
   
   useEffect(() => {
+    axios.get(`https://potluck.herokuapp.com/events/${spotifyEventPk}`, {
+      headers: {
+        'Content-Type': 'applications/json',
+        Authorization: userToken
+      }
+    }).then((response) => {
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      getSpotify()
+    })
+
     async function getSpotify() {
       if (!code) {
         redirectToAuthCodeFlow(clientId);
