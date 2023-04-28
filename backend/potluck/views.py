@@ -320,7 +320,7 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
-        # queryset.update(is_read=True)
+        queryset.update(is_read=True)
         return queryset
 
 
