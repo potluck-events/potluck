@@ -10,12 +10,15 @@ import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import React, { useContext } from "react";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useParams, useNavigate } from 'react-router-dom'
 
 
 export default function Notifications(){
     const token = useContext(AuthContext)
     const [notifications, setNotifications] = useState()
     const [read, setRead] = useState(false)
+    const { pk } = useParams()
+
 
     useEffect (() => {
         axios.get(`https://potluck.herokuapp.com/notifications`, {
@@ -29,10 +32,23 @@ export default function Notifications(){
         })
     }, [])
         
-        function handleNotifcationClick(not){
-                if (read = not.is_read)
-                setRead(true)
-        }
+        function handleNotifcationClick(){
+            if (pk) {
+            const options = {
+                method: 'PATCH',
+                url: `https://potluck.herokuapp.com/notifications/${pk}`,
+                headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+                },
+                data: {is_read: true}
+            };
+            axios.request(options).then(function (response) {
+                console.log(response.data);
+                location.reload()
+            }).catch(function (error) {
+                console.error(error);
+            });}}
 
         if (notifications)
     return (
