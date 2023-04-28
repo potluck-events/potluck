@@ -29,13 +29,13 @@ import UserAvatar from "../components/avatar";
 import RSVP from "../components/event-details/rsvp";
 import Checkbox from '@mui/material/Checkbox';
 
-export default function Home(itemsTabOpen) {
+export default function Home({setItemsTabOpen}) {
     const token = useContext(AuthContext)
     const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [isFilterFuture, setIsFilterFuture] = useState(true)
-    const [shoppingList, setShoppingList] = useState(false)
+    const [shoppingLisaaat, setShoppingList] = useState(false)
 
 
     useEffect(() => {
@@ -79,7 +79,7 @@ export default function Home(itemsTabOpen) {
             console.error(error);
         });
 
-        itemsTabOpen(true)
+        setItemsTabOpen(true)
     }, [isFilterFuture])
     
     function handleRadio (state) {

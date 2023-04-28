@@ -16,7 +16,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from 'ics'
 import moment from "moment";
 
-export default function EventDetails({tabState, setTabState}) {
+export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   const location = useLocation()
   const { pk } = useParams()
   const [event, setEvent] = useState()
