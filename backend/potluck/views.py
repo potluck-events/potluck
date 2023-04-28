@@ -320,9 +320,12 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
+        queryset.update()
+        # queryset.update(is_read=True)
         return queryset
 
 
+# notification to guest when they receive an invitation
 @receiver(post_save, sender=Invitation)
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
@@ -333,6 +336,7 @@ def create_invitation_notification(sender, instance, **kwargs):
             recipient=recipient, header=header, message=message)
 
 
+# notification to host when guest responds to an invitation
 @receiver(post_save, sender=Invitation)
 def create_rsvp_notification(sender, instance, **kwargs):
     if not kwargs.get('created', False):
@@ -345,3 +349,17 @@ def create_rsvp_notification(sender, instance, **kwargs):
                 message = f'{instance.guest} has declined your invitation to {instance.event.title}.'
             Notification.objects.create(
                 recipient=recipient, header=header, message=message)
+
+
+# notify guests when host creates a new item
+@receiver(post_save, sender=Item)
+def create_item_notification(sender, instance, created, **kwargs):
+    if created and instance.owner is None:
+        event = instance.event
+        for invitation in event.invitations.all():
+            guest = invitation.guest
+            if guest:
+                header = 'Up for Grabs!'
+                message = f'Something new is up for grabs for {event.title}'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message)

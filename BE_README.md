@@ -59,3 +59,6 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 
 /dietary-restrictions/ --> | GET |
 -- lists all DietaryRestriction objects
+
+/notifications/ --> | GET |
+-- lists all notifications for the logged in user
