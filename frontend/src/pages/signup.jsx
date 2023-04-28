@@ -79,7 +79,7 @@ export default function SignUp({setToken}) {
   }
   
   const handleThumbnailUpload = (token) => {
-
+    
     const form = new FormData();
     console.log(pfp);
     form.append("thumbnail", pfp);
@@ -120,6 +120,8 @@ export default function SignUp({setToken}) {
               <div>
                 <Input required value={password1} onChange={(e) => setPassword1(e.target.value)} label="Password" size="lg" type="password" />
                 {error.non_field_errors && <Typography variant='small' color="red">{error.non_field_errors}</Typography>}
+                {error.password1 && <Typography variant='small' color="red">{error.password1}</Typography>}
+              
               </div>
               <div>
                 <Input required value={password2} onChange={(e) => setPassword2(e.target.value)} label="Retype Password" size="lg" type="password" />

@@ -16,7 +16,7 @@ export default function Landing() {
 
     return (
         <>
-        <div className="flex justify-center gap-3 mt-2">
+        <div className="flex justify-center gap-3 mt-2 mx-6">
             <Button onClick={handleClickLogin} size='lg' className="w-44">
                 Log In
             </Button>

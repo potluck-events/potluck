@@ -43,7 +43,7 @@ export default function Header({setToken}) {
     axios.request(options).then((response) => {
       setToken(null)
       setMobileMenuOpen(false)
-      navigate('/login')
+      navigate('/')
     }).catch((error) => {
       console.error(error);
     }); 
@@ -51,27 +51,30 @@ export default function Header({setToken}) {
   }
 
   useEffect(() => {
-    axios.get('https://potluck.herokuapp.com/users/me', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    }
-    }).then((response) => {
-      setUserData(response.data)
-    })
-    .catch(error => {
-      console.error(error);
-    });
-
-    axios.get(`https://potluck.herokuapp.com/notifications`, {
-      headers: {
+    if (token) {
+      axios.get('https://potluck.herokuapp.com/users/me', {
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': token
-      }
-  }).then((response) => {
-      console.log(response.data)
-      setNotifications(response.data)
-  })
+        }
+      }).then((response) => {
+        setUserData(response.data)
+      })
+        .catch(error => {
+          console.error(error);
+        });
+    
+
+      axios.get(`https://potluck.herokuapp.com/notifications`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }).then((response) => {
+        console.log(response.data)
+        setNotifications(response.data)
+      })
+    }
 
   }, [token])
   
@@ -93,7 +96,7 @@ export default function Header({setToken}) {
             </Link>
           </div>
           {token &&
-          <Menu className=''>
+          <Menu placement='bottom-end'>
             <MenuHandler>
             <div className="flex">
               <button
@@ -115,7 +118,7 @@ export default function Header({setToken}) {
               </button>
             </div>
             </MenuHandler>
-            <MenuList>
+            <MenuList className=''>
               <MenuItem onClick={handleProfile}><FontAwesomeIcon icon={faUser} className='mr-1' /> Profile</MenuItem>
               <MenuItem onClick={handleNotifications}><FontAwesomeIcon icon={faBell} className='mr-1' /> Notifications {notifications && notifications.map((n) => {
                   if (n.is_read === false) { 
