@@ -206,6 +206,7 @@ class EventSerializer(serializers.ModelSerializer):
             'invitation_pk',
             'dietary_restrictions_count',
             'invite_code',
+            'playlist_link',
         )
 
         read_only_fields = ('host',)
@@ -313,18 +314,6 @@ class UserInvitationSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('pk', 'event', 'host',)
-
-
-class InvitationSerializer(serializers.ModelSerializer):
-    guest = UserSerializerShort(many=False, read_only=True)
-
-    class Meta:
-        model = Invitation
-        fields = ('guest',
-                  'email',
-                  'response',)
-
-        read_only_fields = ('event',)
 
 
 class InvitationSerializer(serializers.ModelSerializer):

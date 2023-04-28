@@ -1,4 +1,4 @@
-import { Input, Typography, Button, Textarea, Select, Option, Switch} from "@material-tailwind/react"
+import { Input, Typography, Button, Textarea, Select, Option} from "@material-tailwind/react"
 import { useContext, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../context/authcontext"
@@ -8,8 +8,10 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker'
 import moment from "moment"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faBackwardStep, faX, faXmark, faAt } from "@fortawesome/free-solid-svg-icons"
-
+import { faArrowLeft, faBackwardStep, faX, faXmark, faAt, faMusic } from "@fortawesome/free-solid-svg-icons"
+import { faSpotify } from "@fortawesome/free-brands-svg-icons"
+import spotify from "../components/event-details/spotify"
+import { Switch } from "@headlessui/react"
 export default function EventForm() {
   const token = useContext(AuthContext)
   const navigate = useNavigate()
@@ -21,14 +23,16 @@ export default function EventForm() {
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [zip, setZip] = useState('')
-  const [dateTime, setDateTime] = useState(moment().add(7, 'd'))
+  const [dateTime, setDateTime] = useState(moment().add(7, 'd').startOf('hour'))
   const [error, setError] = useState('')
   const [showAddress, setShowAddress] = useState(false)
   const { pk } = useParams()
   const location = useLocation()
   const [endTime, setEndTime] = useState(null)
+  const [isTipOn, setIsTipOn] = useState(false)
   const [venmoHandle, setVenmoHandle] = useState('')
-  const [isOn, setIsOn] = useState(false)
+  const [isPlaylistOn, setIsPlaylistOn] = useState(false)
+  const [spotifyPlaylist, setSpotifyPlaylist] = useState('')
   
   console.log(location);
   useEffect(() => {
@@ -85,7 +89,12 @@ export default function EventForm() {
 
     axios.request(options).then(function (response) {
       console.log(response.data);
-      navigate(`/events/${response.data.pk}`)
+      if (spotifyPlaylist) {
+        navigate('/spotify')
+      }
+      else {
+        navigate(`/events/${response.data.pk}`)
+      }
     }).catch(function (error) {
       console.error(error);
     });
@@ -96,7 +105,13 @@ export default function EventForm() {
   }
 
   function switchToggle() {
-    setIsOn(!isOn)
+    setIsTipOn(!isTipOn)
+  }
+
+  function handleCreatePlaylist() {
+    console.log("hi");
+    const link = spotify()
+    setSpotifyPlaylist()
   }
 
   return (<>
@@ -104,7 +119,7 @@ export default function EventForm() {
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
     <div className="mt-8 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("create") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("new") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
       <form onSubmit={(e) => handleCreateEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -142,11 +157,30 @@ export default function EventForm() {
             </div>
             </>}
             <div className="">
-              <Switch className="" id="ripple-on" label="Tip Jar?" checked={isOn} onChange={switchToggle} ripple={true} />
-              {isOn === true &&
-            <div className='flex'>
-              <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
-            </div>}
+              <div className="flex flex-row mb-1">
+              <Switch className={`${isTipOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} checked={isTipOn} onChange={setIsTipOn}>
+                <span aria-hidden="true" className={`${isTipOn ? 'translate-x-7' : 'translate-x-0'}
+                    pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
+              </Switch>
+                <Typography variant="h6" className="ml-1" >Tip Jar?</Typography>
+              </div>
+              {isTipOn &&
+              <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faAt} size="xl" /> </span><Input value={venmoHandle} onChange={(e) => setVenmoHandle(e.target.value)} label="Venmo Handle" size="lg" />
+              </div>}
+            </div>
+            <div className="">
+              <div className="flex flex-row mb-1">
+              <Switch className={`${isPlaylistOn ? 'bg-blue-700' : 'bg-blue-500'} relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`} label="Spotify Playlist?" checked={isPlaylistOn} onChange={setIsPlaylistOn}>
+                <span aria-hidden="true" className={`${isPlaylistOn ? 'translate-x-7' : 'translate-x-0'}
+                    pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}/>
+              </Switch>
+              <Typography variant="h6" className="ml-1" >Spotify Playlist?</Typography>
+              </div>
+              {isPlaylistOn &&
+              <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify} size="xl" /> </span><Input value={spotifyPlaylist} onChange={setSpotifyPlaylist} onClick={handleCreatePlaylist} label="Playlist Link" size="lg" />
+              </div>}
             </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
           </div>

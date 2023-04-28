@@ -128,8 +128,8 @@ function LinkModal({ event, linkModalOpen, setLinkModalOpen }) {
   function handleShare() {
     if (navigator.share) {
       navigator.share({
-        title: 'WebShare API Demo',
-        url: `bash-events.netlify.app/invite-code/${event.invite_code}`
+        title: 'Bash Event Invitatin',
+        url: `https://bash-events.netlify.app/invite-code/${event.invite_code}`
       })
     } else {
       console.log("nope");

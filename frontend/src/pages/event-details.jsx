@@ -16,7 +16,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from 'ics'
 import moment from "moment";
 
-export default function EventDetails() {
+export default function EventDetails({tabState, setTabState}) {
   const location = useLocation()
   const { pk } = useParams()
   const [event, setEvent] = useState()
@@ -24,7 +24,6 @@ export default function EventDetails() {
   const [itemModalOpen, setItemModalOpen] = useState(false)
   const [calFile, setCalFile] = useState(false)
   const [itemData, setItemData] = useState()
-  const [itemsTabOpen, setItemsTabOpen] = useLocalStorageState('tabState', { defaultValue: true }) //Is the "tab" on items?
   const token = useContext(AuthContext)
   const navigate = useNavigate()
   console.log(location);
