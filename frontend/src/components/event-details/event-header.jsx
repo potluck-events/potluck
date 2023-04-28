@@ -65,7 +65,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         <div className="mt-2">
           <Typography><span className={event.description.length > 250 ? !showMore ? "ellipsis-after-4" : "" : ""}>{event.description}</span>{event.description.length > 250 && <span className="font-bold text-blue-800 hover:text-blue-500" onClick={() => setShowMore(!showMore)}> Show {showMore? "less" : "more"}</span>}</Typography>
         {event.playlist_link && <a href={event.playlist_link} target="_blank"> <Chip className="my-1 cursor-pointer" color="green" value="Event Playlist" icon={<FontAwesomeIcon icon={faSpotify}  className=" mr-1" size="xl" />} /></a>}
-        { event.tip_jar && <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"> <Chip className="my-1 cursor-pointer" color="teal" value="Tip the Host?" icon={<FontAwesomeIcon icon={faCommentsDollar} className=" mr-1 text-white" size="xl" />} /></a>}
+        { event.tip_jar && <a href={`https://venmo.com/${event.tip_jar}`} target="_blank"> <Chip className="my-1 cursor-pointer" color="teal" value="Tip the Host?" icon={<FontAwesomeIcon icon={faCommentsDollar} className=" mr-1" size="xl" />} /></a>}
     
       </div>
         <div onClick={handleClickAttendees} className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2">
