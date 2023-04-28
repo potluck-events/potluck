@@ -22,25 +22,23 @@ export default function Spotify({ spotifyEventPk }) {
     }).then((response) => {
       setTitle(response.data.title)
       setDescription(response.data.description)
-      getSpotify()
+      getSpotify(response.data.title, response.data.description)
     })
 
-    async function getSpotify() {
+    async function getSpotify(title, description) {
       if (!code) {
         redirectToAuthCodeFlow(clientId);
       } else {
         const accessToken = await getAccessToken(clientId, code);
         const profile = await fetchProfile(accessToken);
-        console.log(profile);
         setUserInfo(profile);
-        const playlist = await createPlaylist(accessToken, profile)
-        console.log(playlist);
+        const playlist = await createPlaylist(accessToken, profile, title, description)
 
-        setPlaylist(playlist, spotifyEventPk)
+        setPlaylist(playlist, spotifyEventPk, userToken)
       }
     }
 
-    getSpotify()
+    
 
   }, [])
 
@@ -59,7 +57,7 @@ async function redirectToAuthCodeFlow(clientId) {
   params.append("client_id", clientId);
   params.append("response_type", "code");
   params.append("redirect_uri", "http://localhost:5173/spotify");
-  params.append("scope", "user-read-private user-read-email playlist-modify-private");
+  params.append("scope", "user-read-private user-read-email playlist-modify-private playlist-modify-public");
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
 
@@ -114,8 +112,7 @@ async function fetchProfile(token) {
   return await result.json();
 }
 
-async function createPlaylist(token, profile) {
-  console.log(profile.id);
+async function createPlaylist(token, profile, title, description) {
   const options = {
     method: 'POST',
     url: `https://api.spotify.com/v1/users/${profile.id}/playlists`,
@@ -124,9 +121,10 @@ async function createPlaylist(token, profile) {
        Authorization: `Bearer ${token}`
     },
     data: {
-      name: "My new playlist",
-      public: false,
-      collaborative: true
+      name: title,
+      description: description,
+      public: true,
+      collaborative: false
     }
   }
   const result = await axios.request(options)
@@ -134,8 +132,7 @@ async function createPlaylist(token, profile) {
   return await result.data
 }
 
-function setPlaylist(playlist, pk) {
-  const token = useContext(AuthContext)
+function setPlaylist(playlist, pk, token) {
 
   const options = {
     method: "PATCH",
@@ -145,13 +142,12 @@ function setPlaylist(playlist, pk) {
       Authorization: token,
     },
     data: {
-      playlist_link: playlist,
+      playlist_link: playlist.external_urls.spotify,
     }
   };
 
   axios.request(options).then(function (response) {
-    console.log(response.data);
-    //navigate(`/events/${response.data.pk}`)
+    navigate(`/events/${response.data.pk}`)
   }).catch(function (error) {
     console.error(error);
   });
