@@ -103,7 +103,7 @@ export default function Header({setToken}) {
                 {notifications && notifications.map((n) => {
                   if (n.is_read === false) { 
                   return (
-                  <FontAwesomeIcon 
+                  <FontAwesomeIcon className='mb-5'
                   icon={faCircleExclamation} style={{color: "#ff0a0a",}}/> 
                   );
                 } else {

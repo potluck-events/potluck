@@ -18,6 +18,8 @@ export default function Notifications(){
     const [notifications, setNotifications] = useState()
     const [read, setRead] = useState(false)
     const { pk } = useParams()
+    const navigate = useNavigate()
+
 
 
     useEffect (() => {
@@ -47,7 +49,8 @@ export default function Notifications(){
                 location.reload()
             }).catch(function (error) {
                 console.error(error);
-            });}
+            })
+            navigate(`/events/${pk}`);}
 
         if (notifications)
     return (
@@ -63,7 +66,7 @@ export default function Notifications(){
                                         <Typography variant='h5' >{not.header}</Typography>
                                     </div>
                                     <div className=" self-center">
-                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}} />}
+                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#ff0a0a",}}  className=""/>}
                                     </div>
                                 </div>
                                 <div>
