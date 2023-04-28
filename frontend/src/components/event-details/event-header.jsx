@@ -126,7 +126,7 @@ function EditMenu({ pk, handleDelete,  calFile  }){
     <div className="m-auto">
     <Menu placement="bottom-end" >
       <MenuHandler>
-        <FontAwesomeIcon icon={faEllipsis} className="text-2xl"/>
+        <FontAwesomeIcon icon={faEllipsis} className="text-2xl cursor-pointer"/>
       </MenuHandler>
       <MenuList>
           <div className="px-1 py-1 ">
@@ -165,10 +165,10 @@ function EditMenu({ pk, handleDelete,  calFile  }){
       </Menu>
       {isConfirmDeleteOpen && (
         <div className="w-fit">
-          <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="fixed px-2 min-w-fit w-fit">
-            <Card>
-              <Typography className='pt-2 text-center' variant='h5'>Are you sure?</Typography>
-              <div className="flex py-2 self-center space-x-4">
+          <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="">
+            <Card className="">
+              <Typography className='mt-4 mb-2 text-center' variant='h5'>Are you sure?</Typography>
+              <div className="flex mb-2 py-2 self-center space-x-4">
                 <Button className="" color="blue" onClick={handleDeleteConfirmed}>
                   Yes
                 </Button>
