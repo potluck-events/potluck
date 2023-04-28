@@ -32,8 +32,7 @@ export default function Notifications(){
         })
     }, [])
         
-        function handleNotifcationClick(){
-            if (pk) {
+        function handleNotifcationClick(pk){
             const options = {
                 method: 'PATCH',
                 url: `https://potluck.herokuapp.com/notifications/${pk}`,
@@ -48,7 +47,7 @@ export default function Notifications(){
                 location.reload()
             }).catch(function (error) {
                 console.error(error);
-            });}}
+            });}
 
         if (notifications)
     return (
@@ -58,7 +57,7 @@ export default function Notifications(){
                 return (
                 <Card className="my-3 mt-3 mx-6 px-6" key={index}>
                     <CardBody className="p-2">
-                            <div className="flex flex-col justify-between py-1 cursor-pointer" onClick={handleNotifcationClick}>
+                            <div className="flex flex-col justify-between py-1 cursor-pointer" onClick={() => handleNotifcationClick(not.pk)}>
                                 <div className="flex">
                                     <div className="py-1 justify-between flex items-center mr-2" >
                                         <Typography variant='h5' >{not.header}</Typography>
