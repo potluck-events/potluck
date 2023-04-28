@@ -24,9 +24,6 @@ import { AuthContext } from "../context/authcontext";
 import moment from 'moment'
 import { faAnglesRight, faCalendarPlus, faCircleExclamation, faFilter, faHouse, faHouseChimney, faSpinner, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useLocalStorageState from "use-local-storage-state";
-import UserAvatar from "../components/avatar";
-import RSVP from "../components/event-details/rsvp";
 import Checkbox from '@mui/material/Checkbox';
 
 export default function Home({setItemsTabOpen}) {
@@ -35,7 +32,6 @@ export default function Home({setItemsTabOpen}) {
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
     const [isFilterFuture, setIsFilterFuture] = useState(true)
-    const [shoppingLisaaat, setShoppingList] = useState(false)
 
 
     useEffect(() => {
@@ -79,8 +75,8 @@ export default function Home({setItemsTabOpen}) {
             console.error(error);
         });
 
-        setItemsTabOpen(true)
     }, [isFilterFuture])
+    setItemsTabOpen(true)
     
     function handleRadio (state) {
         setIsFilterFuture(state);
