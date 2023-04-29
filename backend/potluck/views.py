@@ -412,14 +412,13 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
 #             recipient=recipient, header=header, message=message, event=event)
 
 
-# NEED TO WORK ON HEADER AND MESSAGE!!!!
 # notify owner of an item when item is deleted
 @receiver(pre_delete, sender=Item)
 def delete_item_notification_for_owner(sender, instance, **kwargs):
     event = instance.event
     recipient = instance.owner
-    header = 'Item deleted from Event'
-    message = f'You are no longer bringing {instance} to {event.title}'
+    header = "You're off the hook!"
+    message = f"You don't need to bring {instance} to {event.title}!"
     Notification.objects.create(
         recipient=recipient, header=header, message=message, event=event)
 
@@ -429,7 +428,7 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
 def delete_item_notification_for_host(sender, instance, **kwargs):
     event = instance.event
     host = event.host
-    header = 'Item deleted from event'
-    message = f'{instance.title} has been deleted for {event.title}.'
+    header = "You're off the hook!"
+    message = f"You don't need to bring {instance} to {event.title}!"
     Notification.objects.create(
         recipient=host, header=header, message=message, event=event)
