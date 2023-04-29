@@ -48,6 +48,10 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
       if (error.response.status === 403) {
         navigate("/page403")
       }
+      else if (error.response.status === 404) {
+        navigate("/page404")
+      }
+      //else navigate('/')
     });
   }, [])
 
@@ -58,39 +62,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
     return some
   }
 
-  function createICS(event) {
-    let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
-    let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
-    const options = {
-      start: start,
-      startOutputType:"local",
-      title: event.title,
-      description: event.description,
-      location: event.location,
-      url: `https://bash-events.netlify.app/events/${event.pk}`,
-    }
-    end ? options.end = end : ""
-
-    handleDownload()
-
-    async function handleDownload() {
-      const filename = `${event.title}.ics`
-      const file = await new Promise((resolve, reject) => {
-        createEvent(options, (error, value) => {
-          if (error) {
-            reject(error)
-          }
-          
-          resolve(new File([value], filename, { type: 'plain/text' }))
-        })
-      })
-      //FIX THIS: Not opening on mobile
-      const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
-      // trying to assign the file URL to a window could cause cross-site
-      // issues so this is a workaround using HTML5
-      setCalFile({url: url, download: filename})
-    }
-  }
+  
 
 
   if (event) return (<>
@@ -140,3 +112,36 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
 }
 
 
+function createICS(event) {
+    let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
+    let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
+    const options = {
+      start: start,
+      startOutputType:"local",
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      url: `https://bash-events.netlify.app/events/${event.pk}`,
+    }
+    end ? options.end = end : ""
+
+    handleDownload()
+
+    async function handleDownload() {
+      const filename = `${event.title}.ics`
+      const file = await new Promise((resolve, reject) => {
+        createEvent(options, (error, value) => {
+          if (error) {
+            reject(error)
+          }
+          
+          resolve(new File([value], filename, { type: 'plain/text' }))
+        })
+      })
+      //FIX THIS: Not opening on mobile
+      const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
+      // trying to assign the file URL to a window could cause cross-site
+      // issues so this is a workaround using HTML5
+      setCalFile({url: url, download: filename})
+    }
+  }

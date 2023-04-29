@@ -28,6 +28,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 export default function Home({setItemsTabOpen}) {
     const token = useContext(AuthContext)
+    const navigate = useNavigate()
     const [events, setEvents] = useState()
     const [itemsEvents, setItemsEvents] = useState()
     const [pending, setPending] = useState()
@@ -45,6 +46,12 @@ export default function Home({setItemsTabOpen}) {
         })
         .catch(error => {
             console.error(error);
+            if (error.response.status === 403) {
+                navigate("/page403")
+            }
+            else if (error.response.status === 404) {
+                navigate("/page404")
+            }
         });
         
 
