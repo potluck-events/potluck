@@ -12,16 +12,18 @@ import { Alert, Collapse, IconButton, Tooltip } from "@mui/material";
 
 
 export default function RSVPList() {
-  const [inviteModalOpen, setInviteModalOpen] = useState(false)
-  const [linkModalOpen, setLinkModalOpen] = useState(false)
   const { pk } = useParams()
+  const { copyFromPk } = useParams()
   const token = useContext(AuthContext)
-  const [invitations, setInvitation] = useState()
+  const [inviteModalOpen, setInviteModalOpen] = useState(copyFromPk ? true :false)
+  const [linkModalOpen, setLinkModalOpen] = useState(false)
+  const [invitations, setInvitations] = useState()
   const [event, setEvent] = useState()
   const navigate = useNavigate()
 
 
   useEffect(() => {
+    //GET invitation data
     let options = {
       method: 'GET',
       url: `https://potluck.herokuapp.com/events/${pk}/invitations`,
@@ -33,7 +35,7 @@ export default function RSVPList() {
     
     axios.request(options).then(function (response) {
       console.log(response.data);
-      setInvitation(response.data)
+      setInvitations(response.data)
     }).catch(function (error) {
       console.error(error);
       if (error.response.status === 403) {
@@ -57,7 +59,7 @@ export default function RSVPList() {
   }, [])
 
   if (invitations && event) return (
-    <><div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={() => navigate(-1)}>
+    <><div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={() => navigate(`/events/${pk}`)}>
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Back
       </div>
       <EventTitle title={event.title} />
