@@ -58,6 +58,7 @@ export default function Login({setToken}) {
             </div>
           </div>
           <Typography variant="small">Don't have an account? <Link to="/sign-up" state={{ from: location.state?.from }} className=" font-bold text-blue-800 hover:text-blue-500">Create one</Link></Typography>
+          <Typography variant="small">Forgot your password? <Link to="/password-reset" className=" font-bold text-blue-800 hover:text-blue-500">Reset password</Link></Typography>
         </form>
       </div>
   

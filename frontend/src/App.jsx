@@ -18,6 +18,7 @@ import EditProfile from './pages/edit-profile';
 import InviteCodeRedirect from './pages/invite-code';
 import Spotify from './components/event-details/spotify';
 import Notifications from './pages/notifications';
+import PasswordReset from './pages/password-reset';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path='/' element={token ? <Home setItemsTabOpen={setItemsTabOpen} /> : <Landing/>} />
           <Route path='/login' element={!token ? <Login setToken={setToken}/> : <Home />} />
           <Route path='/sign-up' element={!token ? <SignUp setToken={setToken} /> : <Home />} />
+          <Route path='/password-reset' element={<PasswordReset />} />
           <Route element={<ProtectedRoute/>}>
             <Route path='/invitations' element={<UserInvitations />} />
             <Route path='/invite-code/:code' element={<InviteCodeRedirect />} />
