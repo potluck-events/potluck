@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from potluck import views
+from dj_rest_auth.views import (
+    PasswordResetConfirmView, PasswordResetView
+)
+from dj_rest_auth.registration.views import (
+    RegisterView, VerifyEmailView
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +34,15 @@ urlpatterns = [
     path('accounts/registration/',
          views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
+    path('accounts/password/reset/', PasswordResetView.as_view(),
+         name='password_reset'),
+    path('accounts/password/reset/confirm/<uidb64>/<token>/',
+         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('accounts/registration/account-confirm-email/',
+         VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    path('accounts/registration/account-confirm-email/<str:key>/',
+         VerifyEmailView.as_view(), name='account_confirm_email'),
+
 
     path('users/me', views.UserProfile.as_view(), name='me'),
     path('users/info/<str:email>', views.GetUserInfo.as_view()),
