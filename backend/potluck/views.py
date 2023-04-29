@@ -423,7 +423,6 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
         recipient=recipient, header=header, message=message, event=event)
 
 
-# NEED TO CHANGE HEADER & MESSAGE
 # notify host when an item is deleted
 @receiver(pre_delete, sender=Item)
 def delete_item_notification_for_host(sender, instance, **kwargs):
@@ -433,3 +432,28 @@ def delete_item_notification_for_host(sender, instance, **kwargs):
     message = f"{instance} has been deleted from {event.title}!"
     Notification.objects.create(
         recipient=host, header=header, message=message, event=event)
+
+
+# notify host when a post is made
+@receiver(post_save, sender=Post)
+def create_post_notification_for_host(sender, instance, **kwargs):
+    event = instance.event
+    host = event.host
+    header = 'New Post!'
+    message = f'{instance.author} posted a message in {instance.event.title}!'
+    Notification.objects.create(
+        recipient=host, header=header, message=message, event=event)
+
+
+# notify guests when a post is made
+@receiver(post_save, sender=Post)
+def create_post_notification_for_guests(sender, instance, created, **kwargs):
+    if created:
+        event = instance.event
+        for invitation in event.invitations.filter(response=True):
+            guest = invitation.guest
+            if guest:
+                header = 'New Post!'
+                message = f'{instance.author} posted a message in {instance.event.title}!'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message, event=event)
