@@ -55,7 +55,6 @@ export default function Home({setItemsTabOpen}) {
             'Authorization': token
             }
         }).then((response) => {
-            console.log(response.data)
             setItemsEvents(response.data)
         })
         .catch(error => {
@@ -229,7 +228,6 @@ function Items({ events }) {
 function EventItem({ item }) {
     const token = useContext(AuthContext)
     const [isAcquired, setIsAcquired] = useState(item.is_acquired)
-    console.log(item)
 
     function handleChecked(){
         const options = {
