@@ -138,37 +138,30 @@ function EditMenu({ pk, handleDelete,  calFile  }){
             </MenuItem>
           </div>
           <div className="px-1 py-1 ">
-            <MenuItem>
-                <button onClick={handleEditButton}>
+            <MenuItem onClick={handleEditButton}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faPenToSquare} />
                   Edit
-                </button>
             </MenuItem>
           </div>
           <div className="px-1 py-1 ">
-            <MenuItem>
-                <button onClick={handleCopy}>
+            <MenuItem onClick={handleCopy}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCopy} />
                   Duplicate
-                </button>
             </MenuItem>
           </div>
           <div className="px-1 py-1">
-            <MenuItem>
-                <button onClick={handleDeleteConfirmation}>
+            <MenuItem onClick={handleDeleteConfirmation}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faTrash} />
                   Delete
-                </button>
             </MenuItem>
           </div>
         </MenuList>
       </Menu>
       {isConfirmDeleteOpen && (
         <div className="w-fit">
-          <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="">
-            <Card className="">
+          <Dialog onClose={handleDeleteCancel} open={isConfirmDeleteOpen} className="w-3/5 max-w-[60%] flex items-center justify-center flex-col">
               <Typography className='mt-4 mb-2 text-center' variant='h5'>Are you sure?</Typography>
-              <div className="flex mb-2 py-2 self-center space-x-4">
+              <div className="flex mb-2 py-2 self-center gap-x-4">
                 <Button className="" color="blue" onClick={handleDeleteConfirmed}>
                   Yes
                 </Button>
@@ -176,7 +169,6 @@ function EditMenu({ pk, handleDelete,  calFile  }){
                   Cancel
                   </Button>
               </div>
-            </Card>
           </Dialog>
         </div>
         )}

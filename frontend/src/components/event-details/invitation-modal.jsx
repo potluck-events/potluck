@@ -1,5 +1,5 @@
 import { Dialog, Transition, } from '@headlessui/react'
-import { Fragment, useState, useContext } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
 import { Input, Textarea, Button, Chip, Typography } from '@material-tailwind/react'
 import { useParams } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
@@ -8,10 +8,36 @@ import React from "react";
 
 export default function InvitationModal({ inviteModalOpen, setInviteModalOpen }) {
     const { pk } = useParams()
+    const { copyFromPk } = useParams()
+
     const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [show, setShow] = useState(true);
     const [invites, setInvites] = useState([]);
+
+    useEffect(() => {
+        //IF copying event, get corresponding event details
+        if (copyFromPk) {
+        const options = {
+            method: 'GET',
+            url: `https://potluck.herokuapp.com/events/${copyFromPk}/invitations`,
+            headers: { 
+            'Authorization': token
+            }
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+            setInvites(response.data.map((invite) => ({
+                email: invite.email,
+                name: invite.guest.full_name
+            })))
+        })
+
+        }
+    }, [])
+
+
 
     async function handleSendClick(event) {
         event.preventDefault()

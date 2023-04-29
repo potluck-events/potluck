@@ -16,27 +16,44 @@ import { Switch } from "@headlessui/react"
 
 export default function EventForm({setSpotifyEventPk}) {
   const token = useContext(AuthContext)
+  const { pk } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [theme, setTheme] = useState('')
   const [description, setDescription] = useState('')
   const [locationName, setLocationName] = useState('')
+  const [showAddress, setShowAddress] = useState(false)
   const [street, setStreet] = useState('')
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [zip, setZip] = useState('')
   const [dateTime, setDateTime] = useState(moment().add(7, 'd').startOf('hour'))
-  const [error, setError] = useState('')
-  const [showAddress, setShowAddress] = useState(false)
-  const { pk } = useParams()
-  const location = useLocation()
   const [endTime, setEndTime] = useState(null)
   const [isTipOn, setIsTipOn] = useState(false)
   const [venmoHandle, setVenmoHandle] = useState('')
+  const [error, setError] = useState('')
+  
+  
+  //Event form flow:
+  const [formState, setFormState] = useState()
+  //1: Is form CREATE NEW (/event/new) --> POST
+  //2: Is form EDIT (/event/pk/edit) --> GET -> PATCH
+  //3: Is form COPY (/event/pk/copy) --> GET -> POST -> /event/rsvp
+  
+  //4: Is form NEW PLAYLIST --> POST/PATCH -> /spotify -> event/pk
   const [isPlaylistOn, setIsPlaylistOn] = useState(false)
   const [playlistLink, setPlaylistLink] = useState("")
-  
+
+
+
+
   useEffect(() => {
+    //Set formState
+    if(location.pathname.includes("new")) setFormState("create")
+    else if (location.pathname.includes("edit")) setFormState("edit")
+    else setFormState("copy")
+
     if (pk) {
     axios.get(`https://potluck.herokuapp.com/events/${pk}`, {
       headers: {
@@ -62,15 +79,17 @@ export default function EventForm({setSpotifyEventPk}) {
         setShowAddress(true)
       }
     })
+    
+
   }
   }, []) 
 
-  function handleCreateEvent(e) {
+  function handleSaveEvent(e) {
     e.preventDefault()
 
     const options = {
-      method: location.pathname.includes("edit") ? "PATCH" : 'POST',
-      url: location.pathname.includes("edit") ? `https://potluck.herokuapp.com/events/${pk}` : 'https://potluck.herokuapp.com/events',
+      method: formState === 'edit' ? "PATCH" : 'POST',
+      url: formState === 'edit' ? `https://potluck.herokuapp.com/events/${pk}` : 'https://potluck.herokuapp.com/events',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -88,17 +107,18 @@ export default function EventForm({setSpotifyEventPk}) {
         time_scheduled: dateTime.format("HH:MM"),
         tip_jar: isTipOn? venmoHandle : "",
         playlist_link: isPlaylistOn ? playlistLink : "",
-
       }
     };
     if(endTime) options.data.end_time = endTime.format("HH:MM")
       
     axios.request(options).then(function (response) {
-      console.log(response.data);
       //If spotify playlist is checked and there hasn't been a previous playlist set, create one
       if (isPlaylistOn && ! response.data.playlist_link) {
         setSpotifyEventPk(response.data.pk)
         navigate('/spotify')
+      }
+      else if (formState==="copy"){
+        navigate(`/events/${response.data.pk}/invitations/${pk}`)
       }
       else {
         navigate(`/events/${response.data.pk}`)
@@ -116,9 +136,9 @@ export default function EventForm({setSpotifyEventPk}) {
       <div className="mx-6 cursor-pointer rounded bg-gray-200 w-fit p-1 px-2" onClick={goBack}>
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
-    <div className="mt-8 flex flex-col items-center justify-center">
+    <div className="mt-2 flex flex-col items-center justify-center">
       <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("new") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
-      <form onSubmit={(e) => handleCreateEvent(e)}>
+      <form onSubmit={(e) => handleSaveEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
             <div>
@@ -180,7 +200,7 @@ export default function EventForm({setSpotifyEventPk}) {
               </div>}
               {(isPlaylistOn && !playlistLink)&&
               <div className='flex border-l-2 pl-4 mt-2'>
-                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account </p>
+                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account. or, insert a custom playlist link above. </p>
                 </div>}
             </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>
