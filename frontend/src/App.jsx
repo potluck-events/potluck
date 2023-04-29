@@ -41,6 +41,7 @@ function App() {
             <Route path='/events/:pk/edit' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
             <Route path='/events/:pk/copy' element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />} />
             <Route path='/events/:pk/invitations' element={<RSVPList />} />
+            <Route path='/events/:pk/invitations/:copyFromPk' element={<RSVPList />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/edit' element={<EditProfile />} />
             <Route path='/spotify' element={<Spotify spotifyEventPk={spotifyEventPk} />} />
