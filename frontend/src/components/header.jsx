@@ -63,6 +63,10 @@ export default function Header({setToken}) {
       })
         .catch(error => {
           console.error(error);
+          if (error.response.data.detail === "Invalid token.") {
+                setToken(null)
+                navigate('/')
+            }
         });
     
 
