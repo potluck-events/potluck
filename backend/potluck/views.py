@@ -391,7 +391,7 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
         event = instance.event
         host = instance.event.host
         if host:
-            header = 'An event just got even better!'
+            header = 'Your event just got even better!'
             message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
             Notification.objects.create(
                 recipient=host, header=header, message=message, event=event)
@@ -423,6 +423,7 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
         recipient=recipient, header=header, message=message, event=event)
 
 
+# NEED TO CHANGE HEADER & MESSAGE
 # notify host when an item is deleted
 @receiver(pre_delete, sender=Item)
 def delete_item_notification_for_host(sender, instance, **kwargs):
