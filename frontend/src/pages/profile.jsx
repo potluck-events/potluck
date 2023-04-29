@@ -98,7 +98,7 @@ export default function Profile() {
 
 function Restrictions({ user }) {
     return (
-        <div className="flex gap-3 flex-wrap justify-center max-w-4xl mt-2">
+        <div className="flex gap-3 flex-wrap justify-center mt-2">
         {user.dietary_restrictions_names.map((r, index) => (
             <div key={index}>
                 <Chip value={r} />

@@ -132,13 +132,13 @@ export default function SignUp({setToken}) {
               <div>
                 <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} label="Last Name" size="lg" type="text" />
               </div>
-              <div>
-              </div>
+            <div className="flex justify-center">
               <label htmlFor="raised-button-file">
                 <MButton variant="contained" component="span" className="">
                   {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
                 </MButton>
               </label> 
+              </div>
               <input
                 className="input"
                 style={{ display: 'none' }}
