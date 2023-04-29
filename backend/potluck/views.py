@@ -32,7 +32,7 @@ from .email import send
 import json
 from django.db.models import Q
 
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 
@@ -320,7 +320,7 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
-        queryset.update(is_read=True)
+        # queryset.update(is_read=True)
         return queryset
 
 
@@ -399,7 +399,7 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
 
 # maybe change so that only notifies item owner?
 # notify guests when an item is deleted
-@receiver(post_delete, sender=Item)
+@receiver(pre_delete, sender=Item)
 def delete_item_notification_for_guests(sender, instance, **kwargs):
     event = instance.event
     guests = event.invitations.filter(
@@ -412,8 +412,20 @@ def delete_item_notification_for_guests(sender, instance, **kwargs):
             recipient=recipient, header=header, message=message, event=event)
 
 
+# NEED TO WORK ON HEADER AND MESSAGE!!!!
+# notify owner of an item when item is deleted
+# @receiver(pre_delete, sender=Item)
+# def delete_item_notification_for_owner(sender, instance, **kwargs):
+#     event = instance.event
+#     recipient = instance.owner
+#     header = 'Item deleted from Event'
+#     message = f'You are no longer bringing {instance} to {event}'
+#     Notification.objects.create(
+#         recipient=recipient, header=header, message=message, event=event)
+
+
 # notify host when an item is deleted
-@receiver(post_delete, sender=Item)
+@receiver(pre_delete, sender=Item)
 def delete_item_notification_for_host(sender, instance, **kwargs):
     event = instance.event
     host = event.host
