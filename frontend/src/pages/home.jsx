@@ -191,7 +191,7 @@ function Items({ events }) {
     <Card className="">
         <CardBody className="flex relative">
         <div className="flex-grow">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => onClickViewEvent(e.pk)}>
                 <div>
                     <Typography className="font-semibold" variant="h5">
                         {e.title}
@@ -199,7 +199,7 @@ function Items({ events }) {
                 </div>
                 <div className="self-end">
                     <IconButton variant="text" className=" mr-1">
-                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer" onClick={() => onClickViewEvent(e.pk)}/>
+                        <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer"/>
                     </IconButton>
                         </div>
             </div>
