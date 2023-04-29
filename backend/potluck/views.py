@@ -335,7 +335,7 @@ class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
         recipient = instance.guest
-        header = f'New Invitation!'
+        header = 'New Invitation!'
         message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
         Notification.objects.create(
             recipient=recipient, header=header, message=message, event=instance.event)
@@ -347,7 +347,7 @@ def create_rsvp_notification(sender, instance, **kwargs):
     if not kwargs.get('created', False):
         if instance.response is not None:
             recipient = instance.event.host
-            header = f'New RSVP!'
+            header = 'New RSVP!'
             if instance.response == True:
                 message = f'{instance.guest} has accepted your invitation to {instance.event.title}!'
             else:
@@ -368,20 +368,6 @@ def create_host_item_notification(sender, instance, created, **kwargs):
                 message = f'{instance.event.host} needs someone to bring {instance.title} for {event.title}.'
                 Notification.objects.create(
                     recipient=guest, header=header, message=message, event=event)
-
-
-# notify guests when a guest creates a new item
-# @receiver(post_save, sender=Item)
-# def create_item_notification_for_guest(sender, instance, created, **kwargs):
-#     if created and instance.owner is not None:
-#         event = instance.event
-#         for invitation in event.invitations.all():
-#             guest = invitation.guest
-#             if guest:
-#                 header = 'An event just got even better!'
-#                 message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
-#                 Notification.objects.create(
-#                     recipient=guest, header=header, message=message, event=event)
 
 
 # notify host when a guest creates a new item
