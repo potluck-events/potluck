@@ -41,12 +41,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         <div className="pb-2 flex-auto self-center">
           <Typography variant="h4" className=''>{event.title}</Typography>
         </div>
-        {event.user_is_host ? 
-          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} /> :
-          <a href={ calFile.url} download={ calFile.download} className='mb-2 hover:bg-blue-400 hover:text-white text-gray-900 group flex items-center rounded-md px-2 text-sm h-12'>
-                <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faCalendar} />
-                  Add to Calendar
-                </a> }
+          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} />     
         </div>
           <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
           {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>
@@ -95,7 +90,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
 }
 
 
-function EditMenu({ pk, handleDelete,  calFile  }){
+function EditMenu({ pk, handleDelete,  calFile, isHost  }){
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -137,7 +132,7 @@ function EditMenu({ pk, handleDelete,  calFile  }){
                 </a>
             </MenuItem>
           </div>
-          <div className="px-1 py-1 ">
+          {isHost && <><div className="px-1 py-1 ">
             <MenuItem onClick={handleEditButton}>
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faPenToSquare} />
                   Edit
@@ -154,7 +149,7 @@ function EditMenu({ pk, handleDelete,  calFile  }){
                 <FontAwesomeIcon className='w-5 h-5 mr-2'icon={faTrash} />
                   Delete
             </MenuItem>
-          </div>
+          </div></> }
         </MenuList>
       </Menu>
       {isConfirmDeleteOpen && (
