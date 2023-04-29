@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom"
 
 
 export default function PasswordReset() {
-    const [email, setEmail] = useState()
+    const [email, setEmail] = useState('')
     const navigate = useNavigate()
+    const [error, setError] = useState("")
 
 
-    const handleReset = () => {
-    
+    const handleReset = (e) => {
+        e.preventDefault()
 
         const options = {
             method: 'POST',
-            url: 'https://potluck.herokuapp.com/accounts/password/reset',
+            url: 'https://potluck.herokuapp.com/accounts/password/reset/',
             headers: {
             'Content-Type': 'application/json'
             },
@@ -22,9 +23,16 @@ export default function PasswordReset() {
             email: email,
             },
         };
-        axios.request(options).then(navigate('/'))
+        axios.request(options)
+        .then((response) => {
+            console.log(response.data)
+            navigate('/')
+        })
+        .catch((error) => {
+            console.error(error);
+            setError(error.response.data);})
     }
-
+    
     return (
     <>
     <div className="text-center py-5">
