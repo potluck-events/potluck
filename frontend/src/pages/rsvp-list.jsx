@@ -64,9 +64,10 @@ export default function RSVPList() {
       </div>
       <EventTitle title={event.title} />
       <Invitations invitees={invitations.length} />
-      <InvitationModal setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
-      <LinkModal event={event} setLinkModalOpen={setLinkModalOpen} linkModalOpen={linkModalOpen} />
-      {event.user_is_host && <InviteButton setInviteModalOpen={setInviteModalOpen} setLinkModalOpen={setLinkModalOpen} />}
+      {event.user_is_host &&
+        <><InvitationModal setInviteModalOpen={setInviteModalOpen} inviteModalOpen={inviteModalOpen} />
+        <LinkModal event={event} setLinkModalOpen={setLinkModalOpen} linkModalOpen={linkModalOpen} />
+        <InviteButton setInviteModalOpen={setInviteModalOpen} setLinkModalOpen={setLinkModalOpen} /></>}
       <Responses event={event} header={"Attending"} invitations={invitations.filter((i) => i.response === true)} />
       <Responses event={event} header={"TBD"} invitations={invitations.filter((i) => i.response === null)} />
       <Responses event={event} header={"Declined"} invitations={invitations.filter((i) => i.response === false)} />
@@ -115,7 +116,7 @@ function Responses({ header, invitations, event }) {
           <UserAvatar user={invitation.guest}/>
           <div className='mx-2 my-2'>
             {invitation.guest && <Typography variant='paragraph' className='font-semibold'>{invitation.guest.full_name}</Typography>}
-            <Typography variant='paragraph'>Email: {invitation.email}</Typography>
+            {(!invitation.guest || event.user_is_host) && <Typography variant='paragraph'>Email: {invitation.email}</Typography>}
           </div>
         </div>)) :
         <Typography variant='paragraph'>No guests</Typography>
