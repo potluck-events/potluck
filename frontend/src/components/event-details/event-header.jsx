@@ -78,14 +78,14 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         <div className="">
         {event.dietary_restrictions_count && <>
           <Typography variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</Typography>
-          <div className="flex pt-1 gap-x-1 flex-wrap justify-start items-center">
+          <div className="flex pt-1 gap-x-1 flex-wrap justify-start items-center" onClick={() => setRestrictionsExpanded(!restrictionsExpanded)}>
             {Object.keys(event.dietary_restrictions_count)
             .filter((key) => key !== 'null').map((key) => (
               <Chip color='amber' key={key} className="h-fit my-1 rounded-full"
                 value={!restrictionsExpanded ? `${key.split(/[ -]/).map((w) => w.slice(0,1)).join("")}` : `${key}: ${event.dietary_restrictions_count[key]}`}
               />
             ))}
-            <FontAwesomeIcon icon={restrictionsExpanded ? faMinusCircle : faPlusCircle} className="cursor-pointer w-5 h-5"  onClick={() => setRestrictionsExpanded(!restrictionsExpanded)}/>
+            <FontAwesomeIcon icon={restrictionsExpanded ? faMinusCircle : faPlusCircle} className="cursor-pointer w-5 h-5"  />
           </div></>}
         </div>
       </div>
