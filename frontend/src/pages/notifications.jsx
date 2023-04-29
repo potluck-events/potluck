@@ -46,6 +46,7 @@ export default function Notifications(){
             };
             axios.request(options).then(function (response) {
                 console.log(response.data);
+                location.reload()
                 
             }).catch(function (error) {
                 console.error(error);
