@@ -37,8 +37,9 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
     };
 
     axios.request(options).then(function (response) {
+      console.log(response.data);
       setEvent(response.data)
-      createICS(response.data)
+      createICS(response.data, setCalFile)
       if (response.data.street_address) {
         let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`
         setMapsURL(url)
@@ -112,7 +113,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
 }
 
 
-function createICS(event) {
+function createICS(event, setCalFile) {
     let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
     let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
     const options = {

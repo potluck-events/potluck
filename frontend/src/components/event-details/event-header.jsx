@@ -1,4 +1,4 @@
-import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown, faCopy, faMoneyBill, faDollar, faDollarSign, faCommentsDollar, faEllipsis, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCalendar, faLocation, faLocationDot, faUser, faPenToSquare, faAngleDown, faCopy, faMoneyBill, faDollar, faDollarSign, faCommentsDollar, faEllipsis, faEllipsisVertical, faPlus, faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Typography, Button, Dialog, Card, Chip, Menu, MenuHandler, MenuList, MenuItem } from "@material-tailwind/react";
 import moment from "moment";
@@ -15,6 +15,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
   const { pk } = useParams()
   const navigate = useNavigate()
   const token = useContext(AuthContext)
+  const [restrictionsExpanded, setRestrictionsExpanded] = useState(false)
 
   function handleDelete(){
     const options = {
@@ -75,14 +76,16 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         </div>
         <div className=" border-b-2 mt-2 mb-2"></div>
         <div className="">
-        {event.dietary_restrictions_count && <><Typography variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</Typography>
-          <div className="flex pt-1 gap-x-1 flex-wrap justify-start">
+        {event.dietary_restrictions_count && <>
+          <Typography variant='h6' className='text-left mt-1 font-bold'>Guest Dietary Restrictions</Typography>
+          <div className="flex pt-1 gap-x-1 flex-wrap justify-start items-center">
             {Object.keys(event.dietary_restrictions_count)
             .filter((key) => key !== 'null').map((key) => (
               <Chip color='amber' key={key} className="h-fit my-1 rounded-full"
-                value={`${key}`}
+                value={!restrictionsExpanded ? `${key.split(/[ -]/).map((w) => w.slice(0,1)).join("")}` : `${key}: ${event.dietary_restrictions_count[key]}`}
               />
             ))}
+            <FontAwesomeIcon icon={restrictionsExpanded ? faMinusCircle : faPlusCircle} className="cursor-pointer w-5 h-5"  onClick={() => setRestrictionsExpanded(!restrictionsExpanded)}/>
           </div></>}
         </div>
       </div>
