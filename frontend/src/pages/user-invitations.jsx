@@ -45,7 +45,7 @@ export default function UserInvitations() {
     <div className="text-center mb-3">
       <Typography variant='h2'>Invitations</Typography>
     </div>
-    <div className="divide-y-2">
+    <div className="">
       {events.filter((e) => e.response === null).length !== 0 &&
         <div className='py-4 mx-6'>
           <Typography variant='h4' className="text-center border-b-black border-b-2">Pending Invitations</Typography>
