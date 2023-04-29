@@ -37,7 +37,6 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
     };
 
     axios.request(options).then(function (response) {
-      console.log(response.data);
       setEvent(response.data)
       createICS(response.data)
       if (response.data.street_address) {
@@ -62,7 +61,6 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   function createICS(event) {
     let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
     let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
-    console.log(start);
     const options = {
       start: start,
       startOutputType:"local",
