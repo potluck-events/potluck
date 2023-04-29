@@ -418,7 +418,7 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
     event = instance.event
     recipient = instance.owner
     header = "You're off the hook!"
-    message = f"You don't need to bring {instance} to {event.title}!"
+    message = f"You don't need to bring {instance.title} to {event.title}!"
     Notification.objects.create(
         recipient=recipient, header=header, message=message, event=event)
 
@@ -429,7 +429,7 @@ def delete_item_notification_for_host(sender, instance, **kwargs):
     event = instance.event
     host = event.host
     header = "An item was removed from your event."
-    message = f"{instance} has been deleted from {event.title}!"
+    message = f"{instance} has been deleted."
     Notification.objects.create(
         recipient=host, header=header, message=message, event=event)
 
