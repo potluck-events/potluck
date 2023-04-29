@@ -361,7 +361,7 @@ def create_rsvp_notification(sender, instance, **kwargs):
 def create_host_item_notification(sender, instance, created, **kwargs):
     if created and instance.owner is None:
         event = instance.event
-        for invitation in event.invitations.all():
+        for invitation in event.invitations.filter(response=True):
             guest = invitation.guest
             if guest:
                 header = 'Up for Grabs!'
