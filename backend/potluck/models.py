@@ -127,7 +127,7 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     time_created = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(
-        to='Event', on_delete=models.RESTRICT, related_name='notifications', blank=True, null=True)
+        to='Event', on_delete=models.CASCADE, related_name='notifications', blank=True, null=True)
 
     class Meta:
         ordering = ['-time_created']
