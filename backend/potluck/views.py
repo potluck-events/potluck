@@ -414,14 +414,14 @@ def delete_item_notification_for_guests(sender, instance, **kwargs):
 
 # NEED TO WORK ON HEADER AND MESSAGE!!!!
 # notify owner of an item when item is deleted
-@receiver(post_delete, sender=Item)
-def delete_item_notification_for_owner(sender, instance, **kwargs):
-    event = instance.event
-    recipient = instance.owner
-    header = 'Item deleted from Event'
-    message = f'You are no longer bringing {instance} to {event}'
-    Notification.objects.create(
-        recipient=recipient, header=header, message=message, event=event)
+# @receiver(post_delete, sender=Item)
+# def delete_item_notification_for_owner(sender, instance, **kwargs):
+#     event = instance.event
+#     recipient = instance.owner
+#     header = 'Item deleted from Event'
+#     message = f'You are no longer bringing {instance} to {event}'
+#     Notification.objects.create(
+#         recipient=recipient, header=header, message=message, event=event)
 
 
 # notify host when an item is deleted
