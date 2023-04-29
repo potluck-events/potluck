@@ -26,6 +26,7 @@ export default function Header({setToken}) {
   const [userData, setUserData] = useState()
   const navigate = useNavigate()
   const [notifications, setNotifications] = useState()
+  const [unreadNotifications, setUnreadNotifcations] = useState(0)
 
 
     
@@ -73,6 +74,7 @@ export default function Header({setToken}) {
       }).then((response) => {
         console.log(response.data)
         setNotifications(response.data)
+        setUnreadNotifcations(response.data.filter((n) => n.is_read === false).length)
       })
     }
 
@@ -103,17 +105,9 @@ export default function Header({setToken}) {
                 type="button"
                 className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
               >
-                {notifications && notifications.map((n) => {
-                  if (n.is_read === false) { 
-                  return (
-                  <FontAwesomeIcon className='mb-5'
-                  icon={faCircleExclamation} style={{color: "#ff0a0a",}}/> 
-                  );
-                } else {
-                  return null;
-                }
-              }).find((n) => n)}
-                    <UserAvatar user={userData} className='w-6 h-6' />
+                    <UserAvatar user={userData} className='w-6 h-6' >
+                    {unreadNotifications > 0 && <div className=" bg-blue-500 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-4 w-4 text-xs">{unreadNotifications}</div>}
+                      </UserAvatar>
                     <FontAwesomeIcon icon={faAngleDown}/>
               </button>
             </div>
