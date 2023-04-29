@@ -391,7 +391,7 @@ def create_item_notification_for_host(sender, instance, created, **kwargs):
         event = instance.event
         host = instance.event.host
         if host:
-            header = 'An event just got even better!'
+            header = 'Your event just got even better!'
             message = f'{instance.owner} is bringing {instance.title} to {event.title}!'
             Notification.objects.create(
                 recipient=host, header=header, message=message, event=event)
@@ -418,7 +418,7 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
     event = instance.event
     recipient = instance.owner
     header = "You're off the hook!"
-    message = f"You don't need to bring {instance} to {event.title}!"
+    message = f"You don't need to bring {instance.title} to {event.title}!"
     Notification.objects.create(
         recipient=recipient, header=header, message=message, event=event)
 
@@ -428,7 +428,32 @@ def delete_item_notification_for_owner(sender, instance, **kwargs):
 def delete_item_notification_for_host(sender, instance, **kwargs):
     event = instance.event
     host = event.host
-    header = "You're off the hook!"
-    message = f"You don't need to bring {instance} to {event.title}!"
+    header = "An item was removed from your event."
+    message = f"{instance} has been deleted."
     Notification.objects.create(
         recipient=host, header=header, message=message, event=event)
+
+
+# notify host when a post is made
+@receiver(post_save, sender=Post)
+def create_post_notification_for_host(sender, instance, **kwargs):
+    event = instance.event
+    host = event.host
+    header = 'New Post!'
+    message = f'{instance.author} posted a message in {instance.event.title}!'
+    Notification.objects.create(
+        recipient=host, header=header, message=message, event=event)
+
+
+# notify guests when a post is made
+@receiver(post_save, sender=Post)
+def create_post_notification_for_guests(sender, instance, created, **kwargs):
+    if created:
+        event = instance.event
+        for invitation in event.invitations.filter(response=True):
+            guest = invitation.guest
+            if guest:
+                header = 'New Post!'
+                message = f'{instance.author} posted a message in {instance.event.title}!'
+                Notification.objects.create(
+                    recipient=guest, header=header, message=message, event=event)
