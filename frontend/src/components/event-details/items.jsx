@@ -118,8 +118,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
       <div onClick={() => setExpanded(!expanded)} className="flex-grow">
         <div className="flex-grow">
           <div className="flex flex-auto justify-between flex-row pr-2 self-start " onClick={() => setExpanded(!expanded)}>
-          <div className="flex items-center gap-2"><Typography variant="h6" >{item.title}</Typography>
-          </div>
+          <Typography variant="h6" >{item.title}</Typography>
             <div className="flex flex-row gap-3 self-start pt-1">
               {((userIsHost || item.user_is_creator)&& expanded) &&
               <>
