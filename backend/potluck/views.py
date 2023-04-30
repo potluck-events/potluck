@@ -416,12 +416,13 @@ def create_ungrab_item_notification_for_guests(sender, instance, **kwargs):
 # notify owner of an item when item is deleted
 @receiver(pre_delete, sender=Item)
 def delete_item_notification_for_owner(sender, instance, **kwargs):
-    event = instance.event
-    recipient = instance.owner
-    header = "You're off the hook!"
-    message = f"You don't need to bring {instance.title} to {event.title}."
-    Notification.objects.create(
-        recipient=recipient, header=header, message=message, event=event)
+    if instance.owner is not None:
+        event = instance.event
+        recipient = instance.owner
+        header = "You're off the hook!"
+        message = f"You don't need to bring {instance.title} to {event.title}."
+        Notification.objects.create(
+            recipient=recipient, header=header, message=message, event=event)
 
 
 # notify host when an item is deleted
@@ -458,3 +459,28 @@ def create_post_notification_for_guests(sender, instance, created, **kwargs):
                 message = f'{instance.author} posted a message in {instance.event.title}!'
                 Notification.objects.create(
                     recipient=guest, header=header, message=message, event=event)
+
+
+# notify guest when a host deletes their invitation
+@receiver(pre_delete, sender=Invitation)
+def delete_invitation_notification_for_guest(sender, instance, **kwargs):
+    event = instance.event
+    recipient = instance.guest
+    header = "Invitation Canceled"
+    message = f'Your invitation to {event.title} has been deleted by the host.'
+    Notification.objects.create(
+        recipient=recipient, header=header, message=message, event=event)
+
+
+# NOT WORKING
+# @receiver(pre_delete, sender=Event)
+# def delete_event_notification_for_guest(sender, instance, **kwargs):
+#     event = instance
+#     # for invitation in instance.invitations.exclude(response=False):
+#     for invitation in event.invitations:
+#         guest = invitation.guest
+#         if guest:
+#             header = 'Event Canceled'
+#             message = f'{event.title} has been canceled by the host.'
+#             Notification.objects.create(
+#                 recipient=guest, header=header, message=message, event=event)
