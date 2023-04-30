@@ -105,20 +105,22 @@ export default function EditProfile(){
                     <Input value={city} onChange={(e) => setCity(e.target.value)} label="City" size="lg" type="text" />
                 </div>
                 <div>
-                </div>
                     <AllergyList allergyList={allergyList} allergies={allergies} handleCheckboxChange={handleCheckboxChange} />
-                <label htmlFor="raised-button-file" className=" text-center">
-                    <MButton variant="contained" component="span" >
-                    {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
-                    </MButton>
-                <input
-                    className="input"
-                    style={{ display: 'none' }}
-                    id="raised-button-file"
-                    type="file"
-                    onChange={(i) => handleUpload(i)}
-                />
-                </label> 
+                </div>
+                <div>
+                    <label htmlFor="raised-button-file" className=" text-center">
+                        <MButton variant="contained" component="span" sx={{backgroundColor: "#2196f3", fontWeight: 700, fontSize: '.75rem', paddingY: ".75rem", borderRadius: '.5rem' }}>
+                        {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
+                        </MButton>
+                    <input
+                        className="input"
+                        style={{ display: 'none' }}
+                        id="raised-button-file"
+                        type="file"
+                        onChange={(i) => handleUpload(i)}
+                                    />
+                    </label> 
+                </div>
                 <Button type="submit" className=" center" fullWidth>Update</Button>
                 </div>
             </div>
@@ -131,7 +133,7 @@ export default function EditProfile(){
 function AllergyList({allergyList, allergies, handleCheckboxChange}) {
     return( <div className=" border-light-blue-700 border-2 p-4 mb-6">
         <Fragment>
-            <Typography variant='h5' className='text-center'>Allergies</Typography>
+            <Typography variant='h5' className='text-center'>Dietary Restrictions</Typography>
             <div className=" columns-2  justify-center">
                 {allergyList.map((a, index) => (
                     <Typography key={index} className='flex  items-center '>
