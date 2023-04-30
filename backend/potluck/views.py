@@ -56,6 +56,9 @@ class CustomRegisterView(RegisterView):
 class CustomPasswordResetView(PasswordResetView):
     serializer_class = CustomPasswordResetSerializer
 
+    def post(self, request, *args, **kwargs):
+        seri
+
 
 class GoogleLogin(SocialLoginView):
     # SOCIAL AUTH CODE IN PROGRESS

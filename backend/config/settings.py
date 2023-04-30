@@ -124,7 +124,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'potluck/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -219,6 +219,8 @@ if env('USE_S3'):
     AWS_S3_FILE_OVERWRITE = True
 
 
-REST_AUTH_SERIALIZERS = {
-    'PASSWORD_RESET_SERIALIZER': 'potluck.serializers.PasswordResetSerializer',
+REST_AUTH = {
+    'PASSWORD_RESET_SERIALIZER': 'potluck.serializers.CustomPasswordResetSerializer',
 }
+
+DJ_REST_AUTH_TEMPLATE_JWT_PASSWORD_RESET_EMAIL = 'registration/custom_reset_confirm.html'
