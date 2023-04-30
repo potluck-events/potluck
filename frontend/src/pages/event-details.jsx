@@ -128,23 +128,35 @@ function createICS(event, setCalFile) {
 
     handleDownload()
 
-    async function handleDownload() {
+    function handleDownload() {
       const filename = `${event.title}.ics`
-      const file = await new Promise((resolve, reject) => {
-        createEvent(options, (error, value) => {
-          if (error) {
-            reject(error)
-          }
-          
-          resolve(new File([value], filename, {
-            'Content-Type': 'text/calendar; charset=utf-8',
-            'Content-Disposition': `attachment; filename=${filename}`,}))
-        })
-      })
+      const icsData = createEvent(options, (error, value) => {
+        if (error) {
+          console.error(error);
+        }
+        return value;
+      });
+
+      // Set the headers for the response
+      const headers = {
+        'Content-Type': 'text/calendar; charset=utf-8',
+        'Content-Disposition': `attachment; filename=${filename}`,
+      };
+
+      // Create a buffer from the ICS data and send it as the response
+      const buffer = Buffer.from(icsData, 'utf-8');
+      const response = {
+        headers,
+        statusCode: 200,
+        body: buffer.toString('base64'),
+        isBase64Encoded: true,
+      };
+      
       //FIX THIS: Not opening on mobile
-      const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
+      const url = `data:text/calendar;charset=utf-8;base64,${response.body}`;
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
       setCalFile({url: url, download: filename})
     }
+    
   }
