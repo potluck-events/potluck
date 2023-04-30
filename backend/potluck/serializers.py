@@ -2,6 +2,7 @@ from collections import Counter
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
 from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 from itertools import chain
@@ -17,6 +18,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.last_name = self.validated_data['last_name']
         user.thumbnail = self.validated_data['thumbnail']
         user.save(update_fields=['first_name', 'last_name'])
+
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+    def get_email_options(self, user):
+        return {
+            'html_email_template_name': 'registration/custom_reset_confirm.html',
+        }
 
 
 class DietaryRestrictionSerializer(serializers.ModelSerializer):

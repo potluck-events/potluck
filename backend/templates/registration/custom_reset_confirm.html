@@ -11,8 +11,18 @@
     <p>
       <b
         >You're recieving this email because you requested a password reset for
-        your user account at {{ }}
+        your user account at {{ site_name }}
       </b>
     </p>
+    <br />
+    <p>Please go to the following page and choose a new password:</p>
+    <p>
+      {{ protocol }}://{{ domain }}{% url 'password_reset_confirmation'
+      uidb64=uid token=token %}
+    </p>
+    <p>Your username, in case you've forgottenL {{ user.get_username }}</p>
+    <br />
+    <p><i> Thanks for using our site! The {{ site_name }} team. </i></p>
+    <p></p>
   </body>
 </html>

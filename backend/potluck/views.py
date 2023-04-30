@@ -5,6 +5,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
+from dj_rest_auth.registration.views import PasswordResetView
 
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
