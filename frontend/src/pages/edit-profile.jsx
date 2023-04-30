@@ -14,7 +14,7 @@ export default function EditProfile(){
     const [pfp, setPfp] = useState()
     const [city, setCity] = useState(' ')
     const [allergies, setAllergies] = useState([])
-    const [allergy, setAllergy] = useState('')
+    const [allergyList, setAllergyList] = useState('')
 
 
 
@@ -37,7 +37,7 @@ export default function EditProfile(){
                 Authorization: token
             }
         }).then((response) => {
-            setAllergy(response.data)
+            setAllergyList(response.data)
         })
     }, []) 
 
@@ -87,7 +87,7 @@ export default function EditProfile(){
         setPfp(event.target.files[0])
     }
 
-    if (allergy.length > 0)
+    if (allergyList.length > 0)
     return (
         <>
         <div className="mt-8 flex flex-col items-center justify-center">
@@ -106,20 +106,7 @@ export default function EditProfile(){
                 </div>
                 <div>
                 </div>
-                    <div className=" border-light-blue-700 border-2 p-4 mb-6">
-                        <Fragment>
-                            <Typography variant='h5' className='text-center'>Allergies</Typography>
-                            <div className=" columns-2  justify-center">
-                                {allergy.map((a, index) => (
-                                    <Typography key={index} className='flex  items-center '>
-                                        <Checkbox className='' checked={allergies.indexOf(a.name) > -1} onChange={handleCheckboxChange} value={a.name} id="ripple-on" />
-                                        {a.name}
-                                    </Typography>
-                                ))
-                                }
-                            </div>
-                        </Fragment>
-                    </div>
+                    <AllergyList allergyList={allergyList} allergies={allergies} handleCheckboxChange={handleCheckboxChange} />
                 <label htmlFor="raised-button-file" className=" text-center">
                     <MButton variant="contained" component="span" >
                     {pfp ? `File name: ${pfp.name}` : "Upload Profile Picture"}
@@ -139,4 +126,20 @@ export default function EditProfile(){
         </div>
         </>
     )
+}
+
+function AllergyList({allergyList, allergies, handleCheckboxChange}) {
+    return( <div className=" border-light-blue-700 border-2 p-4 mb-6">
+        <Fragment>
+            <Typography variant='h5' className='text-center'>Allergies</Typography>
+            <div className=" columns-2  justify-center">
+                {allergyList.map((a, index) => (
+                    <Typography key={index} className='flex  items-center '>
+                        <Checkbox className='' checked={allergies.indexOf(a.name) > -1} onChange={handleCheckboxChange} value={a.name} id="ripple-on" />
+                        {a.name}
+                    </Typography>
+                ))}
+            </div>
+        </Fragment>
+    </div>)
 }
