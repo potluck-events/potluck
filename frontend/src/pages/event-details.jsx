@@ -15,6 +15,7 @@ import Posts from "../components/event-details/posts";
 import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from 'ics'
 import moment from "moment";
+import { Buffer } from 'buffer';
 
 export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   const location = useLocation()
@@ -37,8 +38,9 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
     };
 
     axios.request(options).then(function (response) {
+      console.log(response.data);
       setEvent(response.data)
-      createICS(response.data)
+      createICS(response.data, setCalFile)
       if (response.data.street_address) {
         let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`
         setMapsURL(url)
@@ -112,7 +114,7 @@ function EventBody({ event, setEvent, itemsTabOpen, setItemsTabOpen, setItemData
 }
 
 
-function createICS(event) {
+function createICS(event, setCalFile) {
     let start = moment(moment(`${event.date_scheduled} ${event.time_scheduled}`)).format('YYYY-M-D-H-m').split("-").map(Number)
     let end = event.end_time ? moment(moment(`${event.date_scheduled} ${event.end_time}`)).format('YYYY-M-D-H-m').split("-").map(Number) : null
     const options = {
@@ -123,25 +125,39 @@ function createICS(event) {
       location: event.location,
       url: `https://bash-events.netlify.app/events/${event.pk}`,
     }
-    end ? options.end = end : ""
+    if(end) options.end = end
 
     handleDownload()
 
-    async function handleDownload() {
+    function handleDownload() {
       const filename = `${event.title}.ics`
-      const file = await new Promise((resolve, reject) => {
-        createEvent(options, (error, value) => {
-          if (error) {
-            reject(error)
-          }
-          
-          resolve(new File([value], filename, { type: 'plain/text' }))
-        })
-      })
+      const icsData = createEvent(options, (error, value) => {
+        if (error) {
+          console.error(error);
+        }
+        return value;
+      });
+
+      // Set the headers for the response
+      const headers = {
+        'Content-Type': 'text/calendar; charset=utf-8',
+        'Content-Disposition': `attachment; filename=${filename}`,
+      };
+
+      // Create a buffer from the ICS data and send it as the response
+      const buffer = Buffer.from(icsData, 'utf-8');
+      const response = {
+        headers,
+        statusCode: 200,
+        body: buffer.toString('base64'),
+        isBase64Encoded: true,
+      };
+      
       //FIX THIS: Not opening on mobile
-      const url = URL.createObjectURL(file) //.replace("blob:https","webcal").replace("blob:http","webcal");
+      const url = `data:text/calendar;charset=utf-8;base64,${response.body}`;
       // trying to assign the file URL to a window could cause cross-site
       // issues so this is a workaround using HTML5
       setCalFile({url: url, download: filename})
     }
+    
   }

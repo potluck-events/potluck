@@ -39,7 +39,7 @@ export default function Posts({posts, userIsHost}) {
       data: { text: userPost }
     };
     axios.request(options).then(response => {
-      location.reload()
+      navigate(0)
     }
     )
   }
@@ -55,7 +55,7 @@ export default function Posts({posts, userIsHost}) {
       },
     };
     axios.request(options).then(response => {
-      location.reload()
+      navigate(0)
     })
   }
   

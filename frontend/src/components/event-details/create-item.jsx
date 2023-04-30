@@ -1,28 +1,40 @@
 import { Dialog, Transition, } from '@headlessui/react'
 import { Fragment, useState, useContext, useEffect } from 'react'
 import { Input, Textarea, Button } from '@material-tailwind/react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
-import axios from 'axios'
+import axios, { all } from 'axios'
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material'
 
 
 
 export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemData, setItemData}) {
-const [title, setTitle] = useState('')
-const [description, setDescription] = useState('')
-const { pk } = useParams()
-const token = useContext(AuthContext)
-
-  function close () {
-    setItemModalOpen(false)
-  }
-
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const { pk } = useParams()
+  const token = useContext(AuthContext)
+  const [allergyList, setAllergyList] = useState('')
+  const [itemAllergies, setItemAllergies] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
+      axios.get(`https://potluck.herokuapp.com/dietary-restrictions`, {
+        headers: {
+                'Content-Type': 'applications/json',
+                Authorization: token
+            }
+        }).then((response) => {
+            setAllergyList(response.data)
+            console.log(response.data)
+        })
+
     if (itemData) {
       setTitle(itemData.title)
       setDescription(itemData.description)
+      setItemAllergies(itemData.dietary_restrictions_names)
     }
   }, [itemData]) 
+
+
 
   function handleCreateItem(i) {
     i.preventDefault()
@@ -33,19 +45,27 @@ const token = useContext(AuthContext)
         'Content-Type': 'application/json',
         Authorization: token
       },
-      data: { title: title, description: description }
+      data: { title: title, description: description, dietary_restrictions_names: JSON.stringify(itemAllergies)}
     };
 
     axios.request(options).then(function (response) {
       setItemData(null)
-      location.reload()
+      navigate(0)
       console.log(response.data);
     }).catch(function (error) {
       console.error(error);
     });
   }
 
-  return (
+    const handleSelectAllergy = (event) => {
+      const allergy = event.target.value
+      setItemAllergies(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? allergy.split(',') : allergy,
+      );
+    };
+
+  if (allergyList) return (
     <>
       <Transition appear show={itemModalOpen} as={Fragment}>
         <Dialog as="div" className="relative z-20" onClose={setItemModalOpen}>
@@ -83,11 +103,33 @@ const token = useContext(AuthContext)
                     <div className="mt-3">
                       <Input value={title} onChange={(t) => setTitle(t.target.value)} label="Item" size="lg" />
                     </div>
-                    <div className='my-2'>
-                      <Textarea value={description} onChange={(e) => setDescription(e.target.value)} label="Description" size="lg" />
+                    <div className='mt-2'>
+                      <Textarea value={description} className='mb-0' onChange={(e) => setDescription(e.target.value)} label="Description" size="lg" />
                     </div>
+                    <div className=' mb-2'>
+                      <FormControl className='w-full'>
+                        <InputLabel sx={{ fontSize:".875rem", color:"#607D8B", borderRadius: ".375rem" }}  id="select-label">Dietary Categories</InputLabel>
+                        <Select
+                          labelId="select-label"
+                          multiple
+                          value={itemAllergies}
+                          onChange={handleSelectAllergy}
+                          input={<OutlinedInput label="Dietary Categories" />}
+                          renderValue={(selected) => selected.join(', ')}
+                          // MenuProps={MenuProps}
+                        >
+                          {allergyList.map((allergy) => (
+                            <MenuItem key={allergy.id} value={allergy.name}>
+                              <Checkbox checked={itemAllergies.indexOf(allergy.name) > -1} />
+                              <ListItemText primary={allergy.name} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </div>
+
                     <div className="flex justify-center">
-                      <Button type="submit" onClick={close} className="w-32" >Add</Button>
+                      <Button type="submit" onClick={() => setItemModalOpen(false)} className="w-32" >Add</Button>
                     </div>
                   </form>
                 </Dialog.Panel>

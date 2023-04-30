@@ -43,7 +43,7 @@ export default function EventForm({setSpotifyEventPk}) {
   
   //4: Is form NEW PLAYLIST --> POST/PATCH -> /spotify -> event/pk
   const [isPlaylistOn, setIsPlaylistOn] = useState(false)
-  const [playlistLink, setPlaylistLink] = useState("")
+  const [playlistLink, setPlaylistLink] = useState(false)
 
 
 
@@ -137,7 +137,7 @@ export default function EventForm({setSpotifyEventPk}) {
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
     <div className="mt-2 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("new") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{formState==="create" ? "Create a new event" : formState==="edit" ? "Edit event" : "Copy event"}</Typography>
       <form onSubmit={(e) => handleSaveEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
@@ -195,12 +195,16 @@ export default function EventForm({setSpotifyEventPk}) {
               </Switch>
               <Typography variant="h6" className="ml-1" > Shared Spotify Playlist?</Typography>
               </div>
-              {isPlaylistOn && <div className='flex'>
-                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify}  className="text-green-500" size="xl" /> </span><Input value={playlistLink} onChange={(e) => setPlaylistLink(e.target.value)} label="Playlist Link" size="lg" />
+              {(playlistLink !== false && isPlaylistOn) && <div className='flex'>
+                <span className=" self-center mr-1"><FontAwesomeIcon icon={faSpotify} className="text-green-500" size="xl" /> </span><Input value={playlistLink} onChange={(e) => setPlaylistLink(e.target.value)} label="Playlist Link" size="lg" />
               </div>}
-              {(isPlaylistOn && !playlistLink)&&
+              {(isPlaylistOn && !playlistLink && playlistLink === false ) &&
               <div className='flex border-l-2 pl-4 mt-2'>
-                <p>You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account. or, insert a custom playlist link above. </p>
+                  <p> <FontAwesomeIcon icon={faSpotify} className="text-green-500 mr-1" size="lg" />You will be taken to Spotify.com to authorize your credentials, and a collaborative playlist will be made on your account. Or, <span className="text-blue-800 hover:underline cursor-pointer" onClick={() => setPlaylistLink("")} > click to insert a custom playlist link.</span> </p>
+                </div>}
+              {(isPlaylistOn && !playlistLink && playlistLink !== false ) &&
+              <div className='flex border-l-2 pl-4 mt-2'>
+                  <p><span className="text-blue-800 hover:underline cursor-pointer" onClick={() => setPlaylistLink(false)} > Create a playlist for me.</span> </p>
                 </div>}
             </div>
             <Button type="submit" className="" fullWidth>{!pk ? "Create" : "Save"} Event</Button>

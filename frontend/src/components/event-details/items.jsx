@@ -1,6 +1,6 @@
-import { faAlignCenter, faAngleDown, faAngleUp, faPenToSquare, faSquareCheck, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faAlignCenter, faAngleDown, faAngleLeft, faAngleUp, faMinusCircle, faPenToSquare, faPlusCircle, faSquareCheck, faTrash, faUser, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TabsBody, TabPanel, Typography, Button } from "@material-tailwind/react";
+import { TabsBody, TabPanel, Typography, Button, Chip } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import "../../styles/eventdetails.css"
 import Checkbox from '@mui/material/Checkbox';
@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import UserAvatar from "../avatar";
 import { Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Items({ items, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   
@@ -40,6 +41,7 @@ export default function Items({ items, setEvent, setItemData, setItemModalOpen, 
 function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   const [expanded, setExpanded] = useState(false)
   const token = useContext(AuthContext)
+  const navigate = useNavigate()
 
   function handleDeleteItem(i) {
     const options = {
@@ -52,7 +54,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
     };
 
     axios.request(options).then(() => {
-      location.reload()
+      navigate(0)
     })
   }
 
@@ -95,8 +97,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
       };
 
       axios.request(options).then(function (response) {
-        console.log(response.data);
-        location.reload()
+        navigate(0)
       }).catch(function (error) {
         console.error(error);
       });
@@ -115,11 +116,12 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
           </button>
         </Tooltip>:
         <Checkbox className={item.owner && "invisible"} disabled={item.owner ? true : false} value={item.pk} onClick={handleSelect} />}
+      <div onClick={() => setExpanded(!expanded)} className="flex-grow">
         <div className="flex-grow">
           <div className="flex flex-auto justify-between flex-row pr-2 self-start " onClick={() => setExpanded(!expanded)}>
           <Typography variant="h6" >{item.title}</Typography>
-          <div className="flex flex-row gap-3 self-start pt-1">
-            {((userIsHost || item.user_is_creator)&& expanded) &&
+            <div className="flex flex-row gap-3 self-start pt-1">
+              {((userIsHost || item.user_is_creator)&& expanded) &&
               <>
               <Tooltip title="Edit item" placement="left">
                 <FontAwesomeIcon className=" cursor-pointer" icon={faPenToSquare} onClick={handleEditItem} />
@@ -128,12 +130,29 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
                 <FontAwesomeIcon className=" cursor-pointer" icon={faTrash} onClick={handleDeleteItem} />
               </Tooltip>
               </>}
-            <FontAwesomeIcon icon={expanded ? faAngleUp : faAngleDown} onClick={() => setExpanded(!expanded)}/>
+            <FontAwesomeIcon icon={expanded ? faAngleLeft : faAngleDown} onClick={() => setExpanded(!expanded)}/>
           </div>
         </div>
-        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`}>{item.description}</p>
+        <p className={`${item.description ? "" : "text-gray-500"} ${expanded ? "" : "ellipsis-after-1"}`} >{item.description}</p>
+        <DietaryRestrictions item={item} expanded={expanded} />
+      
+        </div>
       </div>
-
     </div>
+  )
+}
+
+
+function DietaryRestrictions({ item, expanded }) {
+  if (item.dietary_restrictions.length > 0) return (
+    <>
+      <div className="flex pt-1 gap-x-1 flex-wrap justify-start items-center" onClick={() => setRestrictionsExpanded(!restrictionsExpanded)}>
+        {item.dietary_restrictions_names.map((r) => (
+          <Chip color='amber' key={r} className="h-fit my-1 rounded-full"
+            value={!expanded ? `${r.split(/[ -]/).map((w) => w.slice(0, 1)).join("")}` : `${r}`}
+          />
+        ))}
+        <FontAwesomeIcon icon={expanded ? faMinusCircle : faPlusCircle} className="cursor-pointer w-5 h-5"  />
+      </div></>
   )
 }

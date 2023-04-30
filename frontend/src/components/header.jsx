@@ -110,7 +110,7 @@ export default function Header({setToken}) {
                 className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
               >
                     <UserAvatar user={userData} className='w-6 h-6' >
-                    {unreadNotifications > 0 && <div className=" bg-blue-500 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-4 w-4 text-xs">{unreadNotifications}</div>}
+                    {unreadNotifications > 0 && <div className="flex items-center justify-center bg-blue-900 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-5 w-5 text-xs text-center m-auto">{unreadNotifications}</div>}
                       </UserAvatar>
                     <FontAwesomeIcon icon={faAngleDown}/>
               </button>
