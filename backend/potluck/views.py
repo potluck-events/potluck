@@ -473,15 +473,15 @@ def delete_invitation_notification_for_guest(sender, instance, **kwargs):
         recipient=recipient, header=header, message=message, event=event)
 
 
-# NOT WORKING
-# @receiver(pre_delete, sender=Event)
-# def delete_event_notification_for_guest(sender, instance, **kwargs):
-#     event = instance
-#     # for invitation in instance.invitations.exclude(response=False):
-#     for invitation in event.invitations:
-#         guest = invitation.guest
-#         if guest:
-#             header = 'Event Canceled'
-#             message = f'{event.title} has been canceled by the host.'
-#             Notification.objects.create(
-#                 recipient=guest, header=header, message=message, event=event)
+# notify guests when host deletes event
+@receiver(pre_delete, sender=Event)
+def delete_event_notification_for_guest(sender, instance, **kwargs):
+    event = instance
+    # for invitation in instance.invitations.exclude(response=False):
+    for invitation in event.invitations.all():
+        guest = invitation.guest
+        if guest:
+            header = 'Event Canceled'
+            message = f'{event.title} has been canceled by the host.'
+            Notification.objects.create(
+                recipient=guest, header=header, message=message)
