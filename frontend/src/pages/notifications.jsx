@@ -46,7 +46,7 @@ export default function Notifications(){
             };
             axios.request(options).then(function (response) {
                 console.log(response.data);
-                location.reload()
+                navigate(0)
                 
             }).catch(function (error) {
                 console.error(error);
@@ -63,7 +63,7 @@ export default function Notifications(){
                     }
                 };
                 axios.request(options).then(function (response) {
-                    location.reload()
+                    navigate(0)
                 })
             }
 
