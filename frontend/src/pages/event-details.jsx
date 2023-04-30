@@ -15,6 +15,7 @@ import Posts from "../components/event-details/posts";
 import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from 'ics'
 import moment from "moment";
+import { Buffer } from 'buffer';
 
 export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
   const location = useLocation()
