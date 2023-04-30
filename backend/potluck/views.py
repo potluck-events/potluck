@@ -5,7 +5,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
-from dj_rest_auth.registration.views import PasswordResetView
+from dj_rest_auth.views import PasswordResetView
 
 # PERMISSIONS IMPORTS
 from rest_framework.permissions import IsAuthenticated
@@ -19,7 +19,7 @@ from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Not
 from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
                           EventItemSerializer, UserItemSerializer,
                           UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer)
+                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer, CustomPasswordResetSerializer)
 from .serializers import CustomRegisterSerializer
 
 # MISC IMPORTS
@@ -51,6 +51,10 @@ class CustomRegisterView(RegisterView):
                 invitation.save()
         else:
             serializer.save(request=self.request)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    serializer_class = CustomPasswordResetSerializer
 
 
 class GoogleLogin(SocialLoginView):

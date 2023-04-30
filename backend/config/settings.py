@@ -219,8 +219,6 @@ if env('USE_S3'):
     AWS_S3_FILE_OVERWRITE = True
 
 
-REST_AUTH_PASSWORD_RESET_CONFIRM_URL = 'accounts/password/reset/'
-REST_AUTH_PASSWORD_RESET_EMAIL_TEMPLATE = 'registration/custom_reset_confirm.html'
 REST_AUTH_SERIALIZERS = {
-    'PASSWORD_RESET_SERIALIZER': 'your_app.serializers.PasswordResetSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'potluck.serializers.PasswordResetSerializer',
 }

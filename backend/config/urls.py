@@ -34,7 +34,7 @@ urlpatterns = [
     path('accounts/registration/',
          views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
-    path('accounts/password/reset/', PasswordResetView.as_view(),
+    path('accounts/password/reset/', views.CustomPasswordResetView.as_view(),
          name='password_reset'),
     path('accounts/password/reset/confirm/<uidb64>/<token>/',
          PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
