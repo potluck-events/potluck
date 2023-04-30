@@ -21,6 +21,8 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CustomPasswordResetSerializer(PasswordResetSerializer):
+    email_template_name = 'registration/custom_reset_confirm.html'
+
     def get_email_options(self, user):
         return {
             'html_email_template_name': 'registration/custom_reset_confirm.html',
