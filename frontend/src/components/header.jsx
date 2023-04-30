@@ -25,7 +25,7 @@ export default function Header({setToken}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userData, setUserData] = useState()
   const navigate = useNavigate()
-  const [notifications, setNotifications] = useState()
+  const [notifications, setNotifications] = useState([])
   const [unreadNotifications, setUnreadNotifcations] = useState(0)
 
 
@@ -77,8 +77,8 @@ export default function Header({setToken}) {
         }
       }).then((response) => {
         console.log(response.data)
-        setNotifications(response.data)
-        setUnreadNotifcations(response.data.filter((n) => n.is_read === false).length)
+        setNotifications(response.data.results)
+        setUnreadNotifcations(response.data.results.filter((n) => n.is_read === false).length)
       })
     }
 
