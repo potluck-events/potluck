@@ -1,7 +1,7 @@
 import { Dialog, Transition, } from '@headlessui/react'
 import { Fragment, useState, useContext, useEffect } from 'react'
 import { Input, Textarea, Button, Chip, Typography } from '@material-tailwind/react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
 import axios from 'axios'
 import React from "react";
@@ -9,7 +9,7 @@ import React from "react";
 export default function InvitationModal({ inviteModalOpen, setInviteModalOpen }) {
     const { pk } = useParams()
     const { copyFromPk } = useParams()
-
+    const navigate = useNavigate()
     const token = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [show, setShow] = useState(true);
@@ -58,7 +58,7 @@ export default function InvitationModal({ inviteModalOpen, setInviteModalOpen })
                 console.log(r);
             })
         }
-        location.reload()
+        navigate(0)
     }
 
     function handleAddInvite() {

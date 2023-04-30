@@ -1,7 +1,7 @@
 import { Dialog, Transition, } from '@headlessui/react'
 import { Fragment, useState, useContext, useEffect } from 'react'
 import { Input, Textarea, Button } from '@material-tailwind/react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from "../../context/authcontext"
 import axios, { all } from 'axios'
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material'
@@ -15,7 +15,7 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemDa
   const token = useContext(AuthContext)
   const [allergyList, setAllergyList] = useState('')
   const [itemAllergies, setItemAllergies] = useState([])
-    
+  const navigate = useNavigate()
   useEffect(() => {
       axios.get(`https://potluck.herokuapp.com/dietary-restrictions`, {
         headers: {
@@ -50,7 +50,7 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemDa
 
     axios.request(options).then(function (response) {
       setItemData(null)
-      location.reload()
+      navigate(0)
       console.log(response.data);
     }).catch(function (error) {
       console.error(error);

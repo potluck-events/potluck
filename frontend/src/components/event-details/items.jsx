@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import UserAvatar from "../avatar";
 import { Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Items({ items, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   
@@ -40,6 +41,7 @@ export default function Items({ items, setEvent, setItemData, setItemModalOpen, 
 function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
   const [expanded, setExpanded] = useState(false)
   const token = useContext(AuthContext)
+  const navigate = useNavigate()
 
   function handleDeleteItem(i) {
     const options = {
@@ -52,7 +54,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
     };
 
     axios.request(options).then(() => {
-      location.reload()
+      navigate(0)
     })
   }
 
@@ -95,8 +97,7 @@ function Item({item, setEvent, setItemData, setItemModalOpen, userIsHost}) {
       };
 
       axios.request(options).then(function (response) {
-        console.log(response.data);
-        location.reload()
+        navigate(0)
       }).catch(function (error) {
         console.error(error);
       });

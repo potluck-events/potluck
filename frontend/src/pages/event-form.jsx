@@ -137,7 +137,7 @@ export default function EventForm({setSpotifyEventPk}) {
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Cancel
       </div>
     <div className="mt-2 flex flex-col items-center justify-center">
-      <Typography variant = 'h4' color="blue-gray">{location.pathname.includes("new") ? "Create a new event" : location.pathname.includes("edit") ? "Edit event" : "Copy event"}</Typography>
+      <Typography variant = 'h4' color="blue-gray">{formState==="create" ? "Create a new event" : formState==="edit" ? "Edit event" : "Copy event"}</Typography>
       <form onSubmit={(e) => handleSaveEvent(e)}>
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-5">
