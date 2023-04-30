@@ -41,7 +41,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         <div className="pb-2 flex-auto self-center">
           <Typography variant="h4" className=''>{event.title}</Typography>
         </div>
-          <EditMenu pk={event.pk} handleDelete={handleDelete} calFile={calFile} />     
+          <EditMenu pk={event.pk} isHost={event.user_is_host} handleDelete={handleDelete} calFile={calFile} />     
         </div>
           <Typography variant="h6"><FontAwesomeIcon icon={faCalendar}/>  {moment(event.date_scheduled).format('MMMM Do, YYYY')}: {moment(event.time_scheduled, "HH:mm:ss").format('h:mm A')} 
           {event.end_time && ' -'} {event.end_time && (moment(event.end_time, "HH:mm:ss").format('h:mm A'))}</Typography>

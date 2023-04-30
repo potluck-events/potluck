@@ -124,7 +124,7 @@ function createICS(event, setCalFile) {
       location: event.location,
       url: `https://bash-events.netlify.app/events/${event.pk}`,
     }
-    end ? options.end = end : ""
+    if(end) options.end = end
 
     handleDownload()
 
@@ -136,7 +136,9 @@ function createICS(event, setCalFile) {
             reject(error)
           }
           
-          resolve(new File([value], filename, { type: 'plain/text' }))
+          resolve(new File([value], filename, {
+            'Content-Type': 'text/calendar; charset=utf-8',
+            'Content-Disposition': `attachment; filename=${filename}`,}))
         })
       })
       //FIX THIS: Not opening on mobile
