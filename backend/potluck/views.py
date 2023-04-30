@@ -35,7 +35,6 @@ from django.db.models import Q
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from rest_framework.pagination import PageNumberPagination
-from django_q.tasks import async_task
 
 
 class CustomRegisterView(RegisterView):
@@ -329,12 +328,15 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
-        # queryset.update(is_read=True)
-        async_task(self.mark_notifications_as_read, queryset)
         return queryset
 
-    def mark_notifications_as_read(self, queryset):
+    def mark_notifications_as_read(self):
+        queryset = self.get_queryset()
         queryset.update(is_read=True)
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        self.mark_notifications_as_read()
+        return super().finalize_response(request, response, *args, **kwargs)
 
 
 class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
