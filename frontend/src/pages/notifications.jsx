@@ -79,22 +79,14 @@ export default function Notifications(){
             {notifications.map((not, index) => {
                 return (
                 <Card className="my-3 mt-3 mx-6 px-6" key={index}>
-                    <CardBody className="p-2">
+                    <CardBody className="p-2" onClick={() => handleNotifcationClick(not)}>
                             <div className="flex flex-col justify-between py-1 columns-1" >
                                 <div className="flex">
                                     <div className="py-1 justify-between flex items-center mr-2" >
                                     <div className="absolute left-2 self-center">
-                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "blue-900",}}  className=""/>}
+                                        {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "blue",}}  className=""/>}
                                     </div>
                                         <Typography variant='h5' >{not.header}</Typography>
-                                    </div>
-                                    <div className="self-end" onClick={() => handleNotifcationClick(not)}>
-                                        <IconButton variant="text" className=" mr-1">
-                                            <FontAwesomeIcon icon={faAnglesRight} className="w-6 h-6 cursor-pointer"/>
-                                        </IconButton>
-                                    </div>
-                                    <div className="text-end self-center ml-auto cursor-pointer ">
-                                        <FontAwesomeIcon onClick={() => handleDelete(not.pk)} icon={faX} />
                                     </div>
                                 </div>
                                 <div>
@@ -102,6 +94,7 @@ export default function Notifications(){
                                 </div>
                             </div> 
                     </CardBody>
+                        <FontAwesomeIcon onClick={() => handleDelete(not.pk)} icon={faX} className="absolute right-2 top-2"/>
                 </Card>)
             })}
         </div>
