@@ -68,6 +68,22 @@ export default function Notifications(){
                 })
             }
 
+            function handleClearAll() {
+                const options = {
+                    method: 'DELETE',
+                    url: `https://potluck.herokuapp.com/notifications`,
+                    headers: {
+                        'Authorization': token
+                    }
+                };
+                axios.request(options).then(function (response) {
+                    console.log(response.data);
+                    setNotifications([]);
+                }).catch(function (error) {
+                    console.error(error);
+                })
+            }
+
         if (notifications)
     return (
         <>
@@ -75,7 +91,7 @@ export default function Notifications(){
             <Typography variant='h3' className=' underline' >
                 Notifications
             </Typography>
-            <Button size='sm' variant="text" className="absolute end-2 mt-12">Clear All</Button>
+            <Button onClick={() => handleClearAll()} size='sm' variant="text" className="absolute end-2 mt-12">Clear All</Button>
         </div>
         <div className="">
             {notifications.map((not, index) => {
