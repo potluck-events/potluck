@@ -25,7 +25,7 @@ export default function Header({setToken}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userData, setUserData] = useState()
   const navigate = useNavigate()
-  const [notifications, setNotifications] = useState()
+  const [notifications, setNotifications] = useState([])
   const [unreadNotifications, setUnreadNotifcations] = useState(0)
 
 

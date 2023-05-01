@@ -15,7 +15,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 export default function Notifications(){
     const token = useContext(AuthContext)
-    const [notifications, setNotifications] = useState()
+    const [notifications, setNotifications] = useState([])
     const [event, setEvent] = useState()
     const { pk } = useParams()
     const navigate = useNavigate()
