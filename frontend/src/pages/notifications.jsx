@@ -3,7 +3,6 @@ import {
   CardBody,
   IconButton,
   Typography,
-  Button,
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -16,10 +15,10 @@ import {
   faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
-export default function Notifications() {
+export default function Notifications({ notifications, setNotifications }) {
   const token = useContext(AuthContext);
-  const [notifications, setNotifications] = useState([]);
   const [event, setEvent] = useState();
   const { pk } = useParams();
   const navigate = useNavigate();
@@ -35,6 +34,12 @@ export default function Notifications() {
       .then((response) => {
         console.log(response.data);
         setNotifications(response.data);
+        axios.get(`https://potluck.herokuapp.com/notifications/read`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
       });
   }, []);
 
@@ -70,7 +75,7 @@ export default function Notifications() {
       },
     };
     axios.request(options).then(function (response) {
-      navigate(0);
+      location.reload();
     });
   }
 
@@ -96,15 +101,17 @@ export default function Notifications() {
   if (notifications)
     return (
       <>
-        <div className="flex justify-center w-screen mb-10">
+        <div className="flex justify-center w-screen">
           <Typography variant="h3" className=" underline">
             Notifications
           </Typography>
+        </div>
+        <div className="flex justify-end">
           <Button
             onClick={() => handleClearAll()}
             size="sm"
             variant="text"
-            className="absolute end-2 mt-12"
+            className=""
           >
             Clear All
           </Button>
@@ -124,8 +131,7 @@ export default function Notifications() {
                           {not.is_read === false && (
                             <FontAwesomeIcon
                               icon={faCircleExclamation}
-                              style={{ color: "blue" }}
-                              className=" justify-start"
+                              className=" justify-start text-blue-900"
                             />
                           )}
                         </div>

@@ -24,13 +24,11 @@ import {
 import UserAvatar from "./avatar";
 import { useNavigate } from "react-router-dom";
 
-export default function Header({ setToken }) {
+export default function Header({ setToken, notifications, setNotifications }) {
   const token = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
-  const [unreadNotifications, setUnreadNotifcations] = useState(0);
 
   function handleLogout() {
     const options = {
@@ -86,9 +84,6 @@ export default function Header({ setToken }) {
         .then((response) => {
           console.log(response.data);
           setNotifications(response.data);
-          setUnreadNotifcations(
-            response.data.filter((n) => n.is_read === false).length
-          );
         });
     }
   }, [token]);
@@ -126,9 +121,13 @@ export default function Header({ setToken }) {
                     className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                   >
                     <UserAvatar user={userData} className="w-6 h-6">
-                      {unreadNotifications > 0 && (
+                      {notifications.filter((n) => n.is_read === false).length >
+                        0 && (
                         <div className="flex items-center justify-center bg-blue-900 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-5 w-5 text-xs text-center m-auto">
-                          {unreadNotifications}
+                          {
+                            notifications.filter((n) => n.is_read === false)
+                              .length
+                          }
                         </div>
                       )}
                     </UserAvatar>
@@ -140,17 +139,22 @@ export default function Header({ setToken }) {
                 <MenuItem onClick={handleProfile}>
                   <FontAwesomeIcon icon={faUser} className="mr-1" /> Profile
                 </MenuItem>
-                <MenuItem onClick={handleNotifications} className="flex">
-                  <FontAwesomeIcon icon={faBell} className="mr-1" />{" "}
-                  Notifications
-                  {unreadNotifications > 0 && (
+                <MenuItem
+                  onClick={handleNotifications}
+                  className="flex items-center"
+                >
+                  {notifications.filter((n) => n.is_read === false).length >
+                  0 ? (
                     <div
                       className="flex items-center justify-center bg-blue-900
-              text-white cursor-pointer rounded-full h-5 w-5 text-xs text-center m-auto"
+                      text-white cursor-pointer rounded-full h-5 w-5 text-xs text-center mr-1 -ml-1 "
                     >
-                      {unreadNotifications}
+                      {notifications.filter((n) => n.is_read === false).length}
                     </div>
+                  ) : (
+                    <FontAwesomeIcon icon={faBell} className="mr-2 " />
                   )}
+                  Notifications
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <FontAwesomeIcon icon={faRightFromBracket} className="mr-1" />
