@@ -1,5 +1,14 @@
+# django imports
 from django.contrib import admin
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
+
+# local app imports
+from .models import (User,
+                     DietaryRestriction,
+                     Event,
+                     Invitation,
+                     Item,
+                     Post,
+                     Notification)
 
 admin.site.register(User)
 admin.site.register(DietaryRestriction)
