@@ -3,6 +3,7 @@ import {
         CardBody,
         IconButton, 
         Typography,
+        Button,
         } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -70,10 +71,11 @@ export default function Notifications(){
         if (notifications)
     return (
         <>
-        <div>
-            <Typography variant='h3' className=' w-screen text-center border-b-2 border-black'>
+        <div className='flex justify-center w-screen mb-10'>
+            <Typography variant='h3' className=' underline' >
                 Notifications
             </Typography>
+            <Button size='sm' variant="text" className="absolute end-2 mt-12">Clear All</Button>
         </div>
         <div className="">
             {notifications.map((not, index) => {
