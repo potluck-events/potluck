@@ -89,21 +89,25 @@ export default function Notifications({ notifications, setNotifications }) {
   if (notifications)
     return (
       <>
-        <div className="flex justify-center w-screen">
-          <Typography variant="h3" className=" underline">
-            Notifications
-          </Typography>
-        </div>
-        <div className="flex justify-end mr-4">
-          <Button
-            onClick={() => handleClearAll()}
-            size="sm"
-            variant="text"
-            className=""
-          >
-            Clear All
-          </Button>
-        </div>
+        {notifications.length > 0 && (
+          <div className="flex justify-center w-screen">
+            <Typography variant="h3" className=" underline">
+              Notifications
+            </Typography>
+          </div>
+        )}
+        {notifications.length > 0 && (
+          <div className="flex justify-end mr-4">
+            <Button
+              onClick={() => handleClearAll()}
+              size="sm"
+              variant="text"
+              className=""
+            >
+              Clear All
+            </Button>
+          </div>
+        )}
         <div className="">
           {notifications.map((not, index) => {
             return (
@@ -140,6 +144,24 @@ export default function Notifications({ notifications, setNotifications }) {
             );
           })}
         </div>
+        {notifications.length < 1 && (
+          <>
+            <div className=" text-center mt-10 italic text-blue-900">
+              <Typography variant="h4">No new notifications</Typography>
+            </div>
+            <div>
+              <iframe
+                src="https://giphy.com/embed/5NlH8UPQC5DAQ"
+                width="100%"
+                height="100%"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p>
+              <a href="https://giphy.com/gifs/will-smith-fresh-prince-of-bel-air-belair-5NlH8UPQC5DAQ"></a>
+            </p>
+          </>
+        )}
       </>
     );
 }
