@@ -101,7 +101,7 @@ export default function Notifications(){
                             <div className="flex flex-col justify-between py-1 columns-1" >
                                 <div className="flex justify-start">
                                     <div className="py-1 flex items-center mr-2 justify-start" >
-                                    <div className="absolute left-2 self-center">
+                                    <div className="absolute left-2 start-1 top-1">
                                         {not.is_read === false && <FontAwesomeIcon icon={faCircleExclamation} style={{color: "blue",}}  className=" justify-start"/>}
                                     </div>
                                         <Typography variant='h5' >{not.header}</Typography>
