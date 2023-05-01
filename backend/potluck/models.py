@@ -1,8 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.db.models.constraints import UniqueConstraint
-from phonenumber_field.modelfields import PhoneNumberField
+# python imports
 import uuid
+
+# django imports
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.db.models.constraints import UniqueConstraint
+
+# third-party imports
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
