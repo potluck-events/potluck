@@ -328,13 +328,19 @@ class UserNotifications(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
-        # queryset.update(is_read=True)
         return queryset
 
-    def finalize_response(self, request, response, *args, **kwargs):
-        queryset = self.get_queryset()
+
+class ReadUserNotifications(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    pagination_class = NotificationPagination
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.filter(recipient=user)
         queryset.update(is_read=True)
-        return super().finalize_response(request, response, *args, **kwargs)
+        return queryset
 
 
 class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
