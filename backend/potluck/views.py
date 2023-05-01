@@ -498,7 +498,6 @@ def delete_invitation_notification_for_guest(sender, instance, **kwargs):
 @receiver(pre_delete, sender=Event)
 def delete_event_notification_for_guest(sender, instance, **kwargs):
     event = instance
-    # for invitation in instance.invitations.exclude(response=False):
     for invitation in event.invitations.all():
         guest = invitation.guest
         if guest:
