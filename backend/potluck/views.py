@@ -12,10 +12,11 @@ from django.utils import timezone
 
 # third-party imports
 import requests
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
@@ -333,6 +334,12 @@ class UserNotifications(generics.ListAPIView):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
         return queryset
+
+    def delete(self, request):
+        user = request.user
+        notifications = Notification.objects.filter(recipient=user)
+        notifications.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ReadUserNotifications(generics.ListAPIView):
