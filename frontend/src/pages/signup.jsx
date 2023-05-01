@@ -54,7 +54,6 @@ export default function SignUp({ setToken }) {
         email: email,
         first_name: firstName,
         last_name: lastName,
-        thumbnail: pfp,
       }
     };
     
