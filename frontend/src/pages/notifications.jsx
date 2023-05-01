@@ -43,27 +43,15 @@ export default function Notifications({ notifications, setNotifications }) {
       });
   }, []);
 
-  function handleNotifcationClick(not) {
-    const options = {
-      method: "PATCH",
-      url: `https://potluck.herokuapp.com/notifications/${not.pk}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      data: { is_read: true },
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data);
-        navigate(0);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-    console.log(not);
-    navigate(`/events/${not.event}`);
+  function handleNotifcationClick(n) {
+    let newNotifications = notifications.map((oldN) => {
+      n.is_read = true;
+      if (oldN.pk !== n.pk) {
+        return oldN;
+      } else return n;
+    });
+    setNotifications(newNotifications);
+    navigate(`/events/${n.event}`);
   }
 
   function handleDelete(pk) {
@@ -75,7 +63,7 @@ export default function Notifications({ notifications, setNotifications }) {
       },
     };
     axios.request(options).then(function (response) {
-      location.reload();
+      setNotifications(notifications.filter((n) => n.pk != pk));
     });
   }
 
@@ -106,7 +94,7 @@ export default function Notifications({ notifications, setNotifications }) {
             Notifications
           </Typography>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mr-4">
           <Button
             onClick={() => handleClearAll()}
             size="sm"
