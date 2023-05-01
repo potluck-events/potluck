@@ -34,7 +34,6 @@ from django.db.models import Q
 
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-from rest_framework.pagination import PageNumberPagination
 
 
 class CustomRegisterView(RegisterView):
@@ -314,15 +313,8 @@ class ListDietaryRestrictions(generics.ListAPIView):
     queryset = DietaryRestriction.objects.all()
 
 
-class NotificationPagination(PageNumberPagination):
-    page_size = 10
-    # page_size_query_param = 'page_size'
-    max_page_size = 100
-
-
 class UserNotifications(generics.ListAPIView):
     serializer_class = NotificationSerializer
-    pagination_class = NotificationPagination
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -333,7 +325,6 @@ class UserNotifications(generics.ListAPIView):
 
 class ReadUserNotifications(generics.ListAPIView):
     serializer_class = NotificationSerializer
-    pagination_class = NotificationPagination
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
