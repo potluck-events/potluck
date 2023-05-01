@@ -224,3 +224,4 @@ REST_AUTH = {
 }
 
 DJ_REST_AUTH_TEMPLATE_JWT_PASSWORD_RESET_EMAIL = 'registration/custom_reset_confirm.html'
+ACCOUNT_EMAIL_PASSWORD_RESET_HTML = 'registration/custom_reset_confirm.html'

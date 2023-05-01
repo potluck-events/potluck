@@ -1,4 +1,15 @@
-<html>
+{% extends "account/email/base_message.txt" %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}{% blocktrans %}HEY YOUYou're receiving this e-mail because you or someone else has requested a password for your user account.
+It can be safely ignored if you did not request a password reset. Click the link below to reset your password.{% endblocktrans %}
+
+{{ password_reset_url }}{% if username %}
+
+{% blocktrans %}In case you forgot, your username is {{ username }}.{% endblocktrans %}{% endif %}{% endautoescape %}{% endblock %}
+
+
+{% comment %} <html>
   <head>
     <meta name="viewport" content"width-device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset-UTF-8" />
@@ -25,4 +36,4 @@
     <p><i> Thanks for using our site! The {{ site_name }} team. </i></p>
     <p></p>
   </body>
-</html>
+</html> {% endcomment %}

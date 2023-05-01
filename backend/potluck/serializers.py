@@ -8,6 +8,7 @@ from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Not
 from itertools import chain
 from allauth.account.utils import send_email_confirmation
 from allauth.account.adapter import get_adapter
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -23,46 +24,56 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CustomPasswordResetSerializer(PasswordResetSerializer):
-    email_template_name = 'registration/custom_reset_confirm.html'
-
-    def get_email_options(self):
-        # add your custom template ID here
-        email = self.user.email
-        context = super().get_email_options()['context']
-        # add your custom template ID here
-        context['template_id'] = 'your-template-id'
-
+    def save(self):
         request = self.context.get('request')
-        if request:
-            current_site = get_current_site(request)
-            context['current_site'] = current_site
-            context['request'] = request
-
-        adapter = get_adapter()
-        emailconfirmation = adapter\
-            .new_user_email_confirmation(self.user)
-        emailconfirmation.sent = timezone.now()
-        emailconfirmation.save()
-
         opts = {
-            'email': email,
-            'subject': 'PasswordTEST reset',
-            'template': 'ycustom_reset_confirm.txt',  # your email template name
-            'context': context,
-            'confirmation': emailconfirmation,
-            'signup': False,
-            'action': 'reset',
+
+            ###### USE YOUR TEXT FILE ######
+            'html_template_name': 'registration/custom_reset_confirm.html',
+            'email_template_name': 'registration/custom_reset_confirm.txt',
+
+            'request': request,
         }
-        return opts
-        # opts = {
-        #     'subject': 'CUSTOM Password reset',
-        #     'html_template_name': 'custom_reset_confirm.html',  # your HTML template name
-        #     'email_template_name': 'custom_reset_confirm.txt',  # your email template name
-        # }
-        # return opts
-        # return {
-        #     'html_email_template_name': 'registration/custom_reset_confirm.html',
-        # }
+        self.reset_form.save(**opts)
+# class CustomPasswordResetSerializer(PasswordResetSerializer):
+
+#     def get_email_options(self):
+#         # add your custom template ID here
+#         email = self.user.email
+#         context = super().get_email_options()['context']
+#         # add your custom template ID here
+
+#         request = self.context.get('request')
+#         if request:
+#             current_site = get_current_site(request)
+#             context['current_site'] = current_site
+#             context['request'] = request
+
+#         adapter = get_adapter()
+#         emailconfirmation = adapter\
+#             .new_user_email_confirmation(self.user)
+#         emailconfirmation.sent = timezone.now()
+#         emailconfirmation.save()
+
+#         opts = {
+#             'email': email,
+#             'subject': 'PasswordTEST reset',
+#             'template': 'registration/custom_reset_confirm.txt',  # your email template name
+#             'context': context,
+#             'confirmation': emailconfirmation,
+#             'signup': False,
+#             'action': 'reset',
+#         }
+#         return opts
+#         # opts = {
+#         #     'subject': 'CUSTOM Password reset',
+#         #     'html_template_name': 'custom_reset_confirm.html',  # your HTML template name
+#         #     'email_template_name': 'custom_reset_confirm.txt',  # your email template name
+#         # }
+#         # return opts
+#         # return {
+#         #     'html_email_template_name': 'registration/custom_reset_confirm.html',
+#         # }
 
 
 class DietaryRestrictionSerializer(serializers.ModelSerializer):
