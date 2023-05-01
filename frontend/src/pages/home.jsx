@@ -108,7 +108,7 @@ export default function Home({setItemsTabOpen}) {
             </Tab>
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-            <TabPanel value='events' className='py-0'>
+            <TabPanel value='events' className='py-0 px-0'>
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
