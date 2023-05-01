@@ -1,21 +1,31 @@
+# python imports
 from collections import Counter
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from dj_rest_auth.registration.serializers import RegisterSerializer
-from rest_framework import serializers
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 from itertools import chain
+
+# django imports
+from django.utils import timezone
+
+# third-party imports
+from rest_framework import serializers
+from dj_rest_auth.registration.serializers import RegisterSerializer
+
+# local app imports
+from .models import (User,
+                     DietaryRestriction,
+                     Event,
+                     Invitation,
+                     Item,
+                     Post,
+                     Notification)
 
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
-    thumbnail = serializers.ImageField(required=False)
 
     def custom_signup(self, request, user):
         user.first_name = self.validated_data['first_name']
         user.last_name = self.validated_data['last_name']
-        user.thumbnail = self.validated_data['thumbnail']
         user.save(update_fields=['first_name', 'last_name'])
 
 

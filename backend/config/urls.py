@@ -14,15 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+# django imports
 from django.contrib import admin
 from django.urls import path, include
+
+# third-party imports
+from dj_rest_auth.registration.views import VerifyEmailView
+from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
+
+# local app imports
 from potluck import views
-from dj_rest_auth.views import (
-    PasswordResetConfirmView, PasswordResetView
-)
-from dj_rest_auth.registration.views import (
-    RegisterView, VerifyEmailView
-)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -63,6 +66,7 @@ urlpatterns = [
     path('invitations/<int:pk>', views.InvitationDetails.as_view()),
 
     path('notifications', views.UserNotifications.as_view()),
+    path('notifications/read', views.ReadUserNotifications.as_view()),
     path('notifications/<int:pk>', views.NotificationDetails.as_view()),
 
     path('invite-code/<str:code>',

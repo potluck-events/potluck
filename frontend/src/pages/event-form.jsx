@@ -106,7 +106,7 @@ export default function EventForm({setSpotifyEventPk}) {
         date_scheduled: dateTime.format("YYYY-MM-DD"),
         time_scheduled: dateTime.format("HH:MM"),
         tip_jar: isTipOn? venmoHandle : "",
-        playlist_link: isPlaylistOn ? playlistLink : "",
+        playlist_link: (isPlaylistOn && playlistLink) ? playlistLink : "",
       }
     };
     if(endTime) options.data.end_time = endTime.format("HH:MM")

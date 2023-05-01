@@ -1,40 +1,51 @@
-from rest_framework.parsers import MultiPartParser
+# python imports
+import json
+import urllib.parse
 
-# AUTHENTICATION IMPORTS
+# django imports
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q
+from django.db.models.signals import post_save, pre_delete
+from django.dispatch import receiver
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
+# third-party imports
+import requests
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
 
-# PERMISSIONS IMPORTS
-from rest_framework.permissions import IsAuthenticated
-from django.core.exceptions import PermissionDenied
-from .permissions import IsHost, ItemDetailPermission, IsPostAuthorOrHost, IsGuest, ItemPostInvitationHost, ItemPostInvitationGuest, InvitationDetailPermission, IsRecipient
-
-# MODELS IMPORTS
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
-
-# SERIALIZERS IMPORTS
-from .serializers import (UserSerializer, UserSerializerShort, EventSerializer,
-                          EventItemSerializer, UserItemSerializer,
-                          UserInvitationSerializer,
-                          PostSerializer, InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer)
-from .serializers import CustomRegisterSerializer
-
-# MISC IMPORTS
-from rest_framework import generics
-from rest_framework.decorators import api_view
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-import urllib.parse
-import requests
+# local app imports
 from .email import send
-import json
-from django.db.models import Q
-
-from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
-from rest_framework.pagination import PageNumberPagination
+from .models import (User,
+                     DietaryRestriction,
+                     Event, Invitation,
+                     Item,
+                     Post,
+                     Notification)
+from .permissions import (IsHost,
+                          ItemDetailPermission,
+                          IsPostAuthorOrHost,
+                          IsGuest,
+                          ItemPostInvitationHost,
+                          ItemPostInvitationGuest,
+                          InvitationDetailPermission,
+                          IsRecipient)
+from .serializers import (UserSerializer,
+                          UserSerializerShort,
+                          EventSerializer,
+                          EventItemSerializer,
+                          UserItemSerializer,
+                          UserInvitationSerializer,
+                          PostSerializer,
+                          InvitationSerializer, DietaryRestrictionSerializer, NotificationSerializer,
+                          CustomRegisterSerializer)
 
 
 class CustomRegisterView(RegisterView):
@@ -314,20 +325,24 @@ class ListDietaryRestrictions(generics.ListAPIView):
     queryset = DietaryRestriction.objects.all()
 
 
-class NotificationPagination(PageNumberPagination):
-    page_size = 10
-    # page_size_query_param = 'page_size'
-    max_page_size = 100
-
-
 class UserNotifications(generics.ListAPIView):
     serializer_class = NotificationSerializer
-    pagination_class = NotificationPagination
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         queryset = Notification.objects.filter(recipient=user)
+        return queryset
+
+
+class ReadUserNotifications(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.filter(recipient=user)
+        queryset.update(is_read=True)
         return queryset
 
 
@@ -483,7 +498,6 @@ def delete_invitation_notification_for_guest(sender, instance, **kwargs):
 @receiver(pre_delete, sender=Event)
 def delete_event_notification_for_guest(sender, instance, **kwargs):
     event = instance
-    # for invitation in instance.invitations.exclude(response=False):
     for invitation in event.invitations.all():
         guest = invitation.guest
         if guest:
