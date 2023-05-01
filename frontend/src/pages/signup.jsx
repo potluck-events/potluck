@@ -7,8 +7,9 @@ import { AuthContext } from "../context/authcontext";
 
 
 export default function SignUp({ setToken }) {
-    const token = useContext(AuthContext)
+  const token = useContext(AuthContext)
   
+  const [tokenHolder, setTokenHolder] = useState('')
   const [email, setEmail] = useState('')
   const [password1, setPassword1] = useState('')
   const [password2, setPassword2] = useState('')
@@ -24,7 +25,9 @@ export default function SignUp({ setToken }) {
   const navigate = useNavigate()
   const location = useLocation()
 
-
+  window.onbeforeunload = () => {
+    if (tokenHolder) setToken(tokenHolder)
+  }
   
   useEffect(() => {
     axios.get(`https://potluck.herokuapp.com/dietary-restrictions`, {
@@ -54,7 +57,6 @@ export default function SignUp({ setToken }) {
         email: email,
         first_name: firstName,
         last_name: lastName,
-        thumbnail: pfp,
       }
     };
     
@@ -84,7 +86,8 @@ export default function SignUp({ setToken }) {
     };
     
     axios.request(options).then((response) => {
-      setToken('Token ' + response.data.key);
+      setTokenHolder('Token ' + response.data.key);
+      console.log(response);
       setSignUpPage(2)
     }).catch((error) => {
       console.error(error);
@@ -103,31 +106,33 @@ export default function SignUp({ setToken }) {
   }}
 
   function handleSetDetails(e) {
-        e.preventDefault()
 
-        const form = new FormData();
+    e.preventDefault()
 
-        if (pfp) form.append("thumbnail", pfp);
-        form.append("city", city);
-        form.append("dietary_restrictions_names", JSON.stringify(allergies))
+    const form = new FormData();
 
-        const options = {
-          method: 'PATCH',
-          url: 'https://potluck.herokuapp.com/users/me',
-          headers: {
-              'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-              Authorization: token
-          },
-          data: form
-        };
-    
-        axios.request(options).then(function (response) {
-          const origin = location.state?.from?.pathname || '/'
-          navigate(origin)
-        }).catch(function (error) {
-            console.error(error);
-        });
-    }
+    if (pfp) form.append("thumbnail", pfp);
+    form.append("city", city);
+    form.append("dietary_restrictions_names", JSON.stringify(allergies))
+
+    const options = {
+      method: 'PATCH',
+      url: 'https://potluck.herokuapp.com/users/me',
+      headers: {
+          'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+          Authorization: tokenHolder
+      },
+      data: form
+    };
+
+    axios.request(options).then(function (response) {
+      setToken(tokenHolder)
+      const origin = location.state?.from?.pathname || '/'
+      navigate(origin)
+    }).catch(function (error) {
+        console.error(error);
+    });
+  }
   
   if(signUpPage === 1) return (<>
       <div className="mt-8 flex flex-col items-center justify-center">
@@ -165,7 +170,7 @@ export default function SignUp({ setToken }) {
   if (signUpPage === 2 && allergyList) return (<>
     <div className="mt-8 flex flex-col items-center justify-center">
       <Typography variant='h4' color="blue-gray">Sign-up Details</Typography>
-      <form onSubmit={(e) => handleSetDetails(e)}>
+      <form >
         <div className="mt-8 mb-4 w-80">
           <div className="flex flex-col gap-6 items-center justify-center">
             <div>
@@ -189,7 +194,7 @@ export default function SignUp({ setToken }) {
               <AllergyList allergyList={allergyList} allergies={allergies} handleCheckboxChange={handleCheckboxChange} />
             </div>
             <div>
-              <Button type="submit" className="" fullWidth>{(city || allergies.length > 0 || pfp) ?"Save" : "Skip"}</Button>
+              <Button onClick={(e) => handleSetDetails(e)} type="submit" className="" fullWidth>{(city || allergies.length > 0 || pfp) ?"Save" : "Skip"}</Button>
             </div>
           </div>
         </div>

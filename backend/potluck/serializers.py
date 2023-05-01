@@ -10,7 +10,6 @@ from itertools import chain
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
-    thumbnail = serializers.ImageField(required=False)
 
     def custom_signup(self, request, user):
         user.first_name = self.validated_data['first_name']
