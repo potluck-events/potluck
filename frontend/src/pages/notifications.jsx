@@ -30,7 +30,7 @@ export default function Notifications(){
             }
         }).then((response) => {
             console.log(response.data)
-            setNotifications(response.data.results)
+            setNotifications(response.data)
         })
     }, [])
         
