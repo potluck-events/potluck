@@ -29,8 +29,8 @@ export default function Notifications(){
                 'Authorization': token
             }
         }).then((response) => {
-            console.log(response.data)
-            setNotifications(response.data)
+            console.log(response.data.results)
+            setNotifications(response.data.results)
         })
     }, [])
         
