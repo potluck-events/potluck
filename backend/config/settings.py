@@ -124,7 +124,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['potluck/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -220,5 +220,5 @@ if env('USE_S3'):
 
 
 REST_AUTH_SERIALIZERS = {
-    'PASSWORD_RESET_SERIALIZER': 'potluck.serializers.PasswordResetSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'potluck.serializers.CustomPasswordResetSerializer',
 }
