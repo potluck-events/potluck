@@ -9,10 +9,15 @@ import { AuthContext } from "../../context/authcontext";
 
 
 
-export function NewItemButton({setItemModalOpen}) {
+export function NewItemButton({ setItemModalOpen, setItemData }) {
+  
+  function handleNewItem() {
+    setItemModalOpen(true)
+    setItemData(null)
+  }
     return (
         <div className="fixed right-5 bottom-5 z-30">
-            <Button onClick={() => setItemModalOpen(true)} className="rounded-full  shadow-lg shadow-gray-600/50">
+            <Button onClick={handleNewItem} className="rounded-full  shadow-lg shadow-gray-600/50">
               <div className="flex justify-center items-center">
                 <FontAwesomeIcon icon={faPlus} className="w-5 h-5 mr-2" /> New Item            
               </div>
