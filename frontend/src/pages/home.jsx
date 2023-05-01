@@ -82,7 +82,6 @@ export default function Home({setItemsTabOpen}) {
         });
 
     }, [isFilterFuture])
-    setItemsTabOpen(true)
     
     function handleRadio (state) {
         setIsFilterFuture(state);
@@ -108,7 +107,7 @@ export default function Home({setItemsTabOpen}) {
             </Tab>
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-            <TabPanel value='events' className='py-0'>
+            <TabPanel value='events' className='py-0 px-0'>
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
@@ -131,7 +130,7 @@ export default function Home({setItemsTabOpen}) {
         </TabsBody>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
             <TabPanel value='items'>
-            <Typography variant="h2" className='py-2'>Shopping List</Typography>
+            <Typography variant="h2" className='py-2 text-center'>Shopping List</Typography>
                 {itemsEvents &&  <Items events={itemsEvents}/>}
             </TabPanel>
         </TabsBody>
@@ -180,7 +179,7 @@ function Events({ events }) {
             </>)
     else
         return (
-            <Typography variant='small' className='font-semibold'>No Events</Typography>
+    <div className="flex h-20 items-center justify-center"><p className=" text-gray-500 text-lg font-bold">No Events</p></div>
         )
 }
 
@@ -224,7 +223,7 @@ function Items({ events }) {
 )))
 
     return (
-    <div className="flex h-20 items-center justify-center"><p className=" text-gray-500">No invitations</p></div>
+    <div className="flex h-20 items-center justify-center  text-lg font-bold"><p className=" text-gray-500">No Events</p></div>
     )
 }
 

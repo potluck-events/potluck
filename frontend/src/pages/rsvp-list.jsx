@@ -131,11 +131,11 @@ function LinkModal({ event, linkModalOpen, setLinkModalOpen }) {
   function handleShare() {
     if (navigator.share) {
       navigator.share({
-        title: 'Bash Event Invitatin',
+        title: 'Bash Event Invitation',
         url: `https://bash-events.netlify.app/invite-code/${event.invite_code}`
       })
     } else {
-      console.log("nope");
+      console.log("No navigator.share available");
     }
   }
 

@@ -78,7 +78,7 @@ export default function Header({setToken}) {
       }).then((response) => {
         console.log(response.data)
         setNotifications(response.data.results)
-        setUnreadNotifcations(response.data.results.filter((n) => n.is_read === false).length)
+        if (response.data.results) setUnreadNotifcations(response.data.results.filter((n) => n.is_read === false).length)
       })
     }
 
