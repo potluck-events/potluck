@@ -9,7 +9,7 @@ import { AuthContext } from "../context/authcontext";
 export default function SignUp({ setToken }) {
   const token = useContext(AuthContext)
   
-  const [tokenHolder, setTokenHolder] = useState('')
+  const [tokenHolder, setTokenHolder] = useState()
   const [email, setEmail] = useState('')
   const [password1, setPassword1] = useState('')
   const [password2, setPassword2] = useState('')
