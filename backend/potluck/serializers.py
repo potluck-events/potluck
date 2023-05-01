@@ -1,10 +1,22 @@
+# python imports
 from collections import Counter
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from dj_rest_auth.registration.serializers import RegisterSerializer
-from rest_framework import serializers
-from .models import User, DietaryRestriction, Event, Invitation, Item, Post, Notification
 from itertools import chain
+
+# django imports
+from django.utils import timezone
+
+# third-party imports
+from rest_framework import serializers
+from dj_rest_auth.registration.serializers import RegisterSerializer
+
+# local app imports
+from .models import (User,
+                     DietaryRestriction,
+                     Event,
+                     Invitation,
+                     Item,
+                     Post,
+                     Notification)
 
 
 class CustomRegisterSerializer(RegisterSerializer):
