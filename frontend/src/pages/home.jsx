@@ -158,7 +158,7 @@ function Events({ events }) {
                 {events.map((event, index) => {
                     return (
                     <Card className="my-3 " key={index}>
-                        <CardBody className="p-4">
+                        <CardBody className="">
                             <div className="" >
                                 <div onClick={() => onClickViewEvent(event.pk)} className="flex flex-col justify-between py-1 cursor-pointer">
                                     <div className="py-1 justify-between flex items-center" >
