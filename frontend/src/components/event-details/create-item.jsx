@@ -27,11 +27,11 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemDa
             console.log(response.data)
         })
 
-    if (itemData) {
-      setTitle(itemData.title)
-      setDescription(itemData.description)
-      setItemAllergies(itemData.dietary_restrictions_names)
-    }
+    //if (itemData) {
+      setTitle(itemData?.title)
+      setDescription(itemData?.description)
+      setItemAllergies(itemData?.dietary_restrictions_names ?? [])
+    //}
   }, [itemData]) 
 
 
@@ -95,9 +95,9 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemDa
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-gray-900 text-center"
                   >
-                    Add Item
+                    {itemData ? "Edit" : "Add"} Item
                   </Dialog.Title>
                   <form onSubmit={(i) => handleCreateItem(i)}>
                     <div className="mt-3">
@@ -129,7 +129,7 @@ export default function CreateItemModal({itemModalOpen, setItemModalOpen, itemDa
                     </div>
 
                     <div className="flex justify-center">
-                      <Button type="submit" onClick={() => setItemModalOpen(false)} className="w-32" >Add</Button>
+                      <Button type="submit" onClick={() => setItemModalOpen(false)} className="w-32" >{itemData ? "Edit" : "Add"} Item</Button>
                     </div>
                   </form>
                 </Dialog.Panel>

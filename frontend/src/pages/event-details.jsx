@@ -80,7 +80,7 @@ export default function EventDetails({itemsTabOpen, setItemsTabOpen}) {
       
       <CreateItemModal setItemModalOpen={setItemModalOpen} itemModalOpen={itemModalOpen} setItemData={setItemData} itemData={itemData}/>
       
-      {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} />)}
+      {itemsTabOpen && (hasSelected() ? <ReserveItemsButton items={event.items.filter((item) => item.selected)} /> : <NewItemButton setItemModalOpen={setItemModalOpen} setItemData={setItemData} />)}
       
     </div>  
   </>)
