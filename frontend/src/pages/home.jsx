@@ -108,7 +108,7 @@ export default function Home({setItemsTabOpen}) {
             </Tab>
         </TabsHeader>
         <TabsBody animate={{initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 },}}>
-            <TabPanel value='events' className='py-0'>
+            <TabPanel value='events' className='py-0 px-0'>
                 <div className="relative flex items-center justify-center">
                     <InvitationsButton pending={ pending} />
                     <div className="absolute right-1 h-full flex items-center">
@@ -158,7 +158,7 @@ function Events({ events }) {
                 {events.map((event, index) => {
                     return (
                     <Card className="my-3 " key={index}>
-                        <CardBody className="">
+                        <CardBody className="p-4">
                             <div className="" >
                                 <div onClick={() => onClickViewEvent(event.pk)} className="flex flex-col justify-between py-1 cursor-pointer">
                                     <div className="py-1 justify-between flex items-center" >
