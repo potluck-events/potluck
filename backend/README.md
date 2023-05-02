@@ -216,10 +216,10 @@ Some endpoints have additional custom permissions.
 
 #### Custom Permissions
 **/events/int:pk/posts/**
-`GET, POST:` user must be the host or guest of the related event
+* `GET, POST:` user must be the host or guest of the related event
 
 **/posts/int:pk/**
-`DELETE:` user must be the host of the related event or the author of the post
+* `DELETE:` user must be the host of the related event or the author of the post
 
 <br>
 
