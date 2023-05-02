@@ -163,8 +163,8 @@ Some endpoints have additional custom permissions.
 #### Custom Permissions
 **/events/int:pk/**
 
-* `GET:` user must be a host or guest of event with given pk
-* `PUT, PATCH, DELETE:` user must be a host of event with given pk
+* `GET:` user must be the host or a guest of event
+* `PUT, PATCH, DELETE:` user must be the host of event
 
 <br>
 
@@ -174,6 +174,15 @@ Some endpoints have additional custom permissions.
 | /invitations/ | GET | view invitiations for upcoming events received by the user |
 | /events/int:pk/invitations/ | GET, POST | view/create invitations for event with given pk |
 | /invitations/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete invitation with given pk |
+
+#### Custom Permissions
+**/events/int:pk/invitations/**
+* `POST:` user must be the host of event
+
+**/invitations/int:pk/**
+* `GET:` user must be the host of the related event or the recipient of the invitation
+* `DELETE:` user must be the host of the related event
+* `PUT, PATCH:` user must be the recipient of the invitation
 
 <br>
 
