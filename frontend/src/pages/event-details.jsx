@@ -162,6 +162,7 @@ function EventBody({
           setItemModalOpen={setItemModalOpen}
           userIsHost={userIsHost}
           setRefresh={setRefresh}
+          event={event}
         >
           {itemsTabOpen &&
             (hasSelected() ? (
