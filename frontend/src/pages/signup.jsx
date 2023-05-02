@@ -214,7 +214,7 @@ export default function SignUp({ setToken }) {
                     type="text"
                   />
                 </div>
-                <Button type="submit" className="" fullWidth>
+                <Button type="submit" className="bg-blue-900" fullWidth>
                   Sign-up
                 </Button>
               </div>
@@ -259,7 +259,7 @@ export default function SignUp({ setToken }) {
                       variant="contained"
                       component="span"
                       sx={{
-                        backgroundColor: "#2196f3",
+                        backgroundColor: "#1E3A8A",
                         fontWeight: 700,
                         fontSize: ".75rem",
                         paddingY: ".75rem",
@@ -290,7 +290,7 @@ export default function SignUp({ setToken }) {
                   <Button
                     onClick={(e) => handleSetDetails(e)}
                     type="submit"
-                    className=""
+                    className=" bg-blue-900"
                     fullWidth
                   >
                     {city || allergies.length > 0 || pfp ? "Save" : "Skip"}
@@ -320,6 +320,11 @@ function AllergyList({ allergyList, allergies, handleCheckboxChange }) {
                 onChange={handleCheckboxChange}
                 value={a.name}
                 id="ripple-on"
+                sx={{
+                  "&.Mui-checked": {
+                    color: "#1E3A8A",
+                  },
+                }}
               />
               {a.name}
             </Typography>

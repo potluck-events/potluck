@@ -100,7 +100,7 @@ function CreatePostForm({ handleUserPost }) {
       <Button
         disabled={!userPost}
         type="submit"
-        className="w-full mb-3 self-end"
+        className="w-full mb-3 self-end bg-blue-900"
       >
         Post!
       </Button>

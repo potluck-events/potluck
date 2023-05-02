@@ -58,6 +58,7 @@ export default function EventDetails({}) {
       .then(function (response) {
         console.log(response.data);
         setEvent(response.data);
+
         createICS(response.data, setCalFile);
         if (response.data.street_address) {
           let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`;
@@ -118,6 +119,8 @@ export default function EventDetails({}) {
           {itemsTabOpen &&
             (hasSelected() ? (
               <ReserveItemsButton
+                setEvent={setEvent}
+                setRefresh={setRefresh}
                 items={event.items.filter((item) => item.selected)}
               />
             ) : (
@@ -150,7 +153,7 @@ function EventBody({
 }) {
   return (
     <>
-      <Tabs className="mt-3 mb-16" value={itemsTabOpen.toString()}>
+      <Tabs className="mt-3 mb-5" value={itemsTabOpen.toString()}>
         <TabsHeader>
           <Tab value="true" onClick={() => setItemsTabOpen(true)}>
             <div className="flex items-center gap-2">
