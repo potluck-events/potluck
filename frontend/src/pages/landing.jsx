@@ -62,7 +62,7 @@ export default function Landing() {
       <div className="flex justify-center">
         <img
           className="w-3/5 mb-2"
-          src="/temp-img/pexels-pavel-danilyuk-7180617.jpg"
+          src="../temp-img/pexels-pavel-danilyuk-7180617.jpg"
         ></img>
       </div>
     </>
