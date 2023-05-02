@@ -124,6 +124,7 @@ export default function CreateItemModal({
                           onChange={(e) => setTitle(e.target.value)}
                           label="Item"
                           size="lg"
+                          color="indigo"
                         />
                       </div>
                       <div className="mt-2">
@@ -133,6 +134,7 @@ export default function CreateItemModal({
                           onChange={(e) => setDescription(e.target.value)}
                           label="Description"
                           size="lg"
+                          color="indigo"
                         />
                       </div>
                       <div className=" mb-2">

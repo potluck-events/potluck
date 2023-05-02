@@ -108,6 +108,7 @@ export default function EditProfile() {
                     label="First Name"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <div>
@@ -117,6 +118,7 @@ export default function EditProfile() {
                     label="Last Name"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <div>
@@ -126,6 +128,7 @@ export default function EditProfile() {
                     label="City"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <div>
@@ -174,7 +177,7 @@ export default function EditProfile() {
 
 function AllergyList({ allergyList, allergies, handleCheckboxChange }) {
   return (
-    <div className=" border-light-blue-700 border-2 p-4 mb-6">
+    <div className=" border-light-blue-900 border-2 p-4 mb-6">
       <Fragment>
         <Typography variant="h5" className="text-center">
           Dietary Restrictions
