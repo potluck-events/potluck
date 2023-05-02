@@ -87,7 +87,8 @@ export default function EventDetails({}) {
 
           {event.user_is_guest && (
             <div className="flex justify-between items-center mt-1">
-              <p className="font-bold">RSVP:</p> <RSVP event={event} />
+              <p className="font-bold ml-1 mt-1">RSVP:</p>{" "}
+              <RSVP event={event} />
             </div>
           )}
 
