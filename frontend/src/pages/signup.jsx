@@ -157,6 +157,7 @@ export default function SignUp({ setToken }) {
                     onChange={(e) => setEmail(e.target.value)}
                     label="Email"
                     size="lg"
+                    color="indigo"
                   />
                   {error.email && (
                     <Typography variant="small" color="red">
@@ -172,6 +173,7 @@ export default function SignUp({ setToken }) {
                     label="Password"
                     size="lg"
                     type="password"
+                    color="indigo"
                   />
                   {error.non_field_errors && (
                     <Typography variant="small" color="red">
@@ -192,6 +194,7 @@ export default function SignUp({ setToken }) {
                     label="Retype Password"
                     size="lg"
                     type="password"
+                    color="indigo"
                   />
                 </div>
                 <div>
@@ -202,6 +205,7 @@ export default function SignUp({ setToken }) {
                     label="First Name"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <div>
@@ -212,6 +216,7 @@ export default function SignUp({ setToken }) {
                     label="Last Name"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <Button type="submit" className="bg-blue-900" fullWidth>
@@ -251,6 +256,7 @@ export default function SignUp({ setToken }) {
                     label="City"
                     size="lg"
                     type="text"
+                    color="indigo"
                   />
                 </div>
                 <div>

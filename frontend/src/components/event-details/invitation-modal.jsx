@@ -139,13 +139,14 @@ export default function InvitationModal({
                       {invites.map((invite, idx) => (
                         <div key={idx}>
                           <Chip
-                            className="w-fit mx-1 my-1"
+                            className="w-fit mx-1 my-1 "
                             variant="gradient"
                             show={show}
                             dismissible={{
                               onClose: () =>
                                 setInvites(invites.filter((m) => m !== invite)),
                             }}
+                            color="indigo"
                             value={
                               invite?.name
                                 ? `${invite.name} (${
@@ -169,12 +170,13 @@ export default function InvitationModal({
                         containerProps={{
                           className: "min-w-0",
                         }}
+                        color="indigo"
                       />
                       <Button
                         size="sm"
                         color={email ? "blue" : "blue-gray"}
                         disabled={!email}
-                        className="!absolute right-1 top-1 rounded"
+                        className="!absolute right-1 top-1 rounded bg-blue-900"
                         onClick={handleAddInvite}
                       >
                         Add
@@ -184,7 +186,7 @@ export default function InvitationModal({
                       <Button
                         type="submit"
                         onClick={(e) => handleSendClick(e)}
-                        className=" w-18"
+                        className=" w-18 bg-blue-900"
                       >
                         Invite
                       </Button>

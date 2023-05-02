@@ -143,12 +143,16 @@ function Invitations({ invitees }) {
 function InviteButton({ setInviteModalOpen, setLinkModalOpen }) {
   return (
     <div className="mx-4 my-4 flex gap-2">
-      <Button onClick={() => setInviteModalOpen(true)} fullWidth>
+      <Button
+        onClick={() => setInviteModalOpen(true)}
+        fullWidth
+        className="bg-blue-900"
+      >
         Invite Guests
       </Button>
       <Button
         onClick={() => setLinkModalOpen(true)}
-        className="basis-1/3 p-0"
+        className="basis-1/3 p-0 text-blue-900"
         variant="outlined"
       >
         <FontAwesomeIcon icon={faLink} /> Link

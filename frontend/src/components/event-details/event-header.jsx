@@ -105,7 +105,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             <a
               href={mapsURL}
               target="_blank"
-              className="font-bold text-blue-800 hover:text-blue-500"
+              className="font-bold text-blue-900 hover:text-blue-700"
             >
               {event.street_address} {event.city} {event.state}, {event.zipcode}{" "}
             </a>
