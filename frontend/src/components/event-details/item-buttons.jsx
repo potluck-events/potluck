@@ -13,7 +13,7 @@ export function NewItemButton({ setItemModalOpen, setItemData }) {
     setItemData(null);
   }
   return (
-    <div className="fixed right-5 bottom-5 z-30">
+    <div className="relative left-4 bottom-5 z-30">
       <Button
         onClick={handleNewItem}
         className="rounded-full  shadow-lg shadow-gray-600/50"
