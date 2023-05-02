@@ -142,6 +142,8 @@ export default function EventHeader({ event, mapsURL, calFile }) {
                   imageRendering="optimizeQuality"
                   fillRule="evenodd"
                   clipRule="evenodd"
+                  className=" w-fit h-6 -ml-.5 -mt-1"
+                  styl={{ marginTop: "-3px" }}
                 >
                   <g fillRule="nonzero">
                     <path

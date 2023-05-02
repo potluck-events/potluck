@@ -315,6 +315,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                       onChange={(e) => setVenmoHandle(e.target.value)}
                       label="Venmo Handle"
                       size="lg"
+                      color="indigo"
                     />
                   </div>
                 )}
@@ -356,6 +357,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                       onChange={(e) => setPlaylistLink(e.target.value)}
                       label="Playlist Link"
                       size="lg"
+                      color="indigo"
                     />
                   </div>
                 )}

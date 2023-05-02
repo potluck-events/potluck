@@ -162,16 +162,16 @@ export default function Notifications({ notifications, setNotifications }) {
             <div className="mt-2 text-center">
               <Typography variant="h3">Notifications</Typography>
             </div>
-            <div className=" text-center mt-5 text-blue-900">
-              <Typography variant="h4">No notifications</Typography>
-            </div>
-            <div>
+            <div className="mt-5">
               <iframe
                 src="https://giphy.com/embed/5NlH8UPQC5DAQ"
                 width="100%"
                 height="100%"
                 allowFullScreen
               ></iframe>
+              <div className=" text-center mt-5 text-blue-900">
+                <Typography variant="h4">No notifications</Typography>
+              </div>
             </div>
             <p>
               <a href="https://giphy.com/gifs/will-smith-fresh-prince-of-bel-air-belair-5NlH8UPQC5DAQ"></a>
