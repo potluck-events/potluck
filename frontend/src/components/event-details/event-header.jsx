@@ -13,6 +13,7 @@ import {
   faCommentsDollar,
   faEllipsis,
   faEllipsisVertical,
+  faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -183,7 +184,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       </div>
       <div
         onClick={handleClickAttendees}
-        className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2"
+        className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2 border-b-2 pb-3"
       >
         <div className="">
           <Typography variant="h6" className="text-left mt-1 font-bold">
@@ -195,7 +196,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             <Chip color="teal" value={`${event.rsvp_tbd} TBD`} />
           </div>
         </div>
-        <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight} />
+        <FontAwesomeIcon className="h-6 w-6 mt-1 mr-2" icon={faAnglesRight} />
       </div>
       <div className="">
         {event.dietary_restrictions_count && (
