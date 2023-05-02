@@ -93,19 +93,19 @@ The app should now be running at http://localhost:8000/
 | URL | Methods | Description |
 | :---: | :---: | :---: |
 | /users/me/ | GET, PUT, PATCH, DELETE | view/edit/delete user profile |
-| /users/info/str:email | GET | view profile of user with given email |  
+| /users/info/str:email | GET | view profile of user with given email |<br>
 
 ### Dietary Restriction Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
-| /dietary-restrictions/ | GET | view all DietaryRestriction objects |  
+| /dietary-restrictions/ | GET | view all DietaryRestriction objects |<br>
 
 ### Event Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
 | /events/ | GET, POST | view upcoming events the user is hosting or attending; create new event |
 | /events/history/ | GET | view past events the user has hosted or attended |
-| /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |  
+| /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
 
 ### Invitation Endpoints
 | URL | Methods | Description |
