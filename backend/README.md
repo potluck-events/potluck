@@ -21,27 +21,35 @@ https://potluck.herokuapp.com/
 ## Run Locally
 
 1. Clone the project:
+
     git clone https://github.com/potluck-events/potluck.git
 
 2. Navigate to the project directory:
+
     cd potluck
 
 3. Navigate to the backend folder:
+
     cd backend
 
 4. Set up a virtual environment for the project using pipenv. If you don't have pipenv installed, you can install it using pip:
+
     pip install pipenv
 
 5. Then, activate the virtual environment by running:
+
     pipenv shell
 
 6. Install the project dependencies:
+
     pipenv install
 
 7. Set up the database by running the migrations:
+
     python manage.py migrate
 
 8. Start the development server:
+
     python manage.py runserver
 
 The app should now be running at http://localhost:8000/
