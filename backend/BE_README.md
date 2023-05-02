@@ -1,4 +1,17 @@
 
+# Bash (_Potluck_)
+Bash is an app designed to make planning events simple and fun.
+
+## Features
+* Users can create an event, edit the details of an event, or cancel it altogether.
+* Hosts can invite guests and see RSVPs, as well as delete invitations.
+* Users can view upcoming or past events, and can duplicate an event they previously hosted, including the guest list.
+* Users can add a profile picture and list their dietary restrictions.
+* Hosts can request items or favors which a guest can then accept or unaccept.
+* Guests can show items they intend to bring to the event, whether the item was requested by the host or not.
+* Users can see a shopping list of items they have agreed to bring to an event, and can check them off as they acquire them.
+* Users can post and view comments on events they are attending.
+* Users recieve notifications.
 
 ## BASE URL
 https://potluck.herokuapp.com/
