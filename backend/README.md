@@ -233,8 +233,3 @@ Some endpoints have additional custom permissions.
 #### Custom Permissions
 **All Notification Endpoints**
 * `GET, DELETE:` user must be the recipient of the notification
-
-<br>
-
-https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
-https://django-allauth.readthedocs.io/en/latest/views.html
