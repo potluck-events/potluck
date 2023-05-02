@@ -135,7 +135,7 @@ export default function Home({ setItemsTabOpen }) {
                   <NewEventButton />
                 </div>
                 <InvitationsButton pending={pending} />
-                <div className="absolute right-1 h-full flex items-center">
+                <div className="absolute right-4 h-full flex items-center">
                   <Menu placement="bottom-end">
                     <MenuHandler>
                       <FontAwesomeIcon
@@ -151,6 +151,7 @@ export default function Home({ setItemsTabOpen }) {
                         value="1"
                         onChange={() => handleRadio(true)}
                         checked={isFilterFuture}
+                        color="indigo"
                       />
                       <Radio
                         id="Past Events"
@@ -159,6 +160,7 @@ export default function Home({ setItemsTabOpen }) {
                         value="0"
                         onChange={() => handleRadio(false)}
                         checked={!isFilterFuture}
+                        color="indigo"
                       />
                     </MenuList>
                   </Menu>
@@ -222,7 +224,7 @@ function Events({ events }) {
                         {event.user_is_host === true && (
                           <Chip
                             value="Hosting"
-                            className="mt-2 bg-blue-900"
+                            className=" bg-blue-900"
                             icon={
                               <FontAwesomeIcon
                                 icon={faHouseChimney}
@@ -389,7 +391,6 @@ function InvitationsButton({ pending }) {
         onClick={onClickHandleInvitations}
         variant="outlined"
         className="flex m-auto pb-7 h-2 mt-3 outline-blue-900 text-blue-900"
-        color="indigo"
       >
         Invitations ({pending} pending)
         <svg

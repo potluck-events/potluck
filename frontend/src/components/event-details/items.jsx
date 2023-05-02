@@ -210,6 +210,11 @@ function Item({
           checked={item?.selected === true}
           value={item.pk}
           onClick={handleSelect}
+          sx={{
+            "&.Mui-checked": {
+              color: "#1E3A8A",
+            },
+          }}
         />
       )}
       <div

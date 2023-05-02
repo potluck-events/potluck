@@ -53,20 +53,17 @@ export default function UserInvitations() {
       >
         <FontAwesomeIcon className="" icon={faArrowLeft} /> Home
       </div>
-      <div className="text-center mb-3">
-        <Typography variant="h2">Invitations</Typography>
-      </div>
       <div className="">
         {events.filter((e) => e.response === null).length !== 0 && (
           <div className="py-4 mx-6">
-            <Typography variant="h4" className="text-center mb-2 underline">
+            <Typography variant="h4" className="text-center mb-2">
               Pending Invitations
             </Typography>
             <Invitations events={events.filter((e) => e.response === null)} />
           </div>
         )}
         <div className="py-4 mx-6">
-          <Typography variant="h4" className="text-center mb-2 underline">
+          <Typography variant="h4" className="text-center mb-2">
             RSVP'd
           </Typography>
           <Invitations events={events.filter((e) => e.response !== null)} />
