@@ -102,7 +102,7 @@ export default function Notifications({ notifications, setNotifications }) {
               onClick={() => handleClearAll()}
               size="sm"
               variant="text"
-              className=""
+              className="text-blue-900"
             >
               Clear All
             </Button>

@@ -214,7 +214,7 @@ export default function SignUp({ setToken }) {
                     type="text"
                   />
                 </div>
-                <Button type="submit" className="" fullWidth>
+                <Button type="submit" className="bg-blue-900" fullWidth>
                   Sign-up
                 </Button>
               </div>

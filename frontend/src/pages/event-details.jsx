@@ -153,7 +153,7 @@ function EventBody({
 }) {
   return (
     <>
-      <Tabs className="mt-3 mb-16" value={itemsTabOpen.toString()}>
+      <Tabs className="mt-3 mb-5" value={itemsTabOpen.toString()}>
         <TabsHeader>
           <Tab value="true" onClick={() => setItemsTabOpen(true)}>
             <div className="flex items-center gap-2">
