@@ -33,8 +33,16 @@ export default function Notifications({ notifications, setNotifications }) {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        setNotifications(response.data);
+        // console.log(response.data);
+
+        //Clear the incoming notifications of their new status so that the icon goes blank, but retain a shallow copy of which are new so that you can see them in the list
+        const notifications = response.data.map((n) => {
+          n.new_is_read = n.is_read;
+          n.is_read = true;
+          return n;
+        });
+
+        setNotifications(notifications);
         axios.get(`https://potluck.herokuapp.com/notifications/read`, {
           headers: {
             "Content-Type": "application/json",
@@ -119,12 +127,12 @@ export default function Notifications({ notifications, setNotifications }) {
                 >
                   <div className="flex flex-row justify-start py-1">
                     <div className="my-1.5 mr-1">
-                      {not.is_read === true && (
-                        <FontAwesomeIcon
-                          icon={faCircleExclamation}
-                          className=" justify-start text-blue-900"
-                        />
-                      )}
+                      <FontAwesomeIcon
+                        icon={faCircleExclamation}
+                        className={`${
+                          not.new_is_read ? "invisible" : ""
+                        } justify-start text-blue-900`}
+                      />
                     </div>
                     <div>
                       <div className="flex justify-start">
@@ -155,7 +163,7 @@ export default function Notifications({ notifications, setNotifications }) {
               <Typography variant="h3">Notifications</Typography>
             </div>
             <div className=" text-center mt-5 text-blue-900">
-              <Typography variant="h4">No new notifications</Typography>
+              <Typography variant="h4">No notifications</Typography>
             </div>
             <div>
               <iframe

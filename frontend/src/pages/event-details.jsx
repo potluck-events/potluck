@@ -21,10 +21,7 @@ import { AuthContext } from "../context/authcontext";
 import EventHeader from "../components/event-details/event-header";
 import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
-import {
-  NewItemButton,
-  ReserveItemsButton,
-} from "../components/event-details/item-buttons";
+import { ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
 import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from "ics";
@@ -56,7 +53,7 @@ export default function EventDetails({}) {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        console.log("GET", response.data);
         setEvent(response.data);
 
         createICS(response.data, setCalFile);
@@ -104,6 +101,7 @@ export default function EventDetails({}) {
             setRefresh={setRefresh}
             itemsTabOpen={itemsTabOpen}
             setItemsTabOpen={setItemsTabOpen}
+            hasSelected={hasSelected}
           />
 
           <CreateItemModal
@@ -115,20 +113,6 @@ export default function EventDetails({}) {
             setEvent={setEvent}
             setRefresh={setRefresh}
           />
-
-          {itemsTabOpen &&
-            (hasSelected() ? (
-              <ReserveItemsButton
-                setEvent={setEvent}
-                setRefresh={setRefresh}
-                items={event.items.filter((item) => item.selected)}
-              />
-            ) : (
-              <NewItemButton
-                setItemModalOpen={setItemModalOpen}
-                setItemData={setItemData}
-              />
-            ))}
         </div>
       </>
     );
@@ -150,6 +134,7 @@ function EventBody({
   userIsHost,
   itemData,
   setRefresh,
+  hasSelected,
 }) {
   return (
     <>
@@ -174,7 +159,16 @@ function EventBody({
           setItemModalOpen={setItemModalOpen}
           userIsHost={userIsHost}
           setRefresh={setRefresh}
-        />
+          event={event}
+        >
+          {itemsTabOpen && hasSelected() && (
+            <ReserveItemsButton
+              setEvent={setEvent}
+              setRefresh={setRefresh}
+              items={event.items.filter((item) => item.selected)}
+            />
+          )}
+        </Items>
         <Posts
           posts={event.posts}
           userIsHost={event.user_is_host}
