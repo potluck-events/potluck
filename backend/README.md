@@ -12,13 +12,21 @@ https://potluck.herokuapp.com/
   * When creating an event, users can add a spotify playlist which guests can contribute to.
   * When creating an event, users can add a tip jar--a link to their Venmo account which guests can donate to.
 * Hosts can invite guests and see RSVPs, as well as delete invitations.
+  * Guests get notifications when they recieve an invitation, and Hosts get notifications when someone RSVPs to their event.
+  * Guests also get notifications if their invitation is deleted.
 * Users can view upcoming or past events, and can duplicate an event they previously hosted, including the guest list.
+  * Users have the option to edit the event after duplicating, and can modify their guest list before sending invitations.
 * Users can add a profile picture and list their dietary restrictions.
+  * Dietary restrictions are displayed on event details, but will not show exactly who it belongs to. For example, if one vegetarian is attending an event, "1 Vegetarian" will be displayed. This is meant to help plan around guests needs in an anonymous manner.
 * Hosts can request items or favors which a guest can then accept or unaccept.
+  * Guests get notifications when a host creates an item, encouraging them to help by bringing it to the event.
+  * Hosts get notifications when a guest agrees to bring an item, and gets notified if a guest changes their mind and can no longer bring an item. If this happens, guests are also re-notified that the host needs someone to bring the item.
 * Guests can show items they intend to bring to the event, whether the item was requested by the host or not.
 * Users can see a shopping list of items they have agreed to bring to an event, and can check them off as they acquire them.
-* Users can post and view comments on events they are attending.
-* Users recieve notifications regarding events, invitations, rsvps, items and posts.
+* Users can view and create posts, or comments, on events they are attending.
+  * Hosts can delete any or all posts.
+  * Guests can delete their own posts.
+  * Users get notifications when someone makes a post on an event they are hosting or attending.
 
 <br>
 
