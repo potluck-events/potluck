@@ -230,6 +230,10 @@ Some endpoints have additional custom permissions.
 | /notifications/read/ | GET | show all notifications received by the user and mark them as is_read=True |
 | /notifications/int:pk/ | DELETE | delete notification with given pk |
 
+#### Custom Permissions
+**All Notification Endpoints**
+* `GET, DELETE:` user must be the recipient of the notification
+
 <br>
 
 https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
