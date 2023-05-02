@@ -151,6 +151,7 @@ export default function Home({ setItemsTabOpen }) {
                         value="1"
                         onChange={() => handleRadio(true)}
                         checked={isFilterFuture}
+                        color="indigo"
                       />
                       <Radio
                         id="Past Events"
@@ -159,6 +160,7 @@ export default function Home({ setItemsTabOpen }) {
                         value="0"
                         onChange={() => handleRadio(false)}
                         checked={!isFilterFuture}
+                        color="indigo"
                       />
                     </MenuList>
                   </Menu>
