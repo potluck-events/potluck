@@ -336,7 +336,8 @@ class InvitationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Invitation
-        fields = ('guest',
+        fields = ('pk',
+                  'guest',
                   'email',
                   'response',
                   'event')
