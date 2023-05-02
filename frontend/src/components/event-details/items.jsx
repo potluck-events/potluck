@@ -36,6 +36,7 @@ export default function Items({
   setItemModalOpen,
   userIsHost,
   setRefresh,
+  children,
 }) {
   if (items.length)
     return (
@@ -43,6 +44,7 @@ export default function Items({
         animate={{ initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 } }}
       >
         <TabPanel value="true">
+          {children}
           {items.filter((i) => !i.owner).length !== 0 && (
             <>
               {" "}

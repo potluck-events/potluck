@@ -13,7 +13,7 @@ export function NewItemButton({ setItemModalOpen, setItemData }) {
     setItemData(null);
   }
   return (
-    <div className="relative right-2 flex justify-end bottom-5 z-30">
+    <div className="fixed right-5 bottom-5 flex justify-end z-30">
       <Button
         onClick={handleNewItem}
         className="rounded-full shadow-lg shadow-gray-600/50 bg-blue-900"
@@ -43,7 +43,7 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data);
+          console.log("PATCH", response.data);
         })
         .catch(function (error) {
           console.error(error);
@@ -54,11 +54,11 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
   }
 
   return (
-    <div className="fixed right-5 bottom-5 z-30">
+    <div className="fixed right-5 top-5 z-30">
       <form>
         <Button
           onClick={handleReserve}
-          className="rounded-full  shadow-lg shadow-gray-600/50"
+          className="rounded-full  shadow-lg shadow-gray-600/50 bg-blue-900"
         >
           <div className="flex justify-center items-center">
             <FontAwesomeIcon icon={faCheck} className="w-5 h-5 mr-2" /> Reserve
