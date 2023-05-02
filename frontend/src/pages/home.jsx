@@ -389,7 +389,6 @@ function InvitationsButton({ pending }) {
         onClick={onClickHandleInvitations}
         variant="outlined"
         className="flex m-auto pb-7 h-2 mt-3 outline-blue-900 text-blue-900"
-        color="indigo"
       >
         Invitations ({pending} pending)
         <svg
