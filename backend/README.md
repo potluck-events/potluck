@@ -163,8 +163,8 @@ Some endpoints have additional custom permissions.
 #### Custom Permissions
 **/events/int:pk/**
 
-* GET: user must be a host or guest of event with given pk
-* PUT, PATCH, DELETE: user must be a host of event with given pk
+* `GET:` user must be a host or guest of event with given pk
+* `PUT, PATCH, DELETE:` user must be a host of event with given pk
 
 <br>
 
