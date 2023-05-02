@@ -312,7 +312,7 @@ export default function SignUp({ setToken }) {
 
 function AllergyList({ allergyList, allergies, handleCheckboxChange }) {
   return (
-    <div className=" border-light-blue-900 border-2 p-4 mb-6">
+    <div className=" border-light-blue-900 border-2 p-2 mb-6">
       <>
         <Typography variant="h5" className="text-center">
           Dietary Restrictions
