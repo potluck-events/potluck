@@ -154,6 +154,7 @@ function InviteButton({ setInviteModalOpen, setLinkModalOpen }) {
         onClick={() => setLinkModalOpen(true)}
         className="basis-1/3 p-0 text-blue-900"
         variant="outlined"
+        color="indigo"
       >
         <FontAwesomeIcon icon={faLink} /> Link
       </Button>
