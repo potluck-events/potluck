@@ -139,7 +139,7 @@ export default function Home({ setItemsTabOpen }) {
                   <Menu placement="bottom-end">
                     <MenuHandler>
                       <FontAwesomeIcon
-                        className="mt-3 cursor-pointer bg-blue-900 text-white p-2.5 rounded-full shadow-gray-600/50 shadow-lg"
+                        className="mt-3 cursor-pointer bg-blue-900 text-white p-2.5 rounded-full shadow-gray-600/50 shadow-md"
                         icon={faFilter}
                       />
                     </MenuHandler>
@@ -368,7 +368,7 @@ function NewEventButton() {
     <div className=" relative ">
       <Button
         onClick={onClickNewEvent}
-        className="w-10 h-10 rounded-full p-0 shadow-lg shadow-gray-600/50 bg-blue-900"
+        className="w-10 h-10 rounded-full p-0 shadow-md shadow-gray-600/50 bg-blue-900"
       >
         <div className="flex justify-center">
           <FontAwesomeIcon icon={faCalendarPlus} className="w-5 h-10 -mt-0" />
