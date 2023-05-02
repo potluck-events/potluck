@@ -76,7 +76,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       </div>
       <Typography variant="h6">
         <FontAwesomeIcon icon={faCalendar} />{" "}
-        {moment(event.date_scheduled).format("MMMM Do, YYYY")}:{" "}
+        {moment(event.date_scheduled).format("MMMM Do, YYYY")} @{" "}
         {moment(event.time_scheduled, "HH:mm:ss").format("h:mm A")}
         {event.end_time && " -"}{" "}
         {event.end_time && moment(event.end_time, "HH:mm:ss").format("h:mm A")}
