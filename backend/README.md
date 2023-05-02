@@ -5,6 +5,7 @@ Bash is an app designed to make planning events simple and fun.
 ## BASE URL
 https://potluck.herokuapp.com/
 
+<br>
 
 ## Features
 * Users can create an event, edit the details of an event, or cancel it altogether.
@@ -19,6 +20,7 @@ https://potluck.herokuapp.com/
 * Users can post and view comments on events they are attending.
 * Users recieve notifications regarding events, invitations, rsvps, items and posts.
 
+<br>
 
 ## Run Locally
 
@@ -58,6 +60,8 @@ https://potluck.herokuapp.com/
 
 The app should now be running at http://localhost:8000/
 
+<br>
+
 ### Create Local PostgreSQL Database
 
 9. Install PostgreSQL:
@@ -80,12 +84,15 @@ The app should now be running at http://localhost:8000/
 
     `pipenv install psycopg2-binary`
 
+<br>
+
 ### Environment Variables
 
 14. Create a .env file in the backend folder:
 
     `touch ./potluck/backend/.env`
 
+<br>
 
 ## ENDPOINTS
 
@@ -111,12 +118,16 @@ The app should now be running at http://localhost:8000/
 | /events/history/ | GET | view past events the user has hosted or attended |
 | /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
 
+<br>
+
 ### Invitation Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
 | /invitations/ | GET | view invitiations for upcoming events received by the user |
 | /events/int:pk/invitations/ | GET, POST | view/create invitations for event with given pk |
 | /invitations/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete invitation with given pk |
+
+<br>
 
 ### Item Endpoints
 | URL | Methods | Description |
@@ -126,11 +137,15 @@ The app should now be running at http://localhost:8000/
 | /items/int:pk/reserved | PATCH | own/un-own item with given pk |
 | /events/int:pk/items | GET, POST | show/create items for event with given pk |
 
+<br>
+
 ### Post Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
 | /events/int:pk/posts/ | GET, POST | show/create posts for event with given pk |
 | /posts/int:pk/ | DELETE | delete post with given pk |
+
+<br>
 
 ### Notification Endpoints
 | URL | Methods | Description |
