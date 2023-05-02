@@ -13,6 +13,7 @@ import {
   faCircleExclamation,
   faX,
   faAnglesRight,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -116,29 +117,33 @@ export default function Notifications({ notifications, setNotifications }) {
                   className="p-2"
                   onClick={() => handleNotifcationClick(not)}
                 >
-                  <div className="flex flex-col justify-between py-1 columns-1">
-                    <div className="flex justify-start">
-                      <div className="py-1 flex items-center mr-2 justify-start">
-                        <div className="absolute left-2 start-1 top-1">
-                          {not.is_read === false && (
-                            <FontAwesomeIcon
-                              icon={faCircleExclamation}
-                              className=" justify-start text-blue-900"
-                            />
-                          )}
-                        </div>
-                        <Typography variant="h5">{not.header}</Typography>
-                      </div>
+                  <div className="flex flex-row justify-start py-1">
+                    <div className="my-1.5 mr-1">
+                      {not.is_read === true && (
+                        <FontAwesomeIcon
+                          icon={faCircleExclamation}
+                          className=" justify-start text-blue-900"
+                        />
+                      )}
                     </div>
                     <div>
-                      <Typography variant="paragraph">{not.message}</Typography>
+                      <div className="flex justify-start">
+                        <div className="py-1 flex items-center mr-2 justify-start">
+                          <Typography variant="h5">{not.header}</Typography>
+                        </div>
+                      </div>
+                      <div>
+                        <Typography variant="paragraph">
+                          {not.message}
+                        </Typography>
+                      </div>
                     </div>
                   </div>
                 </CardBody>
                 <FontAwesomeIcon
                   onClick={() => handleDelete(not.pk)}
-                  icon={faX}
-                  className="absolute right-2 top-2"
+                  icon={faXmark}
+                  className="absolute right-3 top-3"
                 />
               </Card>
             );
