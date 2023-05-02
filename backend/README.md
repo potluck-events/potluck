@@ -161,10 +161,10 @@ Some endpoints have additional custom permissions.
 | /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
 
 #### Custom Permissions
-* /events/int:pk/
+**/events/int:pk/**
 
-GET: user must be a host or guest of event with given pk
-PUT, PATCH, DELETE: user must be a host of event with given pk
+* GET: user must be a host or guest of event with given pk
+* PUT, PATCH, DELETE: user must be a host of event with given pk
 
 <br>
 
