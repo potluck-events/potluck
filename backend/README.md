@@ -91,13 +91,13 @@ The app should now be running at http://localhost:8000/
 
 ### User Profile Endpoints
 | URL | Methods | Description |
-| :---: | :---: | :--- |
+| :---: | :---: | :---: |
 | /users/me/ | GET, PUT, PATCH, DELETE | view/edit/delete user profile |
 | /users/info/str:email | GET | view profile of user with given email |
 
 ### Dietary Restriction Endpoints
 | URL | Methods | Description |
-| :---: | :---: | :--- |
+| :---: | :---: | :---: |
 | /dietary-restrictions/ | GET | view all DietaryRestriction objects |
 
 ### Event Endpoints
