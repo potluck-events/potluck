@@ -21,10 +21,7 @@ import { AuthContext } from "../context/authcontext";
 import EventHeader from "../components/event-details/event-header";
 import RSVP from "../components/event-details/rsvp";
 import Items from "../components/event-details/items";
-import {
-  NewItemButton,
-  ReserveItemsButton,
-} from "../components/event-details/item-buttons";
+import { ReserveItemsButton } from "../components/event-details/item-buttons";
 import Posts from "../components/event-details/posts";
 import useLocalStorageState from "use-local-storage-state";
 import { createEvent } from "ics";

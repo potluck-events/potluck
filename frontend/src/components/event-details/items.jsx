@@ -47,23 +47,22 @@ export default function Items({
       >
         <TabPanel value="true">
           {children}
-          {(event.user_is_host ||
-            items.filter((i) => !i.owner).length !== 0) && (
-            <>
-              <div className="flex flex-row items-center justify-between">
-                <Typography variant="h5" className="">
-                  Host needs
-                </Typography>
-                {event.user_is_host && (
-                  <div>
-                    <NewItemButtonRow
-                      setItemModalOpen={setItemModalOpen}
-                      setItemData={setItemData}
-                      isHost={event.user_is_host}
-                    />
-                  </div>
-                )}
+          <div className="flex flex-row items-center justify-between">
+            <Typography variant="h5" className="">
+              Host needs
+            </Typography>
+            {event.user_is_host && (
+              <div>
+                <NewItemButtonRow
+                  setItemModalOpen={setItemModalOpen}
+                  setItemData={setItemData}
+                  isHost={event.user_is_host}
+                />
               </div>
+            )}
+          </div>
+          {event.user_is_host || items.filter((i) => !i.owner).length !== 0 ? (
+            <>
               <div className="pl-0 divide-y">
                 {items
                   .filter((i) => !i.owner)
@@ -80,24 +79,26 @@ export default function Items({
                   ))}
               </div>
             </>
+          ) : (
+            <Typography>No items</Typography>
           )}
-          {items.filter((i) => i.owner).length !== 0 && (
+          <div className="mt-3 flex flex-row items-center justify-between">
+            <Typography variant="h5" className="">
+              Guests bringing
+            </Typography>
+            {event.user_is_guest && (
+              <div>
+                <NewItemButtonRow
+                  setItemModalOpen={setItemModalOpen}
+                  setItemData={setItemData}
+                  isHost={event.user_is_host}
+                />
+              </div>
+            )}
+          </div>
+          {items.filter((i) => i.owner).length !== 0 ? (
             <>
               {" "}
-              <div className="mt-3 flex flex-row items-center justify-between">
-                <Typography variant="h5" className="">
-                  Guests bringing
-                </Typography>
-                {event.user_is_guest && (
-                  <div>
-                    <NewItemButtonRow
-                      setItemModalOpen={setItemModalOpen}
-                      setItemData={setItemData}
-                      isHost={event.user_is_host}
-                    />
-                  </div>
-                )}
-              </div>
               <div className="pl-0 divide-y">
                 {items
                   .filter((i) => i.owner)
@@ -114,6 +115,8 @@ export default function Items({
                   ))}
               </div>
             </>
+          ) : (
+            <Typography>No items</Typography>
           )}
         </TabPanel>
       </TabsBody>
@@ -250,12 +253,13 @@ function Item({
       >
         <div className="flex">
           <div className="flex flex-col flex-auto">
-            <Typography variant="small">
-              {item.owner &&
-                (item.user_is_owner
+            {item.owner && (
+              <Typography variant="small">
+                {item.user_is_owner
                   ? "I am bringing"
-                  : `${item.owner.full_name} is bringing`)}
-            </Typography>
+                  : `${item.owner.full_name} is bringing`}
+              </Typography>
+            )}
             <Typography variant="h6" className="flex-auto">
               {item.title}
             </Typography>
@@ -359,15 +363,11 @@ export function NewItemButtonRow({ setItemModalOpen, setItemData, isHost }) {
       onClick={handleNewItem}
       className={`cursor-pointer flex flex-auto justify-start flex-row items-center`}
     >
-      <div
-        className={`${
-          isHost ? "w-10" : "w-5"
-        }  h-10 flex items-center justify-center`}
-      >
+      <div className={`w-5 flex items-center justify-center`}>
         <FontAwesomeIcon icon={faPlus} />
       </div>
       <div className="flex-grow">
-        <Typography variant="h6" className="ml-0.5">
+        <Typography variant="h6" className="ml-0.5 text-end">
           Add Item
         </Typography>
       </div>
