@@ -64,7 +64,7 @@ urlpatterns = [
 
     path('notifications', views.UserNotifications.as_view()),
     path('notifications/read', views.ReadUserNotifications.as_view()),
-    path('notifications/<int:pk>', views.NotificationDetails.as_view()),
+    path('notifications/<int:pk>', views.DeleteNotification.as_view()),
 
     path('invite-code/<str:code>',
          views.CreateInvitationFromCode.as_view()),
