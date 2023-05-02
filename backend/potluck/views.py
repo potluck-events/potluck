@@ -363,11 +363,12 @@ class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
 @receiver(post_save, sender=Invitation)
 def create_invitation_notification(sender, instance, **kwargs):
     if kwargs.get('created', False):
-        recipient = instance.guest
-        header = 'New Invitation!'
-        message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
-        Notification.objects.create(
-            recipient=recipient, header=header, message=message, event=instance.event)
+        if instance.guest is not None:
+            recipient = instance.guest
+            header = 'New Invitation!'
+            message = f'You have been invited to {instance.event.title} by {instance.event.host}!'
+            Notification.objects.create(
+                recipient=recipient, header=header, message=message, event=instance.event)
 
 
 # notification to host when guest responds to an invitation
