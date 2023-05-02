@@ -138,6 +138,8 @@ All endpoints have `permission_classes = [IsAuthenticated]`
 
 Some endpoints have additional custom permissions.
 
+<br>
+
 ### User Profile Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
@@ -211,6 +213,12 @@ Some endpoints have additional custom permissions.
 | :---: | :---: | :---: |
 | /events/int:pk/posts/ | GET, POST | show/create posts for event with given pk |
 | /posts/int:pk/ | DELETE | delete post with given pk |
+
+**/events/int:pk/posts/**
+`GET, POST:` user must be the host or guest of the related event
+
+**/posts/int:pk/**
+`DELETE:` user must be the host of the related event or the author of the post
 
 <br>
 
