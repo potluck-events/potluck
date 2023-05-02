@@ -130,16 +130,16 @@ export default function Home({ setItemsTabOpen }) {
             }}
           >
             <TabPanel value="events" className="py-0 px-0">
-              <div className="relative flex items-center justify-center">
-                <div className="absolute left-1 flex mt-3">
+              <div className="relative flex items-center justify-around">
+                <div className=" flex mt-3">
                   <NewEventButton />
                 </div>
                 <InvitationsButton pending={pending} />
-                <div className="absolute right-4 h-full flex items-center">
+                <div className="h-full flex items-center">
                   <Menu placement="bottom-end">
                     <MenuHandler>
                       <FontAwesomeIcon
-                        className="mt-3 cursor-pointer"
+                        className="mt-3 cursor-pointer bg-blue-900 text-white p-2.5 rounded-full shadow-gray-600/50 shadow-lg"
                         icon={faFilter}
                       />
                     </MenuHandler>
