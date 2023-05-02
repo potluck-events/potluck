@@ -18,6 +18,7 @@ export default function CreateItemModal({
   itemModalOpen,
   setItemModalOpen,
   itemData,
+  setItemData,
   setRefresh,
 }) {
   const [title, setTitle] = useState("");
@@ -72,6 +73,16 @@ export default function CreateItemModal({
       .catch(function (error) {
         console.error(error);
       });
+
+    clearData();
+  }
+
+  function clearData() {
+    setItemModalOpen(false);
+    setItemData(null);
+    setTitle("");
+    setDescription("");
+    setItemAllergies([]);
   }
 
   const handleSelectAllergy = (event) => {
@@ -86,7 +97,7 @@ export default function CreateItemModal({
     return (
       <>
         <Transition appear show={itemModalOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-20" onClose={setItemModalOpen}>
+          <Dialog as="div" className="relative z-20" onClose={clearData}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

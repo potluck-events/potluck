@@ -36,7 +36,7 @@ export default function Landing() {
       <div className="">
         <Typography
           className="mx-6 my-6 text-blue-900"
-          variant="h1"
+          variant="h2"
           color="blue"
         >
           Effortless Party Planning.
@@ -47,23 +47,25 @@ export default function Landing() {
           Welcome to Bash{" "}
           <FontAwesomeIcon className="self-center ml-1" icon={faArrowRight} />
         </Typography>
-        <Typography
-          className="flex mx-6 my-6"
-          variant="paragraph"
-          color="black"
-        >
-          Introducing the ultimate party planning app! With our app, you can
-          easily plan and organize your next event with ease. From creating a
-          guest list and sending out invitations to managing RSVPs, needs, and
-          wants - our app has got you covered. Plus, our intuitive design and
-          user-friendly interface make planning your next bash a breeze. With
-          our app, you'll be the party planning pro in no time!
-        </Typography>
+        <div className="relative overflow-x-clip">
+          <img
+            className="absolute -top-48 right-0 transform rotate-45 w-1/4 z-10 md:hidden"
+            src="/temp-img/image.png"
+          />
+          <Typography className="mx-6 pb-6" color="black">
+            Introducing the ultimate party planning app! With our app, you can
+            easily plan and organize your next event with ease. From creating a
+            guest list and sending out invitations to managing RSVPs, needs, and
+            wants - our app has got you covered. Plus, our intuitive design and
+            user-friendly interface make planning your next bash a breeze. With
+            our app, you'll be the party planning pro in no time!
+          </Typography>
+        </div>
       </div>
       <div className="flex justify-center">
         <img
-          className="w-3/5 mb-2"
-          src="https://s3.console.aws.amahttps://s3.console.aws.amazon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=adobestock_218199309_720.jpgzon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=1-removebg-preview_480.png"
+          className="w-80"
+          src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/adobestock_306912082_720.jpg"
         ></img>
       </div>
     </>

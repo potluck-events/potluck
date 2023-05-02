@@ -105,7 +105,7 @@ export default function Header({ setToken, notifications, setNotifications }) {
             <Link to="/" className="-m-1.5 p-1.5 flex items-center">
               <img
                 className="h-8 w-auto"
-                src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/My+project.png"
+                src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/1-removebg-preview_480.png"
                 alt=""
               />
               <span className=" text-3xl font-bold">Bash</span>

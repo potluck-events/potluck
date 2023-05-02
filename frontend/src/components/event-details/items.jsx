@@ -6,6 +6,7 @@ import {
   faEllipsis,
   faMinusCircle,
   faPenToSquare,
+  faPlus,
   faPlusCircle,
   faSquareCheck,
   faTrash,
@@ -30,23 +31,38 @@ import UserAvatar from "../avatar";
 import { Tooltip } from "@mui/material";
 
 export default function Items({
+  event,
   items,
   setEvent,
   setItemData,
   setItemModalOpen,
   userIsHost,
   setRefresh,
+  children,
 }) {
-  if (items.length)
+  if (true)
     return (
       <TabsBody
         animate={{ initial: { y: 250 }, mount: { y: 0 }, unmount: { y: 250 } }}
       >
         <TabPanel value="true">
-          {items.filter((i) => !i.owner).length !== 0 && (
+          {children}
+          <div className="flex flex-row items-center justify-between">
+            <Typography variant="h5" className="">
+              Host needs
+            </Typography>
+            {event.user_is_host && (
+              <div>
+                <NewItemButtonRow
+                  setItemModalOpen={setItemModalOpen}
+                  setItemData={setItemData}
+                  isHost={event.user_is_host}
+                />
+              </div>
+            )}
+          </div>
+          {event.user_is_host || items.filter((i) => !i.owner).length !== 0 ? (
             <>
-              {" "}
-              <Typography variant="h5">Host needs</Typography>
               <div className="pl-0 divide-y">
                 {items
                   .filter((i) => !i.owner)
@@ -63,13 +79,26 @@ export default function Items({
                   ))}
               </div>
             </>
+          ) : (
+            <Typography>No items</Typography>
           )}
-          {items.filter((i) => i.owner).length !== 0 && (
+          <div className="mt-3 flex flex-row items-center justify-between">
+            <Typography variant="h5" className="">
+              Guests bringing
+            </Typography>
+            {event.user_is_guest && (
+              <div>
+                <NewItemButtonRow
+                  setItemModalOpen={setItemModalOpen}
+                  setItemData={setItemData}
+                  isHost={event.user_is_host}
+                />
+              </div>
+            )}
+          </div>
+          {items.filter((i) => i.owner).length !== 0 ? (
             <>
               {" "}
-              <Typography variant="h5" className="mt-3">
-                Guests bringing
-              </Typography>
               <div className="pl-0 divide-y">
                 {items
                   .filter((i) => i.owner)
@@ -86,6 +115,8 @@ export default function Items({
                   ))}
               </div>
             </>
+          ) : (
+            <Typography>No items</Typography>
           )}
         </TabPanel>
       </TabsBody>
@@ -158,6 +189,7 @@ function Item({
       return prevEvent;
     });
   };
+
   function handleEditItem() {
     setItemData(item);
     setItemModalOpen(true);
@@ -193,7 +225,7 @@ function Item({
         <Tooltip title={item.owner.full_name} placement="top">
           <button className=" cursor-default mx-1.5">
             <UserAvatar user={item.owner}>
-              {item.user_is_owner && (
+              {item.user_is_owner && !(item.user_is_creator && !userIsHost) && (
                 <FontAwesomeIcon
                   onClick={handleReleaseOwner}
                   icon={faXmarkCircle}
@@ -220,35 +252,26 @@ function Item({
         className="flex flex-col flex-grow"
       >
         <div className="flex">
-          <Typography variant="h6" className="flex-auto">
-            {item.title}
-          </Typography>
+          <div className="flex flex-col flex-auto">
+            {item.owner && (
+              <Typography variant="small">
+                {item.user_is_owner
+                  ? "I am bringing"
+                  : `${item.owner.full_name} is bringing`}
+              </Typography>
+            )}
+            <Typography variant="h6" className="flex-auto">
+              {item.title}
+            </Typography>
+          </div>
           <div className="flex flex-row gap-3 pt-1">
             {(userIsHost || item.user_is_creator) && (
-              <>
-                {showOptions && (
-                  <>
-                    <Tooltip title="Edit item" placement="left">
-                      <FontAwesomeIcon
-                        className=" cursor-pointer"
-                        icon={faPenToSquare}
-                        onClick={handleEditItem}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Delete item" placement="left">
-                      <FontAwesomeIcon
-                        className=" cursor-pointer"
-                        icon={faTrash}
-                        onClick={handleDeleteItem}
-                      />
-                    </Tooltip>
-                  </>
-                )}
-                <FontAwesomeIcon
-                  icon={faEllipsis}
-                  onClick={() => setShowOptions(!showOptions)}
-                />
-              </>
+              <ItemOptions
+                showOptions={showOptions}
+                handleEditItem={handleEditItem}
+                handleDeleteItem={handleDeleteItem}
+                setShowOptions={setShowOptions}
+              />
             )}
           </div>
         </div>
@@ -260,6 +283,40 @@ function Item({
         </div>
       </div>
     </div>
+  );
+}
+
+function ItemOptions({
+  showOptions,
+  handleEditItem,
+  handleDeleteItem,
+  setShowOptions,
+}) {
+  return (
+    <>
+      {showOptions && (
+        <>
+          <Tooltip title="Edit item" placement="left">
+            <FontAwesomeIcon
+              className=" cursor-pointer"
+              icon={faPenToSquare}
+              onClick={handleEditItem}
+            />
+          </Tooltip>
+          <Tooltip title="Delete item" placement="left">
+            <FontAwesomeIcon
+              className=" cursor-pointer"
+              icon={faTrash}
+              onClick={handleDeleteItem}
+            />
+          </Tooltip>
+        </>
+      )}
+      <FontAwesomeIcon
+        icon={faEllipsis}
+        onClick={() => setShowOptions(!showOptions)}
+      />
+    </>
   );
 }
 
@@ -294,4 +351,26 @@ function DietaryRestrictions({ item, expanded }) {
         </div>
       </>
     );
+}
+
+export function NewItemButtonRow({ setItemModalOpen, setItemData, isHost }) {
+  function handleNewItem() {
+    setItemModalOpen(true);
+    setItemData(null);
+  }
+  return (
+    <div
+      onClick={handleNewItem}
+      className={`cursor-pointer flex flex-auto justify-start flex-row items-center`}
+    >
+      <div className={`w-5 flex items-center justify-center`}>
+        <FontAwesomeIcon icon={faPlus} />
+      </div>
+      <div className="flex-grow">
+        <Typography variant="h6" className="ml-0.5 text-end">
+          Add Item
+        </Typography>
+      </div>
+    </div>
+  );
 }
