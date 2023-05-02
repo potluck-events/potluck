@@ -196,7 +196,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
                     color="amber"
                     key={key}
                     className="h-fit my-1 rounded-full"
-                    value={`${key}: ${event.dietary_restrictions_count[key]}`}
+                    value={`${event.dietary_restrictions_count[key]} ${key}`}
                   />
                 ))}
             </div>
