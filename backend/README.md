@@ -2,7 +2,7 @@
 # Bash (_Potluck_)
 Bash is an app designed to make planning events simple and fun.
 
-## BASE URL
+#### BASE URL
 https://potluck.herokuapp.com/
 
 <br>
