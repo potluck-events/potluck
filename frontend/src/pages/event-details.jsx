@@ -58,6 +58,7 @@ export default function EventDetails({}) {
       .then(function (response) {
         console.log(response.data);
         setEvent(response.data);
+
         createICS(response.data, setCalFile);
         if (response.data.street_address) {
           let url = `https://www.google.com/maps/search/${response.data.street_address}+${response.data.city}+${response.data.state}+${response.data.zipcode}`;
@@ -118,6 +119,8 @@ export default function EventDetails({}) {
           {itemsTabOpen &&
             (hasSelected() ? (
               <ReserveItemsButton
+                setEvent={setEvent}
+                setRefresh={setRefresh}
                 items={event.items.filter((item) => item.selected)}
               />
             ) : (
