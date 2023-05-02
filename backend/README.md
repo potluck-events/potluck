@@ -214,6 +214,7 @@ Some endpoints have additional custom permissions.
 | /events/int:pk/posts/ | GET, POST | show/create posts for event with given pk |
 | /posts/int:pk/ | DELETE | delete post with given pk |
 
+#### Custom Permissions
 **/events/int:pk/posts/**
 `GET, POST:` user must be the host or guest of the related event
 
