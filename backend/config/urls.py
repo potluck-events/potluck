@@ -31,11 +31,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('accounts/', include('dj_rest_auth.urls')),
-    path('accounts/google/', views.GoogleLogin.as_view(),
-         name='google_login'),  # google auth location
-    path('accounts/google/code', views.CodeView, name='code'),
     path('accounts/registration/',
-         views.CustomRegisterView.as_view(), name='custom_register'),  # custom registration URL
+         views.CustomRegisterView.as_view(), name='custom_register'),
     path('accounts/registration/', include('dj_rest_auth.registration.urls')),
     path('accounts/password/reset/', PasswordResetView.as_view(),
          name='password_reset'),
