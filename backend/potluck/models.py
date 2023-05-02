@@ -121,12 +121,12 @@ class Post(models.Model):
         ordering = ['-time_created']
 
     def __str__(self):
-        return f'Post for {self.event} by {self.author}'
+        return f'Post {self.text} for {self.event} by {self.author}'
 
 
 class Notification(models.Model):
     recipient = models.ForeignKey(
-        to='User', on_delete=models.CASCADE, related_name='notifications')
+        to='User', on_delete=models.CASCADE, related_name='notifications', blank=True, null=True)
     header = models.CharField(max_length=50)
     message = models.TextField(max_length=500)
     is_read = models.BooleanField(default=False)
