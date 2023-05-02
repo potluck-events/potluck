@@ -60,7 +60,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
   };
 
   return (
-    <div className="">
+    <div className="m-1">
       <div className="flex">
         <div className="pb-2 flex-auto self-center">
           <Typography variant="h4" className="">
@@ -81,7 +81,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         {event.end_time && " -"}{" "}
         {event.end_time && moment(event.end_time, "HH:mm:ss").format("h:mm A")}
       </Typography>
-      <div className="border-b-2 pb-1">
+      <div className="border-b-2 pb-2">
         <div className="mb-1 text-m">
           <div className="flex items-center justify-start rounded-full">
             {event.host.thumbnail ? (
