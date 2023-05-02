@@ -70,23 +70,50 @@ https://django-allauth.readthedocs.io/en/latest/views.html
 -- user can delete notification or mark 'is_read' if they are the recipient
 
 
-| Type | URL | Methods | Description |
-| --- | --- | --- | --- |
-| User Profile | /users/me/ | GET, PUT, PATCH, DELETE | view/edit profile of logged-in user |
-| User Profile | /users/info/str:email | GET | view profile of user with given email |
-| Dietary Restrictions | /dietary-restrictions/ | GET | show all DietaryRestriction objects |
-| Events | /events/ | GET, POST | show all upcoming events that the user is hosting or attending; create new event |
-| Events | /events/history/ | GET | show all past events that the user has hosted or attended |
-| Events | /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
-| Invitations | /invitations/ | GET | show all invitiations received by the user related to upcoming events |
-| Invitations | /events/int:pk/invitations/ | GET, POST | show all invitations related to event with given pk, create invitation for event with given pk |
-| Invitations | /invitations/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete invitation with given pk |
-| Items | /items/ | GET | show all items owned by the user related to upcoming events |
-| Items | /items/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete item with given pk |
-| Items | /items/int:pk/reserved | PATCH | reserve/un-reserve item with given pk |
-| Items | /events/int:pk/items | GET, POST | show all items for event with given pk; create item for event with given pk |
-| Posts | /events/int:pk/posts/ | GET, POST | show all posts related to event with given pk; create post for event with given pk |
-| Posts | /posts/int:pk/ | DELETE | delete post with given pk |
-| Notifications | /notifications/ | GET, DELETE | view/delete all notifications received by the user |
-| Notifications | /notifications/read/ | GET | show all notifications received by the user and mark them as is_read=True |
-| Notifications | /notifications/int:pk/ | GET, PUT, PATCH, DELETE | delete notification with given pk |
+## POTLUCK ENDPOINTS
+
+### User Profile Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /users/me/ | GET, PUT, PATCH, DELETE | view/edit/delete user profile |
+| /users/info/str:email | GET | view profile of user with given email |
+
+### Dietary Restriction Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /dietary-restrictions/ | GET | view all DietaryRestriction objects |
+
+### Event Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /events/ | GET, POST | view upcoming events the user is hosting or attending; create new event |
+| /events/history/ | GET | view past events the user has hosted or attended |
+| /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
+
+### Invitation Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /invitations/ | GET | view invitiations for upcoming events received by the user |
+| /events/int:pk/invitations/ | GET, POST | view/create invitations for event with given pk |
+| /invitations/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete invitation with given pk |
+
+### Item Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /items/ | GET | show items owned by the user for upcoming events |
+| /items/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete item with given pk |
+| /items/int:pk/reserved | PATCH | own/un-own item with given pk |
+| /events/int:pk/items | GET, POST | show/create items for event with given pk |
+
+### Post Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /events/int:pk/posts/ | GET, POST | show/create posts for event with given pk |
+| /posts/int:pk/ | DELETE | delete post with given pk |
+
+### Notification Endpoints
+| URL | Methods | Description |
+| --- | --- | --- |
+| /notifications/ | GET, DELETE | view/delete all notifications received by the user |
+| /notifications/read/ | GET | show all notifications received by the user and mark them as is_read=True |
+| /notifications/int:pk/ | GET, PUT, PATCH, DELETE | delete notification with given pk |
