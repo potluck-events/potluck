@@ -344,7 +344,7 @@ function EventItem({ item }) {
             id="ripple-on"
             sx={{
               "&.Mui-checked": {
-                color: "#1c4d80",
+                color: "#1E3A8A",
               },
             }}
           />
