@@ -2,6 +2,9 @@
 # Bash (_Potluck_)
 Bash is an app designed to make planning events simple and fun.
 
+## BASE URL
+https://potluck.herokuapp.com/
+
 ## Features
 * Users can create an event, edit the details of an event, or cancel it altogether.
  * When creating an event, users can add a spotify playlist which guests can contribute to.
@@ -17,47 +20,35 @@ Bash is an app designed to make planning events simple and fun.
 
 ## Run Locally
 
-Clone the project:
-
+1. Clone the project:
     git clone https://github.com/potluck-events/potluck.git
 
-Navigate to the project directory:
-
+2. Navigate to the project directory:
     cd potluck
 
-Navigate to the backend folder:
-
+3. Navigate to the backend folder:
     cd backend
 
-Set up a virtual environment for the project using pipenv. If you don't have pipenv installed, you can install it using pip:
-
+4. Set up a virtual environment for the project using pipenv. If you don't have pipenv installed, you can install it using pip:
     pip install pipenv
 
-Then, activate the virtual environment by running:
-
+5. Then, activate the virtual environment by running:
     pipenv shell
 
-Install the project dependencies:
-
+6. Install the project dependencies:
     pipenv install
 
-Set up the database by running the migrations:
-
+7. Set up the database by running the migrations:
     python manage.py migrate
 
-Start the development server:
-
+8. Start the development server:
     python manage.py runserver
 
 The app should now be running at http://localhost:8000/
 
-## BASE URL
-https://potluck.herokuapp.com/
-
+## DJ-REST ENDPOINTS
 https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
 https://django-allauth.readthedocs.io/en/latest/views.html
-
-## DJ-REST ENDPOINTS
 
 ## POTLUCK ENDPOINTS
 
