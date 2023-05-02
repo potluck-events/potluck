@@ -22,6 +22,7 @@ export default function Landing() {
           onClick={handleClickLogin}
           size="lg"
           className="w-44 bg-blue-900"
+          color="indigo"
         >
           Log In
         </Button>
@@ -29,6 +30,7 @@ export default function Landing() {
           onClick={handleClickSignup}
           variant="outlined"
           className="w-44 text-blue-900 outline-blue-900"
+          color="indigo"
         >
           Sign Up
         </Button>
@@ -50,7 +52,7 @@ export default function Landing() {
         <div className="relative overflow-x-clip">
           <img
             className="absolute -top-48 right-0 transform rotate-45 w-1/4 z-10 md:hidden"
-            src="/temp-img/image.png"
+            src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/image_720.png"
           />
           <Typography className="mx-6 pb-6" color="black">
             Introducing the ultimate party planning app! With our app, you can
@@ -65,7 +67,7 @@ export default function Landing() {
       <div className="flex justify-center">
         <img
           className="w-80"
-          src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/adobestock_306912082_720.jpg"
+          src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/adobestock_244827607_720.jpg"
         ></img>
       </div>
     </>
