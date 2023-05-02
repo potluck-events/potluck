@@ -1,6 +1,5 @@
 # python imports
 import json
-import urllib.parse
 
 # django imports
 from django.core.exceptions import PermissionDenied
@@ -11,15 +10,10 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 # third-party imports
-import requests
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
 
 # local app imports
