@@ -204,7 +204,11 @@ function Item({
           </button>
         </Tooltip>
       ) : (
-        <Checkbox value={item.pk} onClick={handleSelect} />
+        <Checkbox
+          checked={item?.selected === true}
+          value={item.pk}
+          onClick={handleSelect}
+        />
       )}
       <div
         style={item.owner ? { paddingTop: "3px" } : { paddingTop: "8.5px" }}
