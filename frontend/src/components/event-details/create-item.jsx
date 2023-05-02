@@ -162,6 +162,11 @@ export default function CreateItemModal({
                                   checked={
                                     itemAllergies.indexOf(allergy.name) > -1
                                   }
+                                  sx={{
+                                    "&.Mui-checked": {
+                                      color: "#1E3A8A",
+                                    },
+                                  }}
                                 />
                                 <ListItemText primary={allergy.name} />
                               </MenuItem>
@@ -174,7 +179,7 @@ export default function CreateItemModal({
                         <Button
                           type="submit"
                           onClick={() => setItemModalOpen(false)}
-                          className="w-32"
+                          className="w-32 bg-blue-900"
                         >
                           {itemData ? "Edit" : "Add"} Item
                         </Button>
