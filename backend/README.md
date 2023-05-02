@@ -4,6 +4,8 @@ Bash is an app designed to make planning events simple and fun.
 
 ## Features
 * Users can create an event, edit the details of an event, or cancel it altogether.
+ * When creating an event, users can add a spotify playlist which guests can contribute to.
+ * When creating an event, users can add a tip jar--a link to their Venmo account which guests can donate to.
 * Hosts can invite guests and see RSVPs, as well as delete invitations.
 * Users can view upcoming or past events, and can duplicate an event they previously hosted, including the guest list.
 * Users can add a profile picture and list their dietary restrictions.
@@ -11,7 +13,43 @@ Bash is an app designed to make planning events simple and fun.
 * Guests can show items they intend to bring to the event, whether the item was requested by the host or not.
 * Users can see a shopping list of items they have agreed to bring to an event, and can check them off as they acquire them.
 * Users can post and view comments on events they are attending.
-* Users recieve notifications.
+* Users recieve notifications regarding events, invitations, rsvps, items and posts.
+
+## Run Locally
+
+Clone the project:
+
+    git clone https://github.com/potluck-events/potluck.git
+
+Navigate to the project directory:
+
+    cd potluck
+
+Navigate to the backend folder:
+
+    cd backend
+
+Set up a virtual environment for the project using pipenv. If you don't have pipenv installed, you can install it using pip:
+
+    pip install pipenv
+
+Then, activate the virtual environment by running:
+
+    pipenv shell
+
+Install the project dependencies:
+
+    pipenv install
+
+Set up the database by running the migrations:
+
+    python manage.py migrate
+
+Start the development server:
+
+    python manage.py runserver
+
+The app should now be running at http://localhost:8000/
 
 ## BASE URL
 https://potluck.herokuapp.com/
