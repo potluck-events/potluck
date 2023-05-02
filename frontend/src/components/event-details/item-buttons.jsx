@@ -7,25 +7,6 @@ import "../../styles/eventdetails.css";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../context/authcontext";
 
-export function NewItemButton({ setItemModalOpen, setItemData }) {
-  function handleNewItem() {
-    setItemModalOpen(true);
-    setItemData(null);
-  }
-  return (
-    <div className="relative flex justify-end z-30">
-      <Button
-        onClick={handleNewItem}
-        className="rounded-full shadow-lg shadow-gray-600/50 bg-blue-900"
-      >
-        <div className="flex justify-center items-center">
-          <FontAwesomeIcon icon={faPlus} className="w-5 h-5 mr-2" /> New Item
-        </div>
-      </Button>
-    </div>
-  );
-}
-
 export function ReserveItemsButton({ items, setRefresh, setEvent }) {
   const token = useContext(AuthContext);
 
@@ -44,17 +25,17 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
         .request(options)
         .then(function (response) {
           console.log("PATCH", response.data);
+          setEvent(null);
+          setRefresh((r) => !r);
         })
         .catch(function (error) {
           console.error(error);
         });
     }
-    // setEvent(null);
-    setRefresh((r) => !r);
   }
 
   return (
-    <div className="relative top-10 z-30">
+    <div className="fixed bottom-5 right-5 z-30">
       <form>
         <Button
           onClick={handleReserve}
