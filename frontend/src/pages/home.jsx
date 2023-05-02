@@ -222,7 +222,7 @@ function Events({ events }) {
                         {event.user_is_host === true && (
                           <Chip
                             value="Hosting"
-                            className="mt-2"
+                            className="mt-2 bg-blue-900"
                             icon={
                               <FontAwesomeIcon
                                 icon={faHouseChimney}
@@ -240,7 +240,7 @@ function Events({ events }) {
                         <IconButton variant="text" className="mt-1 mr-1">
                           <FontAwesomeIcon
                             icon={faAnglesRight}
-                            className="w-6 h-6"
+                            className="w-6 h-6 text-blue-900"
                           />
                         </IconButton>
                       </div>
@@ -361,7 +361,7 @@ function NewEventButton() {
     <div className=" relative ">
       <Button
         onClick={onClickNewEvent}
-        className="w-10 h-10 rounded-full p-0 shadow-lg shadow-gray-600/50"
+        className="w-10 h-10 rounded-full p-0 shadow-lg shadow-gray-600/50 bg-blue-900"
       >
         <div className="flex justify-center">
           <FontAwesomeIcon icon={faCalendarPlus} className="w-5 h-10 -mt-0" />
@@ -383,7 +383,7 @@ function InvitationsButton({ pending }) {
       <Button
         onClick={onClickHandleInvitations}
         variant="outlined"
-        className="flex m-auto pb-7 h-2 mt-3"
+        className="flex m-auto pb-7 h-2 mt-3 outline-blue-900 text-blue-900"
       >
         Invitations ({pending} pending)
         <svg
