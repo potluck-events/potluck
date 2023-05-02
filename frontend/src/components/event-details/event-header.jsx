@@ -119,7 +119,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
               color="green"
               value="Playlist"
               icon={
-                <FontAwesomeIcon icon={faSpotify} className=" mr-1" size="xl" />
+                <FontAwesomeIcon icon={faSpotify} className="mx-1" size="xl" />
               }
             />
           </a>
