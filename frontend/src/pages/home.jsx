@@ -287,7 +287,7 @@ function Items({ events }) {
                   <IconButton variant="text" className=" mr-1">
                     <FontAwesomeIcon
                       icon={faAnglesRight}
-                      className="w-6 h-6 cursor-pointer"
+                      className="w-6 h-6 cursor-pointer text-blue-900"
                     />
                   </IconButton>
                 </div>
@@ -342,6 +342,11 @@ function EventItem({ item }) {
             onChange={handleChecked}
             value={item.title}
             id="ripple-on"
+            sx={{
+              "&.Mui-checked": {
+                color: "#1c4d80",
+              },
+            }}
           />
           {item.title}
         </Typography>
