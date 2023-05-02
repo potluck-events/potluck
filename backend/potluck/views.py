@@ -1,6 +1,5 @@
 # python imports
 import json
-import urllib.parse
 
 # django imports
 from django.core.exceptions import PermissionDenied
@@ -11,15 +10,10 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 # third-party imports
-import requests
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import RegisterView
 
 # local app imports
@@ -63,28 +57,6 @@ class CustomRegisterView(RegisterView):
                 invitation.save()
         else:
             serializer.save(request=self.request)
-
-
-class GoogleLogin(SocialLoginView):
-    # SOCIAL AUTH CODE IN PROGRESS
-    adapter_class = GoogleOAuth2Adapter
-    callback_url = 'http://localhost:8000/dj-rest-auth/google/code'
-    client_class = OAuth2Client
-
-
-@api_view(['GET'])
-def CodeView(request):
-    # SOCIAL AUTH CODE IN PROGRESS
-    """
-    List all code snippets, or create a new snippet.
-    """
-
-    if request.method == 'GET':
-        code = urllib.parse.unquote(request.query_params['code'])
-
-        url = request.build_absolute_uri('/dj-rest-auth/google/')
-        response = requests.post(url, json={"code": code})
-        return (response.json())
 
 
 class UserProfile(generics.RetrieveUpdateDestroyAPIView):
