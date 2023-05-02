@@ -57,6 +57,7 @@ export default function Login({ setToken }) {
                   onChange={(e) => setEmail(e.target.value)}
                   label="Email"
                   size="lg"
+                  color="indigo"
                 />
                 {error.email && (
                   <Typography variant="small" color="red">
@@ -72,6 +73,7 @@ export default function Login({ setToken }) {
                   label="Password"
                   size="lg"
                   type="password"
+                  color="indigo"
                 />
                 {error.non_field_errors && (
                   <Typography variant="small" color="red">
