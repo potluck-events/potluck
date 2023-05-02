@@ -325,7 +325,7 @@ class ReadUserNotifications(generics.ListAPIView):
         return queryset
 
 
-class NotificationDetails(generics.RetrieveUpdateDestroyAPIView):
+class DeleteNotification(generics.DestroyAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [IsRecipient]
@@ -395,7 +395,7 @@ def create_grab_notification_for_host(sender, instance, **kwargs):
             message = f'{instance.owner} is bringing {instance.title} to {instance.event.title}!'
         else:
             header = 'Up for Grabs!'
-            message = f'{instance.title} is up for grabs again for {instance.event.title}.'
+            message = f'A guest is no longer bringing {instance.title} to {instance.event.title}.'
         Notification.objects.create(
             recipient=recipient, header=header, message=message, event=instance.event)
 
