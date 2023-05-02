@@ -68,27 +68,33 @@ https://potluck.herokuapp.com/
 
 The app should now be running at http://localhost:8000/
 
+9. You can create a django superuser by running:
+
+    `python manage.py createsuperuser`
+
+And you can log into the django admin at http://localhost:8000/admin/ to manage local data.
+
 <br>
 
 ### Create Local PostgreSQL Database
 
-9. Install PostgreSQL:
+10. Install PostgreSQL:
 
     `brew install postgresql`
 
-10. Start PostgreSQL:
+11. Start PostgreSQL:
 
     `brew services start postgresql`
 
-11. Create a user:
+12. Create a user:
 
     `createuser -d <username>`
 
-12. Create a database:
+13. Create a database:
 
     `createdb -U <username> <dbname>`
 
-13. Install a PostgreSQL adapter:
+14. Install a PostgreSQL adapter:
 
     `pipenv install psycopg2-binary`
 
@@ -96,9 +102,34 @@ The app should now be running at http://localhost:8000/
 
 ### Environment Variables
 
-14. Create a .env file in the backend folder:
+15. Create a .env file in the backend folder:
 
     `touch ./potluck/backend/.env`
+
+16. Open the .env file in a text editor and set your environment variables in the following format: 'VARIABLE_NAME=value'
+For example:
+
+    ```
+    SECRET_KEY=my_secret_key
+    DEBUG=True
+    DJANGO_SUPERUSER_USERNAME=admin
+    DJANGO_SUPERUSER_PASSWORD=admin_password
+    DJANGO_SUPERUSER_EMAIL=admin@example.com
+    ```
+
+* DATABASE_URL: This should be set to the URL of your database. Depending on your database type, this may include a username, password, host, and port.
+
+* SECRET_KEY: This should be set to a secret key that is used for cryptographic signing in Django. It is important that this value is kept secret and is not shared publicly.
+
+* DEBUG: This should be set to a boolean value (True or False) and is used to enable or disable debugging in Django. It is recommended to set this to False in production environments.
+
+* DJANGO_SUPERUSER_USERNAME: This should be set to the username you want to use for the Django superuser account.
+
+* DJANGO_SUPERUSER_PASSWORD: This should be set to the password you want to use for the Django superuser account.
+
+* DJANGO_SUPERUSER_EMAIL: This should be set to the email address you want to use for the Django superuser account.
+
+17. Save the .env file.
 
 <br>
 
