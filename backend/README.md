@@ -118,7 +118,7 @@ The app should now be running at http://localhost:8000/
 | --- | --- | --- |
 | /notifications/ | GET, DELETE | view/delete all notifications received by the user |
 | /notifications/read/ | GET | show all notifications received by the user and mark them as is_read=True |
-| /notifications/int:pk/ | GET, PUT, PATCH, DELETE | delete notification with given pk |
+| /notifications/int:pk/ | DELETE | delete notification with given pk |
 
 
 https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
