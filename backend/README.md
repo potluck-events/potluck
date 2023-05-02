@@ -107,6 +107,7 @@ And you can log into the django admin at http://localhost:8000/admin/ to manage 
     `touch ./potluck/backend/.env`
 
 16. Open the .env file in a text editor and set your environment variables in the following format: 'VARIABLE_NAME=value'
+
 For example:
 
     ```
