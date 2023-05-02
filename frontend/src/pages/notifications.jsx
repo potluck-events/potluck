@@ -146,7 +146,10 @@ export default function Notifications({ notifications, setNotifications }) {
         </div>
         {notifications.length < 1 && (
           <>
-            <div className=" text-center mt-10 italic text-blue-900">
+            <div className="mt-2 text-center">
+              <Typography variant="h3">Notifications</Typography>
+            </div>
+            <div className=" text-center mt-5 text-blue-900">
               <Typography variant="h4">No new notifications</Typography>
             </div>
             <div>
