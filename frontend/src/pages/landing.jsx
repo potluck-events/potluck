@@ -22,6 +22,7 @@ export default function Landing() {
           onClick={handleClickLogin}
           size="lg"
           className="w-44 bg-blue-900"
+          color="indigo"
         >
           Log In
         </Button>
@@ -29,6 +30,7 @@ export default function Landing() {
           onClick={handleClickSignup}
           variant="outlined"
           className="w-44 text-blue-900 outline-blue-900"
+          color="indigo"
         >
           Sign Up
         </Button>
