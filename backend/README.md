@@ -134,6 +134,9 @@ For example:
 
 ## ENDPOINTS
 
+All endpoints have `permission_classes = [IsAuthenticated]`
+Some endpoints have additional custom permissions.
+
 ### User Profile Endpoints
 | URL | Methods | Description |
 | :---: | :---: | :---: |
@@ -192,6 +195,7 @@ For example:
 | /notifications/read/ | GET | show all notifications received by the user and mark them as is_read=True |
 | /notifications/int:pk/ | DELETE | delete notification with given pk |
 
+<br>
 
 https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
 https://django-allauth.readthedocs.io/en/latest/views.html
