@@ -36,10 +36,13 @@ export default function Landing() {
       <div className="">
         <Typography
           className="mx-6 my-6 text-blue-900"
-          variant="h1"
+          variant="h2"
           color="blue"
         >
           Effortless Party Planning.
+          <div className="absolute -right-10 top-40 w-2/5 -z-50">
+            <img src="/temp-img/image.png" className="w-2/3 rotate-45"></img>
+          </div>
         </Typography>
       </div>
       <div className="">
@@ -48,22 +51,25 @@ export default function Landing() {
           <FontAwesomeIcon className="self-center ml-1" icon={faArrowRight} />
         </Typography>
         <Typography
-          className="flex mx-6 my-6"
-          variant="paragraph"
+          className="flex mx-6 mt-6"
           color="black"
+          style={{ marginRight: "35%" }}
         >
-          Introducing the ultimate party planning app! With our app, you can
-          easily plan and organize your next event with ease. From creating a
-          guest list and sending out invitations to managing RSVPs, needs, and
-          wants - our app has got you covered. Plus, our intuitive design and
-          user-friendly interface make planning your next bash a breeze. With
-          our app, you'll be the party planning pro in no time!
+          Introducing the ultimate party planning app! With our app,
+        </Typography>
+        <Typography className="flex mx-6 mb-6" color="black">
+          {" "}
+          you can easily plan and organize your next event with ease. From
+          creating a guest list and sending out invitations to managing RSVPs,
+          needs, and wants - our app has got you covered. Plus, our intuitive
+          design and user-friendly interface make planning your next bash a
+          breeze. With our app, you'll be the party planning pro in no time!
         </Typography>
       </div>
       <div className="flex justify-center">
         <img
-          className="w-3/5 mb-2"
-          src="https://s3.console.aws.amahttps://s3.console.aws.amazon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=adobestock_218199309_720.jpgzon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=1-removebg-preview_480.png"
+          className="w-80"
+          src="https://potluckprofilepics.s3.us-east-2.amazonaws.com/adobestock_306912082_720.jpg"
         ></img>
       </div>
     </>
