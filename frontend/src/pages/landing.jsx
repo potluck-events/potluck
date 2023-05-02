@@ -1,6 +1,7 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Typography } from "@material-tailwind/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
@@ -62,7 +63,7 @@ export default function Landing() {
       <div className="flex justify-center">
         <img
           className="w-3/5 mb-2"
-          src="../temp-img/pexels-pavel-danilyuk-7180617.jpg"
+          src="https://s3.console.aws.amahttps://s3.console.aws.amazon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=adobestock_218199309_720.jpgzon.com/s3/object/potluckprofilepics?region=us-east-2&prefix=1-removebg-preview_480.png"
         ></img>
       </div>
     </>

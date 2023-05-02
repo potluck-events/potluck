@@ -58,7 +58,7 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
       <form>
         <Button
           onClick={handleReserve}
-          className="rounded-full  shadow-lg shadow-gray-600/50"
+          className="rounded-full shadow-lg shadow-gray-600/50 bg-blue-900"
         >
           <div className="flex justify-center items-center">
             <FontAwesomeIcon icon={faCheck} className="w-5 h-5 mr-2" /> Reserve

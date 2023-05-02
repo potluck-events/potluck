@@ -188,6 +188,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setTitle(e.target.value)}
                   label="Title"
                   size="lg"
+                  color="indigo"
                 />
               </div>
               <div>
@@ -197,6 +198,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setDescription(e.target.value)}
                   label="Description"
                   size="lg"
+                  color="indigo"
                 />
               </div>
               <div>
@@ -207,6 +209,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setDateTime(e)}
                   label="Date/Time"
                   size="lg"
+                  color="indigo"
                 />
               </div>
               <div>
@@ -217,6 +220,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setDateTime(e)}
                   label="Start Time"
                   size="lg"
+                  color="indigo"
                 />
               </div>
               <div>
@@ -226,6 +230,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setEndTime(e)}
                   label="End Time"
                   size="lg"
+                  color="indigo"
                 />
               </div>
               <div>
@@ -235,6 +240,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                   onChange={(e) => setLocationName(e.target.value)}
                   label="Location"
                   size="lg"
+                  color="indigo"
                 />
                 {!showAddress && (
                   <Typography
@@ -254,6 +260,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                       onChange={(e) => setStreet(e.target.value)}
                       label="Street"
                       size="lg"
+                      color="indigo"
                     />
                   </div>
                   <div>
@@ -262,6 +269,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                       onChange={(e) => setCity(e.target.value)}
                       label="City"
                       size="lg"
+                      color="indigo"
                     />
                   </div>
                   <div>
@@ -273,6 +281,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                       onChange={(e) => setZip(e.target.value)}
                       label="Zip"
                       size="lg"
+                      color="indigo"
                     />
                   </div>
                 </>
@@ -281,7 +290,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                 <div className="flex flex-row mb-1">
                   <Switch
                     className={`${
-                      isTipOn ? "bg-blue-500" : "bg-gray-300"
+                      isTipOn ? "bg-blue-900" : "bg-gray-300"
                     } mb-2 relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                     checked={isTipOn}
                     onChange={setIsTipOn}
@@ -314,7 +323,7 @@ export default function EventForm({ setSpotifyEventPk }) {
                 <div className="flex flex-row mb-1">
                   <Switch
                     className={`${
-                      isPlaylistOn ? "bg-blue-500" : "bg-gray-300"
+                      isPlaylistOn ? "bg-blue-900" : "bg-gray-300"
                     } mb-2 relative inline-flex h-[28px] w-[56px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                     label="Spotify Playlist?"
                     checked={isPlaylistOn}
@@ -405,6 +414,7 @@ function States({ state, setState }) {
         onChange={(e) => setState(e)}
         label="State"
         size="lg"
+        color="indigo"
       >
         <Option value="AL">AL</Option>
         <Option value="AK">AK</Option>

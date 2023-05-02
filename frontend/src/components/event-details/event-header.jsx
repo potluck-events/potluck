@@ -60,7 +60,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
   };
 
   return (
-    <div className="">
+    <div className="m-1">
       <div className="flex">
         <div className="pb-2 flex-auto self-center">
           <Typography variant="h4" className="">
@@ -76,12 +76,12 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       </div>
       <Typography variant="h6">
         <FontAwesomeIcon icon={faCalendar} />{" "}
-        {moment(event.date_scheduled).format("MMMM Do, YYYY")}:{" "}
+        {moment(event.date_scheduled).format("MMMM Do, YYYY")} @{" "}
         {moment(event.time_scheduled, "HH:mm:ss").format("h:mm A")}
         {event.end_time && " -"}{" "}
         {event.end_time && moment(event.end_time, "HH:mm:ss").format("h:mm A")}
       </Typography>
-      <div className="border-b-2 pb-1">
+      <div className="border-b-2 pb-2">
         <div className="mb-1 text-m">
           <div className="flex items-center justify-start rounded-full">
             {event.host.thumbnail ? (
@@ -119,7 +119,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
               color="green"
               value="Playlist"
               icon={
-                <FontAwesomeIcon icon={faSpotify} className=" mr-1" size="xl" />
+                <FontAwesomeIcon icon={faSpotify} className="mx-1" size="xl" />
               }
             />
           </a>
@@ -129,14 +129,27 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             {" "}
             <Chip
               className="my-1 cursor-pointer z-0"
-              color="teal"
+              style={{
+                backgroundColor: "#3396cd",
+              }}
               value="Tip the Host?"
               icon={
-                <FontAwesomeIcon
-                  icon={faCommentsDollar}
-                  className=" mr-1"
-                  size="xl"
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 1333.33 1333.33"
+                  shapeRendering="geometricPrecision"
+                  textRendering="geometricPrecision"
+                  imageRendering="optimizeQuality"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                >
+                  <g fillRule="nonzero">
+                    <path
+                      d="M995.24 271.32c28.68 47.29 41.55 96.05 41.55 157.62 0 196.38-167.62 451.42-303.67 630.49H422.45L297.88 314.34 570 288.5l66.17 530.15c61.5-100.31 137.55-257.93 137.55-365.32 0-58.84-10.08-98.84-25.84-131.78l247.36-50.23z"
+                      fill="#fff"
+                    />
+                  </g>
+                </svg>
               }
             />
           </a>
@@ -175,9 +188,9 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             Attendees
           </Typography>
           <div className="flex justify-around gap-2">
-            <Typography>Going: {event.rsvp_yes}</Typography>
-            <Typography>Can't go: {event.rsvp_no}</Typography>
-            <Typography>TBD: {event.rsvp_tbd}</Typography>
+            <Chip color="teal" value={`${event.rsvp_yes} Going`} />
+            <Chip color="teal" value={`${event.rsvp_no} Can't go`} />
+            <Chip color="teal" value={`${event.rsvp_tbd} TBD`} />
           </div>
         </div>
         <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight} />
@@ -196,7 +209,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
                     color="amber"
                     key={key}
                     className="h-fit my-1 rounded-full"
-                    value={`${key}: ${event.dietary_restrictions_count[key]}`}
+                    value={`${event.dietary_restrictions_count[key]} ${key}`}
                   />
                 ))}
             </div>
