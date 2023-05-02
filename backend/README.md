@@ -110,13 +110,11 @@ And you can log into the django admin at http://localhost:8000/admin/ to manage 
 
 For example:
 
-    ```
-    SECRET_KEY=my_secret_key
+    `SECRET_KEY=my_secret_key
     DEBUG=True
     DJANGO_SUPERUSER_USERNAME=admin
     DJANGO_SUPERUSER_PASSWORD=admin_password
-    DJANGO_SUPERUSER_EMAIL=admin@example.com
-    ```
+    DJANGO_SUPERUSER_EMAIL=admin@example.com`
 
 * DATABASE_URL: This should be set to the URL of your database. Depending on your database type, this may include a username, password, host, and port.
 
