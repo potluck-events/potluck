@@ -6,6 +6,7 @@ import {
   faShare,
   faShareFromSquare,
   faUser,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { Fragment, useContext, useEffect, useState } from "react";
@@ -98,16 +99,19 @@ export default function RSVPList() {
           </>
         )}
         <Responses
+          setRefresh={setRefresh}
           event={event}
           header={"Attending"}
           invitations={invitations.filter((i) => i.response === true)}
         />
         <Responses
+          setRefresh={setRefresh}
           event={event}
           header={"TBD"}
           invitations={invitations.filter((i) => i.response === null)}
         />
         <Responses
+          setRefresh={setRefresh}
           event={event}
           header={"Declined"}
           invitations={invitations.filter((i) => i.response === false)}
@@ -153,13 +157,34 @@ function InviteButton({ setInviteModalOpen, setLinkModalOpen }) {
   );
 }
 
-function Responses({ header, invitations, event }) {
+function Responses({ header, invitations, event, setRefresh }) {
+  const token = useContext(AuthContext);
+
+  function handleDelete(i) {
+    console.log(i);
+    const options = {
+      method: "DELETE",
+      url: `https://potluck.herokuapp.com/invitations/${i.pk}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    };
+
+    axios
+      .request(options)
+      .then(() => setRefresh((r) => !r))
+      .catch(function (error) {
+        console.error(error);
+      });
+  }
+
   return (
     <div className="mx-5 my-4">
       <Typography variant="h4">{header}</Typography>
       {invitations.length !== 0 ? (
         invitations.map((invitation, idx) => (
-          <div key={idx} className="flex items-start">
+          <div key={idx} className="flex items-start relative">
             <UserAvatar user={invitation.guest} />
             <div className="mx-2 my-2">
               {invitation.guest && (
@@ -171,6 +196,13 @@ function Responses({ header, invitations, event }) {
                 <Typography variant="paragraph">
                   Email: {invitation.email}
                 </Typography>
+              )}
+              {event.user_is_host && (
+                <FontAwesomeIcon
+                  onClick={() => handleDelete(invitation)}
+                  className="w-fit absolute top-0 right-3 my-3 cursor-pointer"
+                  icon={faXmark}
+                />
               )}
             </div>
           </div>
