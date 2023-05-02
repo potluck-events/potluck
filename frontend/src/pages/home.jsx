@@ -135,7 +135,7 @@ export default function Home({ setItemsTabOpen }) {
                   <NewEventButton />
                 </div>
                 <InvitationsButton pending={pending} />
-                <div className="absolute right-1 h-full flex items-center">
+                <div className="absolute right-4 h-full flex items-center">
                   <Menu placement="bottom-end">
                     <MenuHandler>
                       <FontAwesomeIcon
