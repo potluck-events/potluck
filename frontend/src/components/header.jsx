@@ -82,7 +82,6 @@ export default function Header({ setToken, notifications, setNotifications }) {
           },
         })
         .then((response) => {
-          console.log(response.data);
           setNotifications(response.data);
         });
     }

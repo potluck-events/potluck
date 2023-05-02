@@ -15,10 +15,10 @@ import React from "react";
 export default function InvitationModal({
   inviteModalOpen,
   setInviteModalOpen,
+  setRefresh,
 }) {
   const { pk } = useParams();
   const { copyFromPk } = useParams();
-  const navigate = useNavigate();
   const token = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [show, setShow] = useState(true);
@@ -62,11 +62,14 @@ export default function InvitationModal({
         },
       };
 
-      const r = await axios.request(options).catch((error) => {
-        console.log(error);
-      });
+      const r = await axios
+        .request(options)
+        .then(() => {
+          setRefresh((r) => !r);
+          setInviteModalOpen(false);
+        })
+        .catch((e) => console.log(e));
     }
-    navigate(0);
   }
 
   function handleAddInvite() {

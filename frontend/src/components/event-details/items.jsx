@@ -28,7 +28,6 @@ import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import UserAvatar from "../avatar";
 import { Tooltip } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 export default function Items({
   items,
@@ -36,6 +35,7 @@ export default function Items({
   setItemData,
   setItemModalOpen,
   userIsHost,
+  setRefresh,
 }) {
   if (items.length)
     return (
@@ -58,6 +58,7 @@ export default function Items({
                       setItemModalOpen={setItemModalOpen}
                       setItemData={setItemData}
                       userIsHost={userIsHost}
+                      setRefresh={setRefresh}
                     />
                   ))}
               </div>
@@ -80,6 +81,7 @@ export default function Items({
                       setItemModalOpen={setItemModalOpen}
                       setItemData={setItemData}
                       userIsHost={userIsHost}
+                      setRefresh={setRefresh}
                     />
                   ))}
               </div>
@@ -104,11 +106,16 @@ export default function Items({
   );
 }
 
-function Item({ item, setEvent, setItemData, setItemModalOpen, userIsHost }) {
-  const [expanded, setExpanded] = useState(false);
+function Item({
+  setRefresh,
+  item,
+  setEvent,
+  setItemData,
+  setItemModalOpen,
+  userIsHost,
+}) {
   const [showOptions, setShowOptions] = useState(false);
   const token = useContext(AuthContext);
-  const navigate = useNavigate();
 
   function handleDeleteItem(i) {
     const options = {
@@ -121,7 +128,7 @@ function Item({ item, setEvent, setItemData, setItemModalOpen, userIsHost }) {
     };
 
     axios.request(options).then(() => {
-      navigate(0);
+      setRefresh((r) => !r);
     });
   }
 
@@ -169,7 +176,7 @@ function Item({ item, setEvent, setItemData, setItemModalOpen, userIsHost }) {
     axios
       .request(options)
       .then(function (response) {
-        navigate(0);
+        setRefresh((r) => !r);
       })
       .catch(function (error) {
         console.error(error);
@@ -237,7 +244,9 @@ function Item({ item, setEvent, setItemData, setItemModalOpen, userIsHost }) {
           </div>
         </div>
         <div className="flex flex-col">
-          <Typography variant="small">{item.description}</Typography>
+          {item.description && (
+            <Typography variant="small">{item.description}</Typography>
+          )}
           <DietaryRestrictions item={item} />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useContext, useEffect } from "react";
 import { Input, Textarea, Button } from "@material-tailwind/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authcontext";
 import axios, { all } from "axios";
 import {
@@ -18,7 +18,7 @@ export default function CreateItemModal({
   itemModalOpen,
   setItemModalOpen,
   itemData,
-  setItemData,
+  setRefresh,
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -26,7 +26,6 @@ export default function CreateItemModal({
   const token = useContext(AuthContext);
   const [allergyList, setAllergyList] = useState("");
   const [itemAllergies, setItemAllergies] = useState([]);
-  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`https://potluck.herokuapp.com/dietary-restrictions`, {
@@ -40,15 +39,14 @@ export default function CreateItemModal({
         console.log(response.data);
       });
 
-    //if (itemData) {
-    setTitle(itemData?.title);
-    setDescription(itemData?.description);
+    setTitle(itemData?.title || "");
+    setDescription(itemData?.description || "");
     setItemAllergies(itemData?.dietary_restrictions_names ?? []);
-    //}
   }, [itemData]);
 
   function handleCreateItem(i) {
     i.preventDefault();
+
     const options = {
       method: itemData ? "PATCH" : "POST",
       url: itemData
@@ -68,8 +66,7 @@ export default function CreateItemModal({
     axios
       .request(options)
       .then(function (response) {
-        setItemData(null);
-        navigate(0);
+        setRefresh((r) => !r);
         console.log(response.data);
       })
       .catch(function (error) {

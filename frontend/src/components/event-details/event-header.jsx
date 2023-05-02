@@ -211,7 +211,6 @@ export default function EventHeader({ event, mapsURL, calFile }) {
 function EditMenu({ pk, handleDelete, calFile, isHost }) {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const navigate = useNavigate();
-  console.log(calFile);
   function handleDeleteConfirmation() {
     setIsConfirmDeleteOpen(true);
   }
