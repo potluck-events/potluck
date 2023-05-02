@@ -5,4 +5,5 @@
 body {
   max-width: 30rem;
   margin: auto;
+  overflow: hidden;
 }
