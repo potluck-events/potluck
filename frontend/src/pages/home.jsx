@@ -222,7 +222,7 @@ function Events({ events }) {
                         {event.user_is_host === true && (
                           <Chip
                             value="Hosting"
-                            className="mt-2 bg-blue-900"
+                            className=" bg-blue-900"
                             icon={
                               <FontAwesomeIcon
                                 icon={faHouseChimney}
