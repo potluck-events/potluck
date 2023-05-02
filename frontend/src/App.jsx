@@ -24,9 +24,6 @@ function App() {
   const [token, setToken] = useLocalStorageState("token", {
     defaultValue: null,
   });
-  const [itemsTabOpen, setItemsTabOpen] = useLocalStorageState("itemsTabOpen", {
-    defaultValue: true,
-  }); //Is the "tab" on items?
   const [spotifyEventPk, setSpotifyEventPk] = useLocalStorageState(
     "spotifyEventPk",
     { defaultValue: null }
@@ -45,12 +42,7 @@ function App() {
             />
           }
         >
-          <Route
-            path="/"
-            element={
-              token ? <Home setItemsTabOpen={setItemsTabOpen} /> : <Landing />
-            }
-          />
+          <Route path="/" element={token ? <Home /> : <Landing />} />
           <Route
             path="/login"
             element={!token ? <Login setToken={setToken} /> : <Home />}
@@ -66,15 +58,7 @@ function App() {
               path="/events/new"
               element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />}
             />
-            <Route
-              path="/events/:pk"
-              element={
-                <EventDetails
-                  itemsTabOpen={itemsTabOpen}
-                  setItemsTabOpen={setItemsTabOpen}
-                />
-              }
-            />
+            <Route path="/events/:pk" element={<EventDetails />} />
             <Route
               path="/events/:pk/edit"
               element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />}
