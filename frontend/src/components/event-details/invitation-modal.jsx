@@ -1,16 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useContext, useEffect } from "react";
-import {
-  Input,
-  Textarea,
-  Button,
-  Chip,
-  Typography,
-} from "@material-tailwind/react";
+import { Input, Textarea, Button, Typography } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import React from "react";
+import { Chip } from "@mui/material";
 
 export default function InvitationModal({
   inviteModalOpen,
@@ -139,15 +134,12 @@ export default function InvitationModal({
                       {invites.map((invite, idx) => (
                         <div key={idx}>
                           <Chip
-                            className="w-fit mx-1 my-1 "
-                            variant="gradient"
-                            show={show}
-                            dismissible={{
-                              onClose: () =>
-                                setInvites(invites.filter((m) => m !== invite)),
-                            }}
-                            color="indigo"
-                            value={
+                            className="w-fit mx-1 my-1"
+                            variant="outlined"
+                            onDelete={() =>
+                              setInvites(invites.filter((m) => m !== invite))
+                            }
+                            label={
                               invite?.name
                                 ? `${invite.name} (${
                                     invite.email.length > 15
