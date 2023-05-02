@@ -194,6 +194,16 @@ Some endpoints have additional custom permissions.
 | /items/int:pk/reserved | PATCH | own/un-own item with given pk |
 | /events/int:pk/items | GET, POST | show/create items for event with given pk |
 
+#### Custom Permissions
+**/items/int:pk/**
+* `PUT, PATCH, DELETE:` user must be the creator of the item or the host of the related event
+
+**/items/int:pk/reserved/**
+* `PATCH:` user must be the owner of the object or a guest of the related event
+
+**/events/int:pk/items/**
+* `GET, POST:` user must be the host or guest of the related event
+
 <br>
 
 ### Post Endpoints
