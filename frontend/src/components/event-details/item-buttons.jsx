@@ -13,7 +13,7 @@ export function NewItemButton({ setItemModalOpen, setItemData }) {
     setItemData(null);
   }
   return (
-    <div className="fixed right-5 bottom-5 flex justify-end z-30">
+    <div className="relative flex justify-end z-30">
       <Button
         onClick={handleNewItem}
         className="rounded-full shadow-lg shadow-gray-600/50 bg-blue-900"
@@ -54,7 +54,7 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
   }
 
   return (
-    <div className="fixed right-5 top-5 z-30">
+    <div className="relative top-10 z-30">
       <form>
         <Button
           onClick={handleReserve}
