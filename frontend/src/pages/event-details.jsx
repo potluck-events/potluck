@@ -164,19 +164,13 @@ function EventBody({
           setRefresh={setRefresh}
           event={event}
         >
-          {itemsTabOpen &&
-            (hasSelected() ? (
-              <ReserveItemsButton
-                setEvent={setEvent}
-                setRefresh={setRefresh}
-                items={event.items.filter((item) => item.selected)}
-              />
-            ) : (
-              <NewItemButton
-                setItemModalOpen={setItemModalOpen}
-                setItemData={setItemData}
-              />
-            ))}
+          {itemsTabOpen && hasSelected() && (
+            <ReserveItemsButton
+              setEvent={setEvent}
+              setRefresh={setRefresh}
+              items={event.items.filter((item) => item.selected)}
+            />
+          )}
         </Items>
         <Posts
           posts={event.posts}
