@@ -135,6 +135,7 @@ For example:
 ## ENDPOINTS
 
 All endpoints have `permission_classes = [IsAuthenticated]`
+
 Some endpoints have additional custom permissions.
 
 ### User Profile Endpoints
@@ -158,6 +159,12 @@ Some endpoints have additional custom permissions.
 | /events/ | GET, POST | view upcoming events the user is hosting or attending; create new event |
 | /events/history/ | GET | view past events the user has hosted or attended |
 | /events/int:pk/ | GET, PUT, PATCH, DELETE | view/edit/delete event with given pk |
+
+#### Custom Permissions
+* /events/int:pk/
+
+GET: user must be a host or guest of event with given pk
+PUT, PATCH, DELETE: user must be a host of event with given pk
 
 <br>
 
