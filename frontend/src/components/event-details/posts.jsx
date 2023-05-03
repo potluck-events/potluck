@@ -127,7 +127,7 @@ function Post({ post, handleDelete, userIsHost }) {
         {(post.user_is_author || userIsHost) && (
           <FontAwesomeIcon
             onClick={() => handleDelete(post)}
-            className="w-fit absolute right-3 my-3 cursor-pointer"
+            className=" absolute right-3 my-3 cursor-pointer"
             icon={faXmark}
           />
         )}
