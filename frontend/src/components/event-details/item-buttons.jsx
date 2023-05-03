@@ -25,7 +25,6 @@ export function ReserveItemsButton({ items, setRefresh, setEvent }) {
         .request(options)
         .then(function (response) {
           console.log("PATCH", response.data);
-          setEvent(null);
           setRefresh((r) => !r);
         })
         .catch(function (error) {

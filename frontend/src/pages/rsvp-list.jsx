@@ -44,7 +44,6 @@ export default function RSVPList() {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
         setInvitations(response.data);
       })
       .catch(function (error) {
@@ -64,7 +63,6 @@ export default function RSVPList() {
     };
 
     axios.request(options).then(function (response) {
-      console.log(response.data);
       setEvent(response.data);
     });
   }, [refresh]);
@@ -166,7 +164,6 @@ function Responses({ header, invitations, event, setRefresh }) {
   const token = useContext(AuthContext);
 
   function handleDelete(i) {
-    console.log(i);
     const options = {
       method: "DELETE",
       url: `https://potluck.herokuapp.com/invitations/${i.pk}`,
@@ -237,7 +234,6 @@ function LinkModal({ event, linkModalOpen, setLinkModalOpen }) {
     setShowCopy(true);
     navigator.clipboard.writeText(inviteLink);
     setTimeout(() => {
-      console.log("hit");
       setShowCopy(false);
     }, 2000);
   }

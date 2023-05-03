@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -29,6 +29,7 @@ export default function Header({ setToken, notifications, setNotifications }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
+  const location = useLocation();
 
   function handleLogout() {
     const options = {
@@ -87,6 +88,21 @@ export default function Header({ setToken, notifications, setNotifications }) {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (location.pathname !== "/notifications") {
+      axios
+        .get(`https://potluck.herokuapp.com/notifications`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        })
+        .then((response) => {
+          setNotifications(response.data);
+        });
+    }
+  }, [location.pathname]);
+
   function handleProfile() {
     navigate("/profile");
   }
@@ -119,17 +135,19 @@ export default function Header({ setToken, notifications, setNotifications }) {
                     type="button"
                     className="-m-2.5 gap-1 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                   >
-                    <UserAvatar user={userData} className="w-6 h-6">
-                      {notifications.filter((n) => n.is_read === false).length >
-                        0 && (
-                        <div className="flex items-center justify-center bg-blue-900 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-5 w-5 text-xs text-center m-auto">
-                          {
-                            notifications.filter((n) => n.is_read === false)
-                              .length
-                          }
-                        </div>
-                      )}
-                    </UserAvatar>
+                    {userData && (
+                      <UserAvatar user={userData} className="w-6 h-6">
+                        {notifications.filter((n) => n.is_read === false)
+                          .length > 0 && (
+                          <div className="flex items-center justify-center bg-blue-900 text-white cursor-pointer rounded-full absolute -top-1 -left-1 h-5 w-5 text-xs text-center m-auto">
+                            {
+                              notifications.filter((n) => n.is_read === false)
+                                .length
+                            }
+                          </div>
+                        )}
+                      </UserAvatar>
+                    )}
                     <FontAwesomeIcon icon={faAngleDown} />
                   </button>
                 </div>

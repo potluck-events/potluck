@@ -102,32 +102,29 @@ export default function Home({ setItemsTabOpen }) {
     setIsFilterFuture(state);
   }
 
-  if (events)
-    return (
-      <>
-        {/* <div className="flex justify-center py-1">
-        <img src="temp-img/logo2.png" alt="" />
-    </div> */}
-        <Tabs className="mt-3 px-6 mb-20" value="events">
-          <TabsHeader>
-            <Tab value="events">
-              <div className="flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5" /> Events
-              </div>
-            </Tab>
-            <Tab value="items">
-              <div className="flex items-center gap-2">
-                <ListBulletIcon className="w-5 h-5" /> Shopping List
-              </div>
-            </Tab>
-          </TabsHeader>
-          <TabsBody
-            animate={{
-              initial: { y: 250 },
-              mount: { y: 0 },
-              unmount: { y: 250 },
-            }}
-          >
+  return (
+    <>
+      <Tabs className="mt-3 px-6 mb-20" value="events">
+        <TabsHeader>
+          <Tab value="events">
+            <div className="flex items-center gap-2">
+              <CalendarIcon className="w-5 h-5" /> Events
+            </div>
+          </Tab>
+          <Tab value="items">
+            <div className="flex items-center gap-2">
+              <ListBulletIcon className="w-5 h-5" /> Shopping List
+            </div>
+          </Tab>
+        </TabsHeader>
+        <TabsBody
+          animate={{
+            initial: { y: 250 },
+            mount: { y: 0 },
+            unmount: { y: 250 },
+          }}
+        >
+          {events ? (
             <TabPanel value="events" className="py-0 px-0">
               <div className="relative flex items-center justify-around">
                 <div className=" flex mt-3">
@@ -169,32 +166,32 @@ export default function Home({ setItemsTabOpen }) {
                 <Typography variant="h3" className="pt-4 -mb-2 text-center">
                   {isFilterFuture ? "My Events" : "Past Events"}
                 </Typography>
-                {events && <Events events={events} />}
+
+                <Events events={events} />
               </div>
             </TabPanel>
-          </TabsBody>
-          <TabsBody
-            animate={{
-              initial: { y: 250 },
-              mount: { y: 0 },
-              unmount: { y: 250 },
-            }}
-          >
-            <TabPanel value="items">
-              <Typography variant="h2" className="py-2 text-center">
-                Shopping List
-              </Typography>
-              {itemsEvents && <Items events={itemsEvents} />}
-            </TabPanel>
-          </TabsBody>
-        </Tabs>
-      </>
-    );
-
-  return (
-    <div className="h-52 flex items-center justify-center">
-      <FontAwesomeIcon icon={faSpinner} spin />
-    </div>
+          ) : (
+            <div className="h-52 flex items-center justify-center">
+              <FontAwesomeIcon icon={faSpinner} spin />
+            </div>
+          )}
+        </TabsBody>
+        <TabsBody
+          animate={{
+            initial: { y: 250 },
+            mount: { y: 0 },
+            unmount: { y: 250 },
+          }}
+        >
+          <TabPanel value="items">
+            <Typography variant="h2" className="py-2 text-center">
+              Shopping List
+            </Typography>
+            {itemsEvents && <Items events={itemsEvents} />}
+          </TabPanel>
+        </TabsBody>
+      </Tabs>
+    </>
   );
 }
 

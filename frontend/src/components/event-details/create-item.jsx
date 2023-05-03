@@ -37,7 +37,6 @@ export default function CreateItemModal({
       })
       .then((response) => {
         setAllergyList(response.data);
-        console.log(response.data);
       });
 
     setTitle(itemData?.title || "");
@@ -68,7 +67,6 @@ export default function CreateItemModal({
       .request(options)
       .then(function (response) {
         setRefresh((r) => !r);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.error(error);
