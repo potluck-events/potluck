@@ -319,10 +319,12 @@ function EditMenu({ pk, handleDelete, calFile, isHost }) {
               Are you sure?
             </Typography>
             <div className="flex mb-2 py-2 self-center gap-x-4">
-              <Button className="" color="blue" onClick={handleDeleteConfirmed}>
+              <Button className="bg-blue-900" onClick={handleDeleteConfirmed}>
                 Yes
               </Button>
-              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button className="bg-blue-900" onClick={handleDeleteCancel}>
+                Cancel
+              </Button>
             </div>
           </Dialog>
         </div>

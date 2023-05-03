@@ -53,7 +53,6 @@ export default function EventDetails({}) {
     axios
       .request(options)
       .then(function (response) {
-        console.log("GET", response.data);
         setEvent(response.data);
 
         createICS(response.data, setCalFile);

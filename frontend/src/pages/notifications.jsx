@@ -17,7 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-
 export default function Notifications({ notifications, setNotifications }) {
   const token = useContext(AuthContext);
   const [event, setEvent] = useState();
