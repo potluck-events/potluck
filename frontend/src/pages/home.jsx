@@ -14,7 +14,6 @@ import {
   Menu,
   MenuHandler,
   MenuList,
-  Chip,
 } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -33,7 +32,7 @@ import {
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Checkbox from "@mui/material/Checkbox";
+import { Checkbox, Chip } from "@mui/material";
 
 export default function Home({ setItemsTabOpen }) {
   const token = useContext(AuthContext);
@@ -167,7 +166,7 @@ export default function Home({ setItemsTabOpen }) {
                 </div>
               </div>
               <div>
-                <Typography variant="h3" className="pt-4 -mb-4 text-center">
+                <Typography variant="h3" className="pt-4 -mb-2 text-center">
                   {isFilterFuture ? "My Events" : "Past Events"}
                 </Typography>
                 {events && <Events events={events} />}
@@ -212,7 +211,7 @@ function Events({ events }) {
         <div className="">
           {events.map((event, index) => {
             return (
-              <Card className="my-3 " key={index}>
+              <Card className="my-3" key={index}>
                 <CardBody className="p-4">
                   <div className="">
                     <div
@@ -223,12 +222,16 @@ function Events({ events }) {
                         <h2 className="font-semibold">{event.title}</h2>
                         {event.user_is_host === true && (
                           <Chip
-                            value="Hosting"
+                            variant="outlined"
+                            label="Hosting"
                             className=" bg-blue-900"
+                            sx={{
+                              marginBottom: "1px",
+                            }}
                             icon={
                               <FontAwesomeIcon
                                 icon={faHouseChimney}
-                                className=" h-4 w-4 p-0.5"
+                                className=" h-4 w-4 p-0.5 "
                               />
                             }
                           />
@@ -281,11 +284,11 @@ function Items({ events }) {
                 onClick={() => onClickViewEvent(e.pk)}
               >
                 <div>
-                  <Typography className="font-semibold" variant="h5">
+                  <Typography className="font-semibold" variant="h6">
                     {e.title}
                   </Typography>
                 </div>
-                <div className="self-end">
+                <div className="self-start">
                   <IconButton variant="text" className=" mr-1">
                     <FontAwesomeIcon
                       icon={faAnglesRight}

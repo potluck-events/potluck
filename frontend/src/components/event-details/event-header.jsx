@@ -269,7 +269,7 @@ function EditMenu({ pk, handleDelete, calFile, isHost }) {
         <MenuHandler>
           <FontAwesomeIcon
             icon={faEllipsis}
-            className="text-2xl cursor-pointer"
+            className="text-2xl cursor-pointer mr-2"
           />
         </MenuHandler>
         <MenuList>

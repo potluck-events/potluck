@@ -61,7 +61,7 @@ export default function Items({
               </div>
             )}
           </div>
-          {event.user_is_host || items.filter((i) => !i.owner).length !== 0 ? (
+          {items.filter((i) => !i.owner).length !== 0 ? (
             <>
               <div className="pl-0 divide-y">
                 {items
