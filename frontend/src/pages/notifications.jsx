@@ -98,7 +98,7 @@ export default function Notifications({ notifications, setNotifications }) {
     return (
       <>
         {notifications.length > 0 && (
-          <div className="flex justify-center w-screen">
+          <div className="flex justify-center">
             <Typography variant="h3" className="">
               Notifications
             </Typography>
