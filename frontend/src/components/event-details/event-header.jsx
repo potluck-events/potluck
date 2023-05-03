@@ -123,7 +123,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
               color="green"
               value="Playlist"
               icon={
-                <FontAwesomeIcon icon={faSpotify} className="mx-1" size="xl" />
+                <FontAwesomeIcon icon={faSpotify} className="ml-1" size="xl" />
               }
             />
           </a>
@@ -132,7 +132,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
           <a href={`https://venmo.com/${event.tip_jar}`} target="_blank">
             {" "}
             <Chip
-              className="my-1 cursor-pointer z-0"
+              className=" cursor-pointer z-0"
               style={{
                 backgroundColor: "#3396cd",
               }}
@@ -146,8 +146,8 @@ export default function EventHeader({ event, mapsURL, calFile }) {
                   imageRendering="optimizeQuality"
                   fillRule="evenodd"
                   clipRule="evenodd"
-                  className=" w-fit h-6 -ml-.5 -mt-1"
-                  styl={{ marginTop: "-3px" }}
+                  className=" h-6 -ml-.5 "
+                  style={{ marginTop: "-2px" }}
                 >
                   <g fillRule="nonzero">
                     <path
