@@ -61,7 +61,7 @@ export default function Items({
               </div>
             )}
           </div>
-          {event.user_is_host || items.filter((i) => !i.owner).length !== 0 ? (
+          {items.filter((i) => !i.owner).length !== 0 ? (
             <>
               <div className="pl-0 divide-y">
                 {items
@@ -254,11 +254,7 @@ function Item({
         <div className="flex">
           <div className="flex flex-col flex-auto">
             {item.owner && (
-              <Typography variant="small">
-                {item.user_is_owner
-                  ? "I am bringing"
-                  : `${item.owner.full_name} is bringing`}
-              </Typography>
+              <Typography variant="small">{item.owner.full_name}</Typography>
             )}
             <Typography variant="h6" className="flex-auto">
               {item.title}

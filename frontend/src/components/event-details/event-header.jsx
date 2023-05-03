@@ -13,6 +13,7 @@ import {
   faCommentsDollar,
   faEllipsis,
   faEllipsisVertical,
+  faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -81,7 +82,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
         {event.end_time && " -"}{" "}
         {event.end_time && moment(event.end_time, "HH:mm:ss").format("h:mm A")}
       </Typography>
-      <div className="border-b-2 pb-2">
+      <div className="border-b-2 pb-2 mt-1">
         <div className="mb-1 text-m">
           <div className="flex items-center justify-start rounded-full">
             {event.host.thumbnail ? (
@@ -93,11 +94,14 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             ) : (
               <FontAwesomeIcon className="mr-1" icon={faUser} />
             )}{" "}
-            <Typography>Hosted by {event.host.full_name} </Typography>
+            <Typography className="" style={{ marginLeft: "-1px" }}>
+              Hosted by {event.host.full_name}{" "}
+            </Typography>
           </div>
         </div>
         <Typography className="mb-1 mr-1 text-m">
-          <FontAwesomeIcon icon={faLocationDot} /> {event.location_name}
+          <FontAwesomeIcon icon={faLocationDot} />{" "}
+          <span style={{ marginLeft: "2px" }}>{event.location_name}</span>
         </Typography>
         {event.street_address && (
           <p className="ab-1 text-m">
@@ -105,7 +109,7 @@ export default function EventHeader({ event, mapsURL, calFile }) {
             <a
               href={mapsURL}
               target="_blank"
-              className="font-bold text-blue-900 hover:text-blue-700"
+              className=" text-blue-900 hover:text-blue-700"
             >
               {event.street_address} {event.city} {event.state}, {event.zipcode}{" "}
             </a>
@@ -183,19 +187,31 @@ export default function EventHeader({ event, mapsURL, calFile }) {
       </div>
       <div
         onClick={handleClickAttendees}
-        className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2"
+        className="pt-1 mt-2 flex justify-between items-center rounded hover:bg-gray-100 cursor-pointer border-t-2 border-b-2 pb-3"
       >
         <div className="">
-          <Typography variant="h6" className="text-left mt-1 font-bold">
-            Attendees
+          <Typography variant="h6" className="text-left mt-1 mb-1 font-bold">
+            Guest List
           </Typography>
-          <div className="flex justify-around gap-2">
-            <Chip color="teal" value={`${event.rsvp_yes} Going`} />
-            <Chip color="teal" value={`${event.rsvp_no} Can't go`} />
-            <Chip color="teal" value={`${event.rsvp_tbd} TBD`} />
+          <div className="flex justify-around gap-1">
+            <Chip
+              className="rounded-full"
+              color="teal"
+              value={`${event.rsvp_yes} Going`}
+            />
+            <Chip
+              className="rounded-full"
+              color="teal"
+              value={`${event.rsvp_no} Can't go`}
+            />
+            <Chip
+              className="rounded-full"
+              color="teal"
+              value={`${event.rsvp_tbd} TBD`}
+            />
           </div>
         </div>
-        <FontAwesomeIcon className="h-5 w-5" icon={faAngleRight} />
+        <FontAwesomeIcon className="h-6 w-6 mt-1 mr-2" icon={faAnglesRight} />
       </div>
       <div className="">
         {event.dietary_restrictions_count && (
@@ -253,7 +269,7 @@ function EditMenu({ pk, handleDelete, calFile, isHost }) {
         <MenuHandler>
           <FontAwesomeIcon
             icon={faEllipsis}
-            className="text-2xl cursor-pointer"
+            className="text-2xl cursor-pointer mr-2"
           />
         </MenuHandler>
         <MenuList>

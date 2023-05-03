@@ -57,14 +57,14 @@ export default function UserInvitations() {
         {events.filter((e) => e.response === null).length !== 0 && (
           <div className="py-4 mx-6">
             <Typography variant="h4" className="text-center mb-2">
-              Pending Invitations
+              Pending
             </Typography>
             <Invitations events={events.filter((e) => e.response === null)} />
           </div>
         )}
         <div className="py-4 mx-6">
           <Typography variant="h4" className="text-center mb-2">
-            RSVP'd
+            Replied
           </Typography>
           <Invitations events={events.filter((e) => e.response !== null)} />
         </div>

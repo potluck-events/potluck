@@ -96,6 +96,7 @@ function CreatePostForm({ handleUserPost }) {
         onChange={(p) => setUserPost(p.target.value)}
         label="New post"
         size="lg"
+        color="indigo"
       />
       <Button
         disabled={!userPost}

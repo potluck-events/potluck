@@ -14,7 +14,6 @@ import {
   Menu,
   MenuHandler,
   MenuList,
-  Chip,
 } from "@material-tailwind/react";
 import { CalendarIcon, ListBulletIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -33,7 +32,7 @@ import {
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Checkbox from "@mui/material/Checkbox";
+import { Checkbox, Chip } from "@mui/material";
 
 export default function Home({ setItemsTabOpen }) {
   const token = useContext(AuthContext);
@@ -130,16 +129,16 @@ export default function Home({ setItemsTabOpen }) {
             }}
           >
             <TabPanel value="events" className="py-0 px-0">
-              <div className="relative flex items-center justify-center">
-                <div className="absolute left-1 flex mt-3">
+              <div className="relative flex items-center justify-around">
+                <div className=" flex mt-3">
                   <NewEventButton />
                 </div>
                 <InvitationsButton pending={pending} />
-                <div className="absolute right-4 h-full flex items-center">
+                <div className="h-full flex items-center">
                   <Menu placement="bottom-end">
                     <MenuHandler>
                       <FontAwesomeIcon
-                        className="mt-3 cursor-pointer"
+                        className="mt-3 cursor-pointer bg-blue-900 text-white p-2.5 rounded-full shadow-gray-600/50 shadow-md"
                         icon={faFilter}
                       />
                     </MenuHandler>
@@ -167,7 +166,7 @@ export default function Home({ setItemsTabOpen }) {
                 </div>
               </div>
               <div>
-                <Typography variant="h3" className="pt-4 -mb-4 text-center">
+                <Typography variant="h3" className="pt-4 -mb-2 text-center">
                   {isFilterFuture ? "My Events" : "Past Events"}
                 </Typography>
                 {events && <Events events={events} />}
@@ -212,7 +211,7 @@ function Events({ events }) {
         <div className="">
           {events.map((event, index) => {
             return (
-              <Card className="my-3 " key={index}>
+              <Card className="my-3" key={index}>
                 <CardBody className="p-4">
                   <div className="">
                     <div
@@ -223,12 +222,16 @@ function Events({ events }) {
                         <h2 className="font-semibold">{event.title}</h2>
                         {event.user_is_host === true && (
                           <Chip
-                            value="Hosting"
+                            variant="outlined"
+                            label="Hosting"
                             className=" bg-blue-900"
+                            sx={{
+                              marginBottom: "1px",
+                            }}
                             icon={
                               <FontAwesomeIcon
                                 icon={faHouseChimney}
-                                className=" h-4 w-4 p-0.5"
+                                className=" h-4 w-4 p-0.5 "
                               />
                             }
                           />
@@ -281,11 +284,11 @@ function Items({ events }) {
                 onClick={() => onClickViewEvent(e.pk)}
               >
                 <div>
-                  <Typography className="font-semibold" variant="h5">
+                  <Typography className="font-semibold" variant="h6">
                     {e.title}
                   </Typography>
                 </div>
-                <div className="self-end">
+                <div className="self-start">
                   <IconButton variant="text" className=" mr-1">
                     <FontAwesomeIcon
                       icon={faAnglesRight}
@@ -368,7 +371,7 @@ function NewEventButton() {
     <div className=" relative ">
       <Button
         onClick={onClickNewEvent}
-        className="w-10 h-10 rounded-full p-0 shadow-lg shadow-gray-600/50 bg-blue-900"
+        className="w-10 h-10 rounded-full p-0 shadow-md shadow-gray-600/50 bg-blue-900"
       >
         <div className="flex justify-center">
           <FontAwesomeIcon icon={faCalendarPlus} className="w-5 h-10 -mt-0" />
@@ -394,18 +397,6 @@ function InvitationsButton({ pending }) {
         color="indigo"
       >
         Invitations ({pending} pending)
-        <svg
-          xmlns="https://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-6 h-6 pb-2"
-        >
-          <path
-            fillRule="evenodd"
-            d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z"
-            clipRule="evenodd"
-          />
-        </svg>
       </Button>
     </div>
   );
