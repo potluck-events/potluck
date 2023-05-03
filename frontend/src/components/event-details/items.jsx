@@ -309,6 +309,7 @@ function ItemOptions({
         </>
       )}
       <FontAwesomeIcon
+        className="cursor-pointer"
         icon={faEllipsis}
         onClick={() => setShowOptions(!showOptions)}
       />
