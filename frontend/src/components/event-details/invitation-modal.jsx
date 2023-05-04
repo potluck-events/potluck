@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import React from "react";
-import { Chip } from "@mui/material";
+import { Avatar, Chip } from "@mui/material";
 
 export default function InvitationModal({
   inviteModalOpen,
@@ -84,6 +84,7 @@ export default function InvitationModal({
         };
         if (username) {
           invite.name = username;
+          invite.thumbnail = request.data[0]?.thumbnail;
         }
 
         setInvites([...invites, invite]);
@@ -136,18 +137,11 @@ export default function InvitationModal({
                           <Chip
                             className="w-fit mx-1 my-1"
                             variant="outlined"
+                            avatar={<Avatar alt="" src={invite?.thumbnail} />}
                             onDelete={() =>
                               setInvites(invites.filter((m) => m !== invite))
                             }
-                            label={
-                              invite?.name
-                                ? `${invite.name} (${
-                                    invite.email.length > 15
-                                      ? `${invite.email.slice(0, 12)}...`
-                                      : invite.email
-                                  })`
-                                : invite.email
-                            }
+                            label={invite?.name ? invite.name : invite.email}
                           />
                         </div>
                       ))}
