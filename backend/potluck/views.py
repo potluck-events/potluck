@@ -255,7 +255,7 @@ class ListCreateInvitations(generics.ListCreateAPIView):
             serializer.save(event=event)
 
         send(f"{event.host.full_name} invited you to an event!",
-             f"Hello! You've been invited to an event on {event.date_scheduled} at {event.time_scheduled}. The event is called {event.title}. Sign up for potluck and view your invitation at www.potluck-events.netlify.com/invitations", [email])
+             f"Hello! You've been invited to an event on {event.date_scheduled} at {event.time_scheduled}. The event is called {event.title}. Sign up for potluck and view your invitation at bash-events.netlify.com/invitations", [email])
 
     def get_permissions(self):
         if self.request.method != 'GET':
