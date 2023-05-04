@@ -202,7 +202,7 @@ function Responses({ header, invitations, event, setRefresh }) {
               {event.user_is_host && (
                 <FontAwesomeIcon
                   onClick={() => handleDelete(invitation)}
-                  className="w-fit absolute top-0 right-3 my-3 cursor-pointer"
+                  className="absolute top-0 right-3 my-3 cursor-pointer"
                   icon={faXmark}
                 />
               )}
