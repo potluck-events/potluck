@@ -36,6 +36,7 @@ export default function InvitationModal({
           response.data.map((invite) => ({
             email: invite.email,
             name: invite.guest.full_name,
+            thumbnail: invite.guest.thumbnail,
           }))
         );
       });
