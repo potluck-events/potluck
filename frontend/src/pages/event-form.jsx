@@ -112,7 +112,6 @@ export default function EventForm({ setSpotifyEventPk }) {
 
   function handleSaveEvent(e) {
     e.preventDefault();
-
     const options = {
       method: formState === "edit" ? "PATCH" : "POST",
       url:
@@ -133,12 +132,12 @@ export default function EventForm({ setSpotifyEventPk }) {
         state: state,
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
-        time_scheduled: dateTime.format("HH:MM"),
+        time_scheduled: dateTime.format("HH:mm"),
         tip_jar: isTipOn ? venmoHandle : "",
         playlist_link: isPlaylistOn && playlistLink ? playlistLink : "",
       },
     };
-    if (endTime) options.data.end_time = endTime.format("HH:MM");
+    if (endTime) options.data.end_time = endTime.format("HH:mm");
 
     axios
       .request(options)
