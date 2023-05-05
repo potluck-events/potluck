@@ -24,10 +24,7 @@ function App() {
   const [token, setToken] = useLocalStorageState("token", {
     defaultValue: null,
   });
-  const [spotifyEventPk, setSpotifyEventPk] = useLocalStorageState(
-    "spotifyEventPk",
-    { defaultValue: null }
-  );
+
   const [notifications, setNotifications] = useState([]);
 
   return (
@@ -54,19 +51,10 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/invitations" element={<UserInvitations />} />
             <Route path="/invite-code/:code" element={<InviteCodeRedirect />} />
-            <Route
-              path="/events/new"
-              element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />}
-            />
+            <Route path="/events/new" element={<EventForm />} />
             <Route path="/events/:pk" element={<EventDetails />} />
-            <Route
-              path="/events/:pk/edit"
-              element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />}
-            />
-            <Route
-              path="/events/:pk/copy"
-              element={<EventForm setSpotifyEventPk={setSpotifyEventPk} />}
-            />
+            <Route path="/events/:pk/edit" element={<EventForm />} />
+            <Route path="/events/:pk/copy" element={<EventForm />} />
             <Route path="/events/:pk/invitations" element={<RSVPList />} />
             <Route
               path="/events/:pk/invitations/:copyFromPk"
@@ -74,10 +62,7 @@ function App() {
             />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<EditProfile />} />
-            <Route
-              path="/spotify"
-              element={<Spotify spotifyEventPk={spotifyEventPk} />}
-            />
+            <Route path="/spotify" element={<Spotify />} />
             <Route
               path="/notifications"
               element={
