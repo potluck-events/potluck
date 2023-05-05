@@ -6,7 +6,9 @@ import { AuthContext } from "../../context/authcontext";
 import axios from "axios";
 import React from "react";
 import { Avatar, Chip } from "@mui/material";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+
 export default function InvitationModal({
   inviteModalOpen,
   setInviteModalOpen,
@@ -137,7 +139,13 @@ export default function InvitationModal({
                         <div key={idx}>
                           <Chip
                             variant="outlined"
-                            avatar={invite?.thumbnail ? <Avatar alt="" src={invite?.thumbnail} /> : <FontAwesomeIcon icon}
+                            avatar={
+                              invite?.thumbnail ? (
+                                <Avatar alt="" src={invite?.thumbnail} />
+                              ) : (
+                                <FontAwesomeIcon icon={faUser} />
+                              )
+                            }
                             onDelete={() =>
                               setInvites(invites.filter((m) => m !== invite))
                             }
