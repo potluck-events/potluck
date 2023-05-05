@@ -27,7 +27,7 @@ import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import spotify from "../components/event-details/spotify";
 import { Switch } from "@headlessui/react";
 
-export default function EventForm({ setSpotifyEventPk }) {
+export default function EventForm() {
   const token = useContext(AuthContext);
   const { pk } = useParams();
   const location = useLocation();
@@ -112,7 +112,6 @@ export default function EventForm({ setSpotifyEventPk }) {
 
   function handleSaveEvent(e) {
     e.preventDefault();
-
     const options = {
       method: formState === "edit" ? "PATCH" : "POST",
       url:
@@ -133,20 +132,23 @@ export default function EventForm({ setSpotifyEventPk }) {
         state: state,
         zipcode: zip,
         date_scheduled: dateTime.format("YYYY-MM-DD"),
-        time_scheduled: dateTime.format("HH:MM"),
+        time_scheduled: dateTime.format("HH:mm"),
         tip_jar: isTipOn ? venmoHandle : "",
         playlist_link: isPlaylistOn && playlistLink ? playlistLink : "",
       },
     };
-    if (endTime) options.data.end_time = endTime.format("HH:MM");
+    if (endTime) options.data.end_time = endTime.format("HH:mm");
 
     axios
       .request(options)
       .then(function (response) {
         //If spotify playlist is checked and there hasn't been a previous playlist set, create one
         if (isPlaylistOn && !response.data.playlist_link) {
-          setSpotifyEventPk(response.data.pk);
-          navigate("/spotify");
+          let eventState = {
+            eventPk: response.data.pk,
+          };
+          if (formState === "copy") eventState.copyPk = pk;
+          navigate("/spotify", { state: eventState });
         } else if (formState === "copy") {
           navigate(`/events/${response.data.pk}/invitations/${pk}`);
         } else {

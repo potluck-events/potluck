@@ -1,32 +1,48 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authcontext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useLocalStorageState from "use-local-storage-state";
 
-
-export default function Spotify({ spotifyEventPk }) {
+export default function Spotify() {
   const [userInfo, setUserInfo] = useState();
   const clientId = "fb2988ad523142b1a493ee09f914a44a"; // Replace with your client ID
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const userToken = useContext(AuthContext)
-  const navigate = useNavigate()
-  console.log(spotifyEventPk);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const userToken = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [spotifyEventPk, setSpotifyEventPk] = useLocalStorageState(
+    "spotifyEventPk",
+    { defaultValue: null }
+  );
+  const [copyPk, setCopyPk] = useLocalStorageState("copyPk", {
+    defaultValue: null,
+  });
 
-  
   useEffect(() => {
-    axios.get(`https://potluck.herokuapp.com/events/${spotifyEventPk}`, {
-      headers: {
-        'Content-Type': 'applications/json',
-        Authorization: userToken
-      }
-    }).then((response) => {
-      setTitle(response.data.title)
-      setDescription(response.data.description)
-      getSpotify(response.data.title, response.data.description)
-    })
+    if (location.state?.eventPk) setSpotifyEventPk(location.state.eventPk);
+    if (location.state?.copyPk) setCopyPk(location.state.copyPk);
+
+    axios
+      .get(
+        `https://potluck.herokuapp.com/events/${
+          location.state?.eventPk || spotifyEventPk
+        }`,
+        {
+          headers: {
+            "Content-Type": "applications/json",
+            Authorization: userToken,
+          },
+        }
+      )
+      .then((response) => {
+        setTitle(response.data.title);
+        setDescription(response.data.description);
+        getSpotify(response.data.title, response.data.description);
+      });
 
     async function getSpotify(title, description) {
       if (!code) {
@@ -35,19 +51,19 @@ export default function Spotify({ spotifyEventPk }) {
         const accessToken = await getAccessToken(clientId, code);
         const profile = await fetchProfile(accessToken);
         setUserInfo(profile);
-        const playlist = await createPlaylist(accessToken, profile, title, description)
+        const playlist = await createPlaylist(
+          accessToken,
+          profile,
+          title,
+          description
+        );
 
-        setPlaylist(playlist, spotifyEventPk, userToken, navigate)
+        setPlaylist(playlist, spotifyEventPk, userToken, navigate, copyPk);
       }
     }
+  }, []);
 
-    
-
-  }, [])
-
-
-  return null
-
+  return null;
 }
 
 async function redirectToAuthCodeFlow(clientId) {
@@ -59,8 +75,16 @@ async function redirectToAuthCodeFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", window.location.hostname.includes("bash") ? "https://bash-events.netlify.app/spotify" :"http://localhost:5173/spotify");
-  params.append("scope", "user-read-private user-read-email playlist-modify-private playlist-modify-public");
+  params.append(
+    "redirect_uri",
+    window.location.hostname.includes("bash")
+      ? "https://bash-events.netlify.app/spotify"
+      : "http://localhost:5173/spotify"
+  );
+  params.append(
+    "scope",
+    "user-read-private user-read-email playlist-modify-private playlist-modify-public"
+  );
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
 
@@ -94,7 +118,12 @@ async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri",window.location.hostname.includes("bash") ? "https://bash-events.netlify.app/spotify" :"http://localhost:5173/spotify");
+  params.append(
+    "redirect_uri",
+    window.location.hostname.includes("bash")
+      ? "https://bash-events.netlify.app/spotify"
+      : "http://localhost:5173/spotify"
+  );
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -117,40 +146,44 @@ async function fetchProfile(token) {
 
 async function createPlaylist(token, profile, title, description) {
   const options = {
-    method: 'POST',
+    method: "POST",
     url: `https://api.spotify.com/v1/users/${profile.id}/playlists`,
     headers: {
-      'Content-Type': 'application/json',
-       Authorization: `Bearer ${token}`
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     data: {
       name: title,
       description: description,
       public: true,
-      collaborative: false
-    }
-  }
-  const result = await axios.request(options)
+      collaborative: false,
+    },
+  };
+  const result = await axios.request(options);
 
-  return await result.data
+  return await result.data;
 }
 
-function setPlaylist(playlist, pk, token, navigate) {
+function setPlaylist(playlist, pk, token, navigate, copyPk) {
   const options = {
     method: "PATCH",
     url: `https://potluck.herokuapp.com/events/${pk}`,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: token,
     },
     data: {
       playlist_link: playlist.external_urls.spotify,
-    }
+    },
   };
 
-  axios.request(options).then(function (response) {
-    navigate(`/events/${response.data.pk}`)
-  }).catch(function (error) {
-    console.error(error);
-  });
+  axios
+    .request(options)
+    .then(function (response) {
+      if (copyPk) navigate(`/events/${response.data.pk}/invitations/${copyPk}`);
+      else navigate(`/events/${response.data.pk}`);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 }
