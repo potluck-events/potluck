@@ -27,7 +27,7 @@ import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import spotify from "../components/event-details/spotify";
 import { Switch } from "@headlessui/react";
 
-export default function EventForm({ setSpotifyEventPk }) {
+export default function EventForm() {
   const token = useContext(AuthContext);
   const { pk } = useParams();
   const location = useLocation();
@@ -144,8 +144,11 @@ export default function EventForm({ setSpotifyEventPk }) {
       .then(function (response) {
         //If spotify playlist is checked and there hasn't been a previous playlist set, create one
         if (isPlaylistOn && !response.data.playlist_link) {
-          setSpotifyEventPk(response.data.pk);
-          navigate("/spotify");
+          let eventState = {
+            eventPk: response.data.pk,
+          };
+          if (formState === "copy") eventState.copyPk = pk;
+          navigate("/spotify", { state: eventState });
         } else if (formState === "copy") {
           navigate(`/events/${response.data.pk}/invitations/${pk}`);
         } else {
