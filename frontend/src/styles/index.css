@@ -5,4 +5,5 @@
 body {
   max-width: 25rem;
   margin: auto;
+  touch-action: manipulation;
 }
